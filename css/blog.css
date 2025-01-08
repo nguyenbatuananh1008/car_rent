@@ -1,0 +1,152 @@
+/*
+Template Name: Car Lease
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************blog****************/
+.center_blog {
+background-image: url(../img/31.jpg);
+background-position: center;
+}
+.blog_1 .btn{
+border-color:#ff4d302e;
+padding:11px 20px;
+border-radius:0;
+ }
+.blog_1 .form-control{
+height:48px;
+ }
+.blog_1l2{
+box-shadow: 0px 10px 20px 0px rgb(0 0 0 / 3%); 
+ }
+.blog_1l2 ul li a {
+background: #ff4d3008;
+color: #111;
+margin-right: 10px;
+padding: 8px 16px 8px 16px;
+border-radius: 6px;
+display: inline-block;
+margin-top: 7px;
+margin-bottom: 7px;
+}
+.blog_1l2 ul li a:hover {
+background:#FF4D30;
+color:#fff;
+}
+
+.center_dt {
+background-image: url(../img/32.jpg);
+background-position: center;
+}
+.blockquote{
+border-left:5px solid #FF4D30; 
+ }
+.blog_1rdt2il ul li a {
+background: #ff4d3008;
+color: #111;
+margin-right: 5px;
+padding: 8px 16px 8px 16px;
+border-radius: 6px;
+display: inline-block;
+margin-top:7px;
+margin-bottom:7px;
+}
+.blog_1rdt2il ul li a:hover {
+background:#FF4D30;
+color:#fff;
+}
+.blog_1rdt2ir ul li a{
+background:#ff4d3008; 
+ }
+.blog_1rdt2ir ul li a i{
+color:#111;
+ }
+.blog_1rdt3i2l .form-control{
+height:60px;
+background:none; 
+ }
+.blog_1rdt3i2l .form_text{
+height:160px; 
+ }
+/*********************blog_end****************/
+
+
+@media screen and (max-width : 767px){
+.blog_1l2 h4{
+text-align:center; 
+ }
+.blog_1l2 .button{
+margin-left:auto;
+margin-right:auto;
+display:block;
+width:70%; 
+text-align:center;
+ }
+.blog_1r{
+margin-top:15px; 
+ }
+.blog_1rdt{
+margin-top:15px;  
+ }
+.blog_1rdt1 img{
+height:auto; 
+ }
+.blog_1rdt2il{
+text-align:center; 
+ }
+.blog_1rdt2ir {
+text-align:center!important;
+margin-top:15px; 
+ }
+.blog_1rdt3 h2{
+text-align:center; 
+ }
+.blog_1rdt3il{
+margin-bottom:15px;  
+ }
+.blog_1rdt3il {
+text-align:center;
+ }
+.blog_1rdt3il img{
+width:auto!important; 
+ }
+.blog_1rdt3il p{
+text-align:left; 
+ }
+.blog_1rdt3il h6{
+text-align:left; 
+ }
+.blog_1rdt3il h4{
+text-align:left; 
+ }
+.blog_1rdt3i2l .form-control{
+margin-bottom:10px; 
+ }
+.blog_1rdt3i2l h6{
+text-align:center;
+ }
+ }
+
+
+@media (min-width:576px) and (max-width:767px) {
+.blog_1l2{
+text-align:center; 
+ }
+.blog_1rdt3il img{
+width:100%!important; 
+ }
+ }
+@media (min-width:768px) and (max-width:991px) {
+
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+
+ }
+@media (min-width:1201px) and (max-width:1255px) {
+
+ }
+
+
