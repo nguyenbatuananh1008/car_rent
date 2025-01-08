@@ -1,0 +1,60 @@
+/*
+Template Name: Car Lease
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************models****************/
+.center_o {
+background-image: url(../img/14.jpg);
+background-position: center;
+}
+.model_m{
+border:1px solid #ff4d302e;
+ }
+/*********************models_end****************/
+
+
+@media screen and (max-width : 767px){
+.model_pg1i {
+margin-top:15px;
+text-align:center; 
+ }
+.model_pg1i2r {
+text-align:center!important;
+margin-top:15px; 
+ }
+.model_pg1i3l {
+margin-top:15px;
+text-align:center!important; 
+ }
+ }
+
+
+@media (min-width:576px) and (max-width:767px) {
+.model_pg1i2r {
+margin-top:0; 
+ }
+.model_pg1i3l {
+margin-top:0;
+ }
+
+ }
+@media (min-width:768px) and (max-width:991px) {
+.model_pg1i3l h6{
+font-size:12px; 
+ }
+.font_12{
+font-size:12px; 
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+
+ }
+@media (min-width:1201px) and (max-width:1255px) {
+
+ }
+
+

@@ -1,0 +1,91 @@
+/*
+Template Name: Car Lease
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************about****************/
+.center_about {
+background-image: url(../img/21.jpg);
+background-position: center;
+}
+.work_i1 img {
+border-radius: 30%;
+box-shadow: 0 0 4px 4px #ff4d302e;
+}
+.work_i1 img:hover {
+border-radius: 30%;
+box-shadow: 0 0 4px 4px #FF4D30; 
+}
+.work_i2 span{
+border-radius:50%;
+width:60px;
+height:60px;
+line-height:60px; 
+ }
+.work_i2{
+bottom:-30px; 
+ }
+ 
+.team_1i img{
+border:5px solid #ff4d302e;
+ }
+.team_1i ul li a{
+background:#ffedea;
+ }
+.team_1i ul li a i{
+color:#111;
+ }
+
+/*********************about_end****************/
+
+
+@media screen and (max-width : 767px){
+.about_pgr {
+margin-top:15px;
+text-align:center; 
+ }
+.about_pgr p{
+text-align:left; 
+ }
+.work_i {
+margin-top:15px; 
+ }
+.work_i_last  p{
+text-align:left;  
+ }
+.team_1i {
+margin-top:15px; 
+ }
+ }
+
+
+@media (min-width:576px) and (max-width:767px) {
+
+
+ }
+@media (min-width:768px) and (max-width:991px) {
+.about_pgl  img{
+height:480px; 
+ }
+.team_1i ul li{
+margin-top:4px;
+margin-bottom:4px; 
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.about_pgl  img{
+height:480px; 
+ }
+.team_1i ul li{
+margin-top:4px;
+margin-bottom:4px; 
+ }
+ }
+@media (min-width:1201px) and (max-width:1255px) {
+
+ }
+
+

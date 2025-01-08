@@ -1,0 +1,109 @@
+/*
+Template Name: Car Lease
+File: Layout CSS
+Author: TemplatesOnWeb
+Author URI: https://www.templateonweb.com/
+Licence: <a href="https://www.templateonweb.com/license">Website Template Licence</a>
+*/
+/*********************contact****************/
+.center_contact {
+background-image: url(../img/36.jpg);
+background-position: center;
+}
+
+.contact_1il span{
+width:70px;
+height:70px;
+line-height:70px; 
+ }
+.contact_2l ul li a{
+background:#ff4d3008;
+width:40px;
+height:40px; 
+font-size:18px;
+ }
+.contact_2l ul li a i{
+line-height:40px;
+color:#111; 
+ }
+.contact_2r .form-control{
+height:60px;
+ }
+.contact_2r .form_text{
+height:160px; 
+ }
+/*********************contact_end****************/
+
+
+@media screen and (max-width : 767px){
+.contact_1i{
+margin-bottom:15px;
+text-align:center; 
+ }
+.contact_1ir{
+margin-top:15px; 
+ }
+.contact_2l .font_60{
+font-size:45px; 
+ }
+.contact_2l {
+text-align:center;
+margin-bottom:15px;
+ }
+.contact_2l p{
+text-align:left;
+ }
+.contact_2{
+margin-top:20px!important;
+ }
+.contact_2r .form-control {
+margin-top:15px;
+}
+.blog_1rdt3i2{
+margin-top:0!important; 
+ }
+.blog_1rdt3i2 h6{
+text-align:center;
+ }
+ }
+
+
+@media (min-width:576px) and (max-width:767px) {
+.contact_1ir h5{
+font-size:16px; 
+ }
+.contact_1ir p{
+font-size:12px!important; 
+ }
+ }
+@media (min-width:768px) and (max-width:991px) {
+.contact_1il span {
+width: 40px;
+height: 40px;
+line-height: 40px;
+font-size:16px!important;
+}
+.contact_1ir h5 {
+font-size:18px;
+}
+.contact_1ir p {
+font-size:14px!important;
+}
+.contact_2l .font_60{
+font-size:50px; 
+ }
+ }
+
+@media (min-width:992px) and (max-width:1200px) {
+.contact_1il span {
+width: 50px;
+height: 50px;
+line-height: 50px;
+font-size:18px!important;
+}
+ }
+@media (min-width:1201px) and (max-width:1255px) {
+
+ }
+
+
