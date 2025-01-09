@@ -1,26 +1,40 @@
 <?php
-
-require_once '../module/Admin.php';
+require_once '../module/Admin.php'; // Đảm bảo đường dẫn đúng
+session_start();
 
 $message = ""; // Biến lưu thông báo lỗi
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email']; // Lấy email từ form
-    $password = $_POST['password']; // Lấy mật khẩu từ form
+    // Lấy dữ liệu từ form
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
 
-    $admin = new Admin();
-    $result = $admin->login($email, $password); // Gọi hàm login để kiểm tra thông tin đăng nhập
-
-    if ($result) {
-        session_start();
-        $_SESSION['admin'] = $result; // Lưu thông tin admin vào session
-        header("Location:index.php"); // Chuyển hướng đến trang index
-        exit();
+    // Kiểm tra trường hợp để trống
+    if (empty($email) || empty($password)) {
+        $message = "Email và mật khẩu không được để trống!";
     } else {
-        $message = "Email hoặc mật khẩu không đúng!"; // Thông báo lỗi
+        try {
+            $adminHandler = new Admin(); // Khởi tạo đối tượng Admin
+            $result = $adminHandler->login($email, $password); // Gọi hàm login
+
+            if ($result) {
+                // Lưu thông tin vào session
+                $_SESSION['id_admin'] = $result['id_admin'];
+                $_SESSION['name'] = $result['name'];
+                $_SESSION['usertype'] = $result['usertype'];
+
+                // Chuyển hướng đến index.php
+                header("Location: index.php");
+                exit();
+            } else {
+                $message = "Email hoặc mật khẩu không đúng!";
+            }
+        } catch (Exception $e) {
+            $message = "Lỗi hệ thống: " . $e->getMessage();
+        }
     }
 }
-?> 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <!-- Hiển thị thông báo lỗi -->
                                         <?php if (!empty($message)): ?>
                                             <div class="alert alert-danger">
-                                                <?= $message; ?>
+                                                <?= htmlspecialchars($message, ENT_QUOTES, 'UTF-8'); ?>
                                             </div>
                                         <?php endif; ?>
 
@@ -60,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     name="email" 
                                                     type="email" 
                                                     placeholder="name@example.com" 
+                                                    value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email'], ENT_QUOTES, 'UTF-8') : ''; ?>" 
                                                     required />
                                                 <label for="inputEmail">Địa chỉ Email</label>
                                             </div>
@@ -73,17 +88,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                     required />
                                                 <label for="inputPassword">Mật khẩu</label>
                                             </div>
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" />
-                                                <label class="form-check-label" for="inputRememberPassword">Nhớ mật khẩu</label>
-                                            </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                               
                                                 <button type="submit" class="btn btn-primary">Đăng Nhập</button>
                                             </div>
                                         </form>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -106,6 +115,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
+        <script src="../js/scripts.js"></script>
     </body>
 </html>

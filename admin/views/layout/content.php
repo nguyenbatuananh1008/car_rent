@@ -1,22 +1,4 @@
-<?php
-session_start();
-
-
-$admin = $_SESSION['admin'];
-?>
-
-<?php include 'layout/header.php'; ?>
-<?php include 'layout/slidebar.php'; ?>
-
-       
-                 
-            
-<div id="layoutSidenav">
-    <div id="layoutSidenav_content">
-        <div class="content-wrapper">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
+<div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Dashboard</h1>
@@ -86,17 +68,3 @@ $admin = $_SESSION['admin'];
                         </div>
                     </div>
                 </main>
-
-   
-       
-    </body>
-    </div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<?php include 'layout/footer.php'; ?>
-</html>
-
-        

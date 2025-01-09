@@ -1,20 +1,19 @@
 <?php
 class Database {
-    private $host = "localhost"; // Địa chỉ server
-    private $username = "root"; // Tài khoản MySQL
-    private $password = ""; // Mật khẩu MySQL
-    private $database = "dat_ve"; // Tên database
-    public $conn;
+    private $host = "localhost";
+    private $db_name = "dat_ve"; // Thay bằng tên cơ sở dữ liệu của bạn
+    private $username = "root";
+    private $password = ""; // Thay bằng mật khẩu của bạn
+    private $conn;
 
-    // Kết nối đến cơ sở dữ liệu
-    public function connect() { 
+    public function connect() {
         $this->conn = null;
 
         try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->database, $this->username, $this->password);
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name, $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $exception) {
-            echo "Kết nối thất bại: " . $exception->getMessage();
+            echo "Connection error: " . $exception->getMessage();
         }
 
         return $this->conn;
