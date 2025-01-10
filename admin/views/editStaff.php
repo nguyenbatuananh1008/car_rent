@@ -2,7 +2,8 @@
 include '../module/adminHandler.php';
 include 'layout/header.php';
 include 'layout/slidebar.php';
-
+include '../module/auth.php';
+checkAccess(0); 
 $id = $_GET['id'];
 $staff = getStaffById($id);
 
@@ -20,22 +21,17 @@ if (isset($_POST['update_name'])) {
 
 // Xử lý khi cập nhật mật khẩu
 if (isset($_POST['update_password'])) {
-    $current_password = $_POST['current_password'];
     $new_password = $_POST['new_password'];
     $confirm_password = $_POST['confirm_password'];
 
-    if ($current_password === $staff['password']) { // So sánh trực tiếp không mã hóa
-        if ($new_password === $confirm_password) {
-            if (updateStaff($id, $staff['name'], $staff['email'], $new_password, $staff['usertype'])) {
-                $success_message = "Cập nhật mật khẩu thành công!";
-            } else {
-                $error_message = "Có lỗi xảy ra khi cập nhật mật khẩu. Vui lòng thử lại.";
-            }
+    if ($new_password === $confirm_password) {
+        if (updateStaff($id, $staff['name'], $staff['email'], $new_password, $staff['usertype'])) {
+            $success_message = "Cập nhật mật khẩu thành công!";
         } else {
-            $error_message = "Mật khẩu mới và xác nhận mật khẩu không khớp!";
+            $error_message = "Có lỗi xảy ra khi cập nhật mật khẩu. Vui lòng thử lại.";
         }
     } else {
-        $error_message = "Mật khẩu hiện tại không chính xác!";
+        $error_message = "Mật khẩu mới và xác nhận mật khẩu không khớp!";
     }
 }
 ?>
@@ -79,10 +75,6 @@ if (isset($_POST['update_password'])) {
                     <!-- Form cập nhật mật khẩu -->
                     <form method="POST">
                         <h3>Đổi mật khẩu</h3>
-                        <div class="form-group">
-                            <label for="current_password">Mật khẩu hiện tại</label>
-                            <input type="password" id="current_password" name="current_password" class="form-control" required>
-                        </div>
                         <div class="form-group">
                             <label for="new_password">Mật khẩu mới</label>
                             <input type="password" id="new_password" name="new_password" class="form-control" required>

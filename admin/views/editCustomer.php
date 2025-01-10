@@ -1,6 +1,7 @@
 <?php
 include '../module/customerHandler.php';
-
+include '../module/auth.php';
+checkAccess(0); 
 // Lấy thông tin khách hàng cần sửa
 if (isset($_GET['id_user'])) {
     $id_user = $_GET['id_user'];

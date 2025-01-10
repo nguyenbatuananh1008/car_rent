@@ -4,6 +4,9 @@ include '../module/adminHandler.php';
 include '../views/layout/header.php';
 include '../views/layout/slidebar.php';
 
+include '../module/auth.php';
+checkAccess(0); 
+
 // Lấy thông tin admin từ session
 if (!isset($_SESSION['id_admin'])) {
     header("Location: login.php"); // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
@@ -55,7 +58,7 @@ if (isset($_POST['update_password'])) {
                     <div class="row mb-2">
                         <div class="col-sm-6"></div>
 <div class="container">
-    <h1>Thông tin tài khoản</h1>
+    <h1>Quản lý tài khoản</h1>
     <?php if (isset($success_message)): ?>
         <div class="alert alert-success"><?= $success_message ?></div>
     <?php elseif (isset($error_message)): ?>

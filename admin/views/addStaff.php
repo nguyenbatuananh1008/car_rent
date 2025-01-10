@@ -2,7 +2,8 @@
 include '../module/adminHandler.php';
 include 'layout/header.php';
 include 'layout/slidebar.php';
-
+include '../module/auth.php';
+checkAccess(0); 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];

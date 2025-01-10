@@ -1,8 +1,9 @@
 <?php
 session_start();
 
+include '../module/auth.php';
+checkAccess(0); 
 
-$admin = $_SESSION['admin'];
 ?>
 
 <?php include 'layout/header.php'; ?>

@@ -1,4 +1,6 @@
 <?php
+include '../module/auth.php';
+checkAccess(0); 
 include '../module/customerHandler.php';
 
 // Kiểm tra nếu có tìm kiếm
@@ -70,9 +72,11 @@ $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm k
                                                         <td><?= htmlspecialchars($customer['name']) ?></td>
                                                         <td><?= htmlspecialchars($customer['email']) ?></td>
                                                         <td>
-                                                            <a href="editCustomer.php?id_user=<?= $customer['id_user'] ?>" class="btn btn-primary btn-sm">Sửa</a>
-                                                            <a href="../module/customerHandler.php?delete_id=<?= $customer['id_user'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
-                                                        </td>
+    <a href="editCustomer.php?id_user=<?= $customer['id_user'] ?>" class="btn btn-primary btn-sm">Sửa</a>
+    <a href="../module/customerHandler.php?delete_id=<?= $customer['id_user'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+    <a href="customerDetail.php?id_user=<?= $customer['id_user'] ?>" class="btn btn-info btn-sm">Chi tiết</a>
+</td>
+
                                                     </tr>
                                                 <?php endforeach; ?>
                                             <?php endif; ?>
