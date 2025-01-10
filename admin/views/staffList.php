@@ -2,6 +2,8 @@
 include '../module/adminHandler.php';
 include 'layout/header.php';
 include 'layout/slidebar.php';
+include '../module/auth.php';
+checkAccess(1); 
 
 // Kiểm tra nếu có từ khóa tìm kiếm
 $search = isset($_GET['search']) ? trim($_GET['search']) : null;
@@ -40,7 +42,7 @@ if (isset($_GET['delete_id'])) {
                                 type="text" 
                                 name="search" 
                                 class="form-control" 
-                                placeholder="Tìm kiếm khách hàng..."
+                                placeholder="Tìm kiếm nhân viên..."
                                 value="<?= htmlspecialchars($search) ?>" />
                             <button class="btn btn-primary" type="submit">
                                 <i class="fas fa-search"></i> <!-- Icon FontAwesome -->
