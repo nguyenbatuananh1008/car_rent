@@ -14,23 +14,29 @@ function getAdminInfo($id_admin) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-
-
-// Cập nhật thông tin admin
-function updateAdminInfo($id_admin, $name = null, $password = null) {
+// Cập nhật thông tin admin (bao gồm ảnh)
+function updateAdminInfo($id_admin, $name = null, $password = null, $image = null) {
     $db = new Database();
     $conn = $db->connect();
 
     $sql = "UPDATE admin SET ";
     $params = [];
+
     if ($name !== null) {
         $sql .= "name = :name, ";
         $params[':name'] = $name;
     }
+
     if ($password !== null) {
         $sql .= "password = :password, ";
         $params[':password'] = $password;
     }
+
+    if ($image !== null) {
+        $sql .= "image = :image, ";
+        $params[':image'] = $image;
+    }
+
     $sql = rtrim($sql, ", ");
     $sql .= " WHERE id_admin = :id_admin";
 
@@ -43,20 +49,16 @@ function updateAdminInfo($id_admin, $name = null, $password = null) {
     return $stmt->execute();
 }
 
-
 // Lấy danh sách nhân viên (usertype = 0)
-// Lấy danh sách nhân viên (hỗ trợ tìm kiếm)
 function getStaffList($search = null) {
     $db = new Database();
     $conn = $db->connect();
 
     if ($search) {
-        // Tìm kiếm theo id_admin, name hoặc email
         $sql = "SELECT * FROM admin WHERE usertype = 0 AND (id_admin LIKE :search OR name LIKE :search OR email LIKE :search)";
         $stmt = $conn->prepare($sql);
         $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
     } else {
-        // Lấy toàn bộ danh sách nhân viên
         $sql = "SELECT * FROM admin WHERE usertype = 0";
         $stmt = $conn->prepare($sql);
     }
@@ -65,18 +67,18 @@ function getStaffList($search = null) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
 // Thêm nhân viên mới
-function addStaff($name, $email, $password, $usertype) {
+function addStaff($name, $email, $password, $usertype, $image = null) {
     $db = new Database();
     $conn = $db->connect();
 
-    $sql = "INSERT INTO admin (name, email, password, usertype) VALUES (:name, :email, :password, :usertype)";
+    $sql = "INSERT INTO admin (name, email, password, usertype, image) VALUES (:name, :email, :password, :usertype, :image)";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password);
     $stmt->bindParam(':usertype', $usertype, PDO::PARAM_INT);
+    $stmt->bindParam(':image', $image);
 
     return $stmt->execute();
 }
@@ -94,19 +96,29 @@ function getStaffById($id) {
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
-
-// Cập nhật thông tin nhân viên
-function updateStaff($id, $name, $email, $password, $usertype) {
+// Cập nhật thông tin nhân viên (bao gồm ảnh)
+function updateStaff($id, $name, $email, $password, $usertype, $image = null) {
     $db = new Database();
     $conn = $db->connect();
 
-    $sql = "UPDATE admin SET name = :name, email = :email, password = :password, usertype = :usertype WHERE id_admin = :id";
+    $sql = "UPDATE admin SET name = :name, email = :email, password = :password, usertype = :usertype";
+
+    if ($image !== null) {
+        $sql .= ", image = :image";
+    }
+
+    $sql .= " WHERE id_admin = :id";
+
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $password);
     $stmt->bindParam(':usertype', $usertype, PDO::PARAM_INT);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+    if ($image !== null) {
+        $stmt->bindParam(':image', $image);
+    }
 
     return $stmt->execute();
 }
@@ -116,23 +128,18 @@ function deleteUser($id) {
     $db = new Database();
     $conn = $db->connect();
 
-    // Kiểm tra xem nhân viên có tồn tại và là loại tài khoản nhân viên (usertype = 0)
     $checkSql = "SELECT * FROM admin WHERE id_admin = :id AND usertype = 0";
     $checkStmt = $conn->prepare($checkSql);
     $checkStmt->bindParam(':id', $id, PDO::PARAM_INT);
     $checkStmt->execute();
 
     if ($checkStmt->rowCount() > 0) {
-        // Nếu nhân viên tồn tại, tiến hành xóa
         $sql = "DELETE FROM admin WHERE id_admin = :id AND usertype = 0";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         return $stmt->execute();
     } else {
-        // Trả về false nếu nhân viên không tồn tại hoặc không phải nhân viên
         return false;
     }
 }
-
-

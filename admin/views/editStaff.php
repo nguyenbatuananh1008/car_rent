@@ -7,15 +7,35 @@ checkAccess(0);
 $id = $_GET['id'];
 $staff = getStaffById($id);
 
-// Xử lý khi cập nhật tên và loại tài khoản
+// Xử lý khi cập nhật thông tin nhân viên (bao gồm ảnh)
 if (isset($_POST['update_name'])) {
     $new_name = $_POST['name'];
     $usertype = $staff['usertype']; // Giữ nguyên loại tài khoản
-    if (updateStaff($id, $new_name, $staff['email'], $staff['password'], $usertype)) {
-        $success_message = "Cập nhật tên thành công!";
-        $staff = getStaffById($id); // Lấy lại thông tin mới
+
+    // Xử lý ảnh
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $imageName = time() . '_' . basename($_FILES['image']['name']);
+        $imagePath = '../uploads/' . $imageName;
+
+        // Kiểm tra và tạo thư mục nếu chưa tồn tại
+        if (!is_dir('../uploads/')) {
+            mkdir('../uploads/', 0777, true);
+        }
+
+        // Di chuyển file vào thư mục uploads
+        if (move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
+            $staff['image'] = $imageName; // Cập nhật tên file ảnh trong dữ liệu nhân viên
+        } else {
+            $error_message = "Không thể tải ảnh lên. Vui lòng thử lại.";
+        }
+    }
+
+    // Cập nhật thông tin nhân viên
+    if (updateStaff($id, $new_name, $staff['email'], $staff['password'], $usertype, $staff['image'])) {
+        $success_message = "Cập nhật thông tin nhân viên thành công!";
+        $staff = getStaffById($id); // Lấy lại thông tin mới sau khi cập nhật
     } else {
-        $error_message = "Có lỗi xảy ra khi cập nhật tên. Vui lòng thử lại.";
+        $error_message = "Có lỗi xảy ra khi cập nhật thông tin. Vui lòng thử lại.";
     }
 }
 
@@ -25,7 +45,7 @@ if (isset($_POST['update_password'])) {
     $confirm_password = $_POST['confirm_password'];
 
     if ($new_password === $confirm_password) {
-        if (updateStaff($id, $staff['name'], $staff['email'], $new_password, $staff['usertype'])) {
+        if (updateStaff($id, $staff['name'], $staff['email'], $new_password, $staff['usertype'], $staff['image'])) {
             $success_message = "Cập nhật mật khẩu thành công!";
         } else {
             $error_message = "Có lỗi xảy ra khi cập nhật mật khẩu. Vui lòng thử lại.";
@@ -52,17 +72,23 @@ if (isset($_POST['update_password'])) {
 
             <section class="content">
                 <div class="container-fluid">
-                    <!-- Form cập nhật tên -->
-                    <form method="POST">
+                    <!-- Form cập nhật tên và ảnh -->
+                    <form method="POST" enctype="multipart/form-data">
                         <h3>Thông tin nhân viên</h3>
                         <div class="form-group">
                             <label for="name">Tên</label>
                             <input type="text" id="name" name="name" class="form-control" value="<?= htmlspecialchars($staff['name']) ?>" required>
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" value="<?= htmlspecialchars($staff['email']) ?>" disabled>
+                            <label for="label">Ảnh</label>
+                            <input type="file" name="image" class="form-control">
+                            <?php if (!empty($staff['image'])): ?>
+                                <img src="../uploads/<?= htmlspecialchars($staff['image']) ?>" alt="Ảnh nhân viên" style="width: 100px; height: 100px; margin-top: 10px; border-radius: 10%;">
+                            <?php else: ?>
+                                <p>Chưa có ảnh</p>
+                            <?php endif; ?>
                         </div>
+                        <br>
                         <div class="form-group">
                             <label>Loại tài khoản</label>
                             <input type="text" class="form-control" value="<?= $staff['usertype'] == 1 ? 'Admin' : 'Nhân viên' ?>" readonly>

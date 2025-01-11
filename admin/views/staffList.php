@@ -70,6 +70,7 @@ if (isset($_GET['delete_id'])) {
                             <tr>
                                 <th>Mã nhân viên</th>
                                 <th>Họ tên</th>
+                                <th>Hình ảnh</th>
                                 <th>Email</th>
                                 <th>Loại tài khoản</th>
                                 <th>Hành động</th>
@@ -78,13 +79,20 @@ if (isset($_GET['delete_id'])) {
                         <tbody>
                             <?php if (empty($staffList)): ?>
                                 <tr>
-                                    <td colspan="5" class="text-center">Không tìm thấy nhân viên phù hợp.</td>
+                                    <td colspan="6" class="text-center">Không tìm thấy nhân viên phù hợp.</td>
                                 </tr>
                             <?php else: ?>
                                 <?php foreach ($staffList as $staff): ?>
                                     <tr>
                                         <td><?= htmlspecialchars($staff['id_admin']) ?></td>
                                         <td><?= htmlspecialchars($staff['name']) ?></td>
+                                        <td>
+                                            <?php if (!empty($staff['image'])): ?>
+                                                <img src="../uploads/<?= htmlspecialchars($staff['image']) ?>" alt="Hình ảnh nhân viên" style="width: 50px; height: 50px; border-radius: 50%;">
+                                            <?php else: ?>
+                                                Không có ảnh
+                                            <?php endif; ?>
+                                        </td>
                                         <td><?= htmlspecialchars($staff['email']) ?></td>
                                         <td><?= $staff['usertype'] == 1 ? 'Admin' : 'Nhân viên' ?></td>
                                         <td>

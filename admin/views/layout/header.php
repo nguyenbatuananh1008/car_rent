@@ -18,11 +18,13 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Lấy tên tài khoản và loại tài khoản từ session (nếu tồn tại)
+// Lấy tên tài khoản, loại tài khoản và ảnh từ session (nếu tồn tại)
 $username = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
 $usertype = isset($_SESSION['usertype']) && $_SESSION['usertype'] == 1 ? "Admin" : "Nhân viên";
+$image = isset($_SESSION['image']) ? $_SESSION['image'] : "default.png"; // Default image nếu không có ảnh
+
 ?>
-<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark " style="ba">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="index.php">Admin Panel</a>
     <!-- Sidebar Toggle-->
@@ -38,10 +40,10 @@ $usertype = isset($_SESSION['usertype']) && $_SESSION['usertype'] == 1 ? "Admin"
     <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user fa-fw"></i> <?= htmlspecialchars($username) ?> (<?= htmlspecialchars($usertype) ?>)
+                <img src="<?= $image ?>"  style="">
+                <?= htmlspecialchars($username) ?> (<?= htmlspecialchars($usertype) ?>)
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-               
                 <li><a class="dropdown-item" href="logout.php">Logout</a></li>
             </ul>
         </li>
