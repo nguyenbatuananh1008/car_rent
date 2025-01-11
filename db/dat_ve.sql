@@ -41,7 +41,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`id_admin`, `name`, `email`, `password`, `usertype`) VALUES
 (2, 'Admin', 'admin@gmail.com', '1a', 1),
-(3, 'Anuj kumar', 'ak@gmail.com', 'f925916e2754e5e03f75dd58a5733251', 0);
+(3, 'Anuj kumar', 'ak@gmail.com', '1b', 0);
 
 -- --------------------------------------------------------
 
