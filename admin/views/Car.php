@@ -11,7 +11,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-
 </head>
 
 <body>
@@ -26,7 +25,7 @@
 
             <!--  -->
             <div class="input-group mb-3">
-                <input type="text" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm theo tên nhà xe">
+                <input type="text" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm theo tên  xe">
                 <button class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
                 <button class="btn btn-primary ms-2" id="btnAdd" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="fas fa-plus"></i> Thêm 
@@ -84,46 +83,77 @@
 
                 <div>
                 <table class="table table-bordered table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th>STT</th>
-                    <th>Tên xe</th>
-                    <th>Sức chứa</th>
-                    <th>Biển số xe</th>
-                    <th>Nhà xe</th>
-                    <th>Hình ảnh</th>
-                    <th>Hành động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                $sql = "SELECT car.id_car, car.c_name, car.capacity, car.c_plate, car.img, car_house.name_c_house FROM car JOIN car_house ON car.id_c_house = car_house.id_c_house";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    $stt = 1;
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>
-                            <td>" . $stt++ . "</td>
-                            <td>" . $row['c_name'] . "</td>
-                            <td>" . $row['capacity'] . "</td>
-                            <td>" . $row['c_plate'] . "</td>
-                            <td>" . $row['name_c_house'] . "</td>
-                            <td><img src='../uploads/" . $row['img'] . "' width='100'></td>
-                            <td>
-                                <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='" . $row['id_car'] . "' data-name='" . $row['c_name'] . "' data-capacity='" . $row['capacity'] . "' data-plate='" . $row['c_plate'] . "' data-name2='" . $row['name_c_house'] . "' data-img='" . $row['img'] . "'><i class='fas fa-edit'></i> Sửa</button>
-                                <button class='btn btn-danger btn-sm btnDelete' data-id='" . $row['id_car'] . "'><i class='fas fa-trash-alt'></i> Xóa</button>
-                            </td>
-                        </tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='7' class='text-center'>Không có dữ liệu</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
+<?php
+$search_keyword = $_POST['search_keyword'] ?? '';
+$sql = "SELECT car.id_car, car.c_name, car.capacity, car.c_plate, car.img, car_house.name_c_house 
+        FROM car 
+        JOIN car_house ON car.id_c_house = car_house.id_c_house";
 
-                
+if (!empty($search_keyword)) {
+    $sql .= " WHERE car.c_name LIKE ? OR car.c_plate LIKE ? OR car.capacity LIKE ? OR car_house.name_c_house LIKE ?";
+}
+
+$stmt = $conn->prepare($sql);
+
+if ($stmt) {
+    if (!empty($search_keyword)) {
+        $like_keyword = "%" . $search_keyword . "%";
+        $stmt->bind_param("ssss", $like_keyword, $like_keyword, $like_keyword, $like_keyword);
+    }
+    $stmt->execute();
+    $result = $stmt->get_result();
+} else {
+    echo "<tr><td colspan='7' class='text-danger'>Lỗi chuẩn bị truy vấn: " . $conn->error . "</td></tr>";
+    $result = null;
+}
+
+?>
+    <thead class="table-dark">
+        <tr>
+            <th>STT</th>
+            <th>Tên xe</th>
+            <th>Sức chứa</th>
+            <th>Biển số xe</th>
+            <th>Nhà xe</th>
+            <th>Hình ảnh</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        if ($result && $result->num_rows > 0) {
+            $stt = 1;
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>
+                    <td>" . $stt++ . "</td>
+                    <td>" . htmlspecialchars($row['c_name']) . "</td>
+                    <td>" . htmlspecialchars($row['capacity']) . "</td>
+                    <td>" . htmlspecialchars($row['c_plate']) . "</td>
+                    <td>" . htmlspecialchars($row['name_c_house']) . "</td>
+                    <td><img src='../uploads/" . htmlspecialchars($row['img']) . "' width='100' alt='Hình ảnh'></td>
+                    <td>
+                        <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='" . $row['id_car'] . "' 
+                                data-name='" . htmlspecialchars($row['c_name']) . "' 
+                                data-capacity='" . htmlspecialchars($row['capacity']) . "' 
+                                data-plate='" . htmlspecialchars($row['c_plate']) . "' 
+                                data-name2='" . htmlspecialchars($row['name_c_house']) . "' 
+                                data-img='" . htmlspecialchars($row['img']) . "'>
+                            <i class='fas fa-edit'></i> Sửa
+                        </button>
+                        <button class='btn btn-danger btn-sm btnDelete' data-id='" . $row['id_car'] . "'>
+                            <i class='fas fa-trash-alt'></i> Xóa
+                        </button>
+                    </td>
+                </tr>";
+            }
+        } else {
+            echo "<tr><td colspan='7' class='text-center'>Không có dữ liệu</td></tr>";
+        }
+        ?>
+    </tbody>
+</table>
+    </div>
+   
                 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -200,8 +230,7 @@
                 </div>
             </div>
 
-            <script>
-                 
+            <script>  
             document.getElementById('btnSearch').addEventListener('click', function() {
                 var searchKeyword = document.getElementById('searchKeyword').value.toLowerCase();
                 var rows = document.querySelectorAll('#carList tr');
@@ -246,8 +275,23 @@
                     });
                 });
 
-                
-            </script>
+                document.getElementById('btnSearch').addEventListener('click', function () {
+                var searchKeyword = document.getElementById('searchKeyword').value;
+
+                var form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '';
+
+                var inputAction = document.createElement('input');
+                inputAction.type = 'hidden';
+                inputAction.name = 'search_keyword';
+                inputAction.value = searchKeyword;
+                form.appendChild(inputAction);
+
+                document.body.appendChild(form);
+                form.submit();
+            });
+        </script>
 
 </body>
 </html>

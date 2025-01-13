@@ -1,5 +1,5 @@
 <?php include 'database.php'; ?>
-
+<?php require 'uploads.php'; ?>
 <?php
 $c_name = $_POST['c_name'] ?? null;
 $c_plate = $_POST['c_plate'] ?? null;
@@ -7,24 +7,7 @@ $id_c_house = $_POST['id_c_house'] ?? null;
 $capacity = $_POST['capacity'] ?? null;
 $action = $_POST['action'] ?? null;
 
-// Xử lý upload ảnh
-$img = null;
-if (isset($_FILES['img']) && $_FILES['img']['error'] == 0) {
 
-    // Tạo tên file duy nhất bằng thời gian hiện tại
-    $img_name = time() . '_' . basename($_FILES['img']['name']);
-    $img_path = '../uploads/' . $img_name;
-
-    // Tạo thư mục nếu chưa có
-    if (!is_dir('../uploads/')) {
-        mkdir('../uploads/', 0777, true);
-    }
-
-    // Di chuyển file từ thư mục tạm đến thư mục uploads
-    if (move_uploaded_file($_FILES['img']['tmp_name'], $img_path)) {
-        $img = $img_name;
-    }
-}
 
 if ($action == 'add') {
     $stmt = $conn->prepare("INSERT INTO car (c_name, c_plate, id_c_house, capacity, img) VALUES (?, ?, ?, ?, ?)");
@@ -62,7 +45,6 @@ if ($action == 'add') {
     }
 } elseif ($action == 'delete') {
     $id_car = $_POST['id_car'];
-    // Xóa ảnh nếu tồn tại
     $stmt = $conn->prepare("SELECT img FROM car WHERE id_car = ?");
     $stmt->bind_param("i", $id_car);
     $stmt->execute();
@@ -81,22 +63,29 @@ if ($action == 'add') {
     }
 } elseif ($action == 'search') {
     $search_keyword = $_POST['search_keyword'];
-    $stmt = $conn->prepare("SELECT * FROM car WHERE c_name LIKE ? OR c_plate LIKE ?");
     $like_keyword = '%' . $search_keyword . '%';
-    $stmt->bind_param("ss", $like_keyword, $like_keyword);
+
+    $sql = "SELECT car.*, car_house.name_c_house FROM car JOIN car_house ON car.id_c_house = car_house.id_c_house 
+            WHERE car.c_name LIKE ? 
+               OR car.capacity LIKE ? 
+               OR car.c_plate LIKE ? 
+               OR car_house.name_c_house LIKE ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("siss", $like_keyword, $like_keyword, $like_keyword, $like_keyword);
     $stmt->execute();
-
     $result = $stmt->get_result();
-    $data = [];
-    while ($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
 
-    echo json_encode($data);
+    $rows = [];
+    while ($row = $result->fetch_assoc()) {
+        $rows[] = $row;
+
+        echo json_encode($rows);
+    }
 }
+
 header('Location: ../views/Car.php');
 exit();
-
 $stmt->close();
 $conn->close();
 ?>

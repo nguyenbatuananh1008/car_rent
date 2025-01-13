@@ -74,7 +74,7 @@
                     $sql .= " WHERE name_c_house LIKE ? OR address LIKE ? OR phone LIKE ? OR email LIKE ?";
                     $stmt = $conn->prepare($sql);
                     $like_keyword = "%" . $search_keyword . "%";
-                    $stmt->bind_param("ssss", $like_keyword, $like_keyword, $like_keyword, $like_keyword);
+                    $stmt->bind_param("ssis", $like_keyword, $like_keyword, $like_keyword, $like_keyword);
                     $stmt->execute();
                     $result = $stmt->get_result();
                 } else {
@@ -178,7 +178,8 @@
     </div>
 
         <script>
-        document.querySelectorAll('.btnEdit').forEach(button => {
+        document.querySelectorAll('.btnEdit').forEach(button => 
+        {
             button.addEventListener('click', (e) => {
                 const id = e.target.closest('button').getAttribute('data-id');
                 const name = e.target.closest('button').getAttribute('data-name');
@@ -220,7 +221,9 @@
 
                 document.body.appendChild(form);
                 form.submit();
+                
             });
+        
         </script>
 </body>
 </html>
