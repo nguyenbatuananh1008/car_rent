@@ -39,6 +39,7 @@
                             <h5 class="modal-title" id="addModalLabel">Nhập thông tin nhà xe</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        
                         <div class="modal-body">
                             <form action="../module/C_house_P.php" method="POST">
                                 <div class="mb-3">
@@ -58,7 +59,8 @@
                                     <input type="email" class="form-control" id="email" name="email" required>
                                 </div>
                                 <input type="hidden" name="action" value="add">
-                                <button type="submit" class="btn btn-primary">Thêm</button>
+                                <div class = "text-end">
+                                <button type="submit" class="btn btn-primary">Thêm</button></div>
                             </form>
                         </div>
                     </div>
@@ -66,6 +68,7 @@
             </div>
 
             <!---->
+            <div class="text-center">
             <table class="table table-bordered table-hover">
                 <?php
                 $search_keyword = $_POST['search_keyword'] ?? '';
@@ -81,6 +84,7 @@
                     $result = $conn->query($sql);
                 }
                 ?>
+
                 <thead class="table-dark">
                     <tr>
                         <th>STT</th>
@@ -88,7 +92,7 @@
                         <th>Địa chỉ</th>
                         <th>Số điện thoại</th>
                         <th>Email</th>
-                        <th>Hành động</th>
+                        <th>Thao tác</th>
                     </tr>
                 </thead>
                 <tbody id="dataTable">
@@ -116,7 +120,7 @@
                 </tbody>
             </table>
         </div>
-
+    </div>
         
 
     <!-- -->
@@ -177,54 +181,8 @@
         </div>
     </div>
 
-        <script>
-        document.querySelectorAll('.btnEdit').forEach(button => 
-        {
-            button.addEventListener('click', (e) => {
-                const id = e.target.closest('button').getAttribute('data-id');
-                const name = e.target.closest('button').getAttribute('data-name');
-                const address = e.target.closest('button').getAttribute('data-address');
-                const phone = e.target.closest('button').getAttribute('data-phone');
-                const email = e.target.closest('button').getAttribute('data-email');
-                
-                document.getElementById('editId_c_house').value = id;
-                document.getElementById('edit_name_c_house').value = name;
-                document.getElementById('edit_address').value = address;
-                document.getElementById('edit_phone').value = phone;
-                document.getElementById('edit_email').value = email;
-
-                new bootstrap.Modal(document.getElementById('editModal')).show();
-            });
-        });
-
-      
-        document.querySelectorAll('.btnDelete').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const id = e.target.closest('button').getAttribute('data-id');
-                document.getElementById('deleteId_c_house').value = id;
-                new bootstrap.Modal(document.getElementById('deleteModal')).show();
-            });
-        });
-
-            document.getElementById('btnSearch').addEventListener('click', function() {
-                var searchKeyword = document.getElementById('searchKeyword').value;
-
-                var form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '';
-
-                var inputAction = document.createElement('input');
-                inputAction.type = 'hidden';
-                inputAction.name = 'search_keyword';
-                inputAction.value = searchKeyword;
-                form.appendChild(inputAction);
-
-                document.body.appendChild(form);
-                form.submit();
-                
-            });
+        <script src="../js/c_house.js"></script>
         
-        </script>
 </body>
 </html>
 <?php include 'footer.php'; ?>

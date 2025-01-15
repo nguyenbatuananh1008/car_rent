@@ -7,8 +7,6 @@ $id_c_house = $_POST['id_c_house'] ?? null;
 $capacity = $_POST['capacity'] ?? null;
 $action = $_POST['action'] ?? null;
 
-
-
 if ($action == 'add') {
     $stmt = $conn->prepare("INSERT INTO car (c_name, c_plate, id_c_house, capacity, img) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("ssiis", $c_name, $c_plate, $id_c_house, $capacity, $img);
@@ -64,7 +62,6 @@ if ($action == 'add') {
 } elseif ($action == 'search') {
     $search_keyword = $_POST['search_keyword'];
     $like_keyword = '%' . $search_keyword . '%';
-
     $sql = "SELECT car.*, car_house.name_c_house FROM car JOIN car_house ON car.id_c_house = car_house.id_c_house 
             WHERE car.c_name LIKE ? 
                OR car.capacity LIKE ? 

@@ -7,10 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = $_POST['password'];
 
     $stmt = $conn->prepare("SELECT id_admin, email, password FROM admin WHERE email = ?");
-    $stmt->bind_param("s", $email);
+    $stmt->bind_param("iss", $email);
     $stmt->execute();
     $result = $stmt->get_result();
-    
     
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
@@ -31,7 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Không tìm thấy tài khoản với email này!";
     }
 
-   
+    header('Location: ../views/login.php');
+    $stmt->close();
     $conn->close();
 }
 ?>
