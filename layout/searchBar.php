@@ -8,7 +8,7 @@ $query = $conn->query("SELECT * FROM city");
 $cities = $query->fetchAll(PDO::FETCH_ASSOC);
 $city_from = isset($city_from) ? $city_from : null;
 $city_to = isset($city_to) ? $city_to : null;
-$date = isset($date) ? $date : null;
+// $date = isset($date) ? $date : null;
 ?>
 ?>
 

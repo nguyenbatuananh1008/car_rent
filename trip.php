@@ -7,39 +7,42 @@ $date = $_GET['date'] ?? null;
 
 $tripSearcher = new TripSearcher();
 $trips = [];
-
+$errors_location = [];
 if ($city_from && $city_to && $date) {
     $trips = $tripSearcher->searchTrips($city_from, $city_to, $date);
 
-	
+    // Tính toán số ghế còn lại và lấy lộ trình cho mỗi chuyến
+    $trips = array_map(function ($trip) use ($tripSearcher, $date) {
+        $number_seat = $tripSearcher->numberSeat($trip['id_trip'], $date);
+        $remaining_seats = (int)$trip['remaining_seats'] - (int)$number_seat;
+        $trip['remaining_seats'] = $remaining_seats;
 
-	$trips = array_map(function ($trip) use($tripSearcher, $date) {
-			// Check số ghế còn lại của mỗi chuyến xe
-		$number_seat = $tripSearcher->numberSeat($trip['id_trip'], $date);
+        // Lấy danh sách điểm đón và trả
+        $trip['pickup_locations'] = $tripSearcher->getLocations($trip['id_trip'], 0);
+        $trip['dropoff_locations'] = $tripSearcher->getLocations($trip['id_trip'], 1);
+        
+        if (empty($trip['pickup_locations']) || empty($trip['dropoff_locations'])) {
+            $errors_location ="Chuyến xe chưa có lộ trình ";
+        }
+        
 
-		$so_ghe_con_lai = (int) $trip['remaining_seats'] - (int) $number_seat;
-
-
-		$trip['remaining_seats'] = $so_ghe_con_lai;
-
-		return $trip;
-	}, $trips);
-
-	var_dump($trips);
-
+        return $trip;
+    }, $trips);
 }
+
+include('layout/header.php');
 
 include('layout/header.php');
 ?>
 <style>
     .model_pg1i {
         overflow: hidden;
-        height: 340px; /* Chiều cao mặc định của div */
+        height: 340px; /* Chiều cao mặc định */
         transition: height 0.5s ease; /* Hiệu ứng mượt mà khi thay đổi chiều cao */
     }
 
     .expanded {
-        height: 700px; /* Chiều cao mở rộng khi bấm */
+        height: 800px; /* Chiều cao mở rộng */
     }
 </style>
 
@@ -121,13 +124,87 @@ include('layout/header.php');
                                         </div>
                                         <hr>
                                         <div class="model_pg1i4 row text-center mt-4">
-											<p>*Vé chặng thuộc chuyến <?= htmlspecialchars($trip['date']) ?> <?= htmlspecialchars($trip['city_from_name']) ?> - <?= htmlspecialchars($trip['city_to_name']) ?></p>
+											<p>*Vé chặng thuộc chuyến ngày <?= htmlspecialchars($date) ?>  <?= htmlspecialchars($trip['city_from_name']) ?> - <?= htmlspecialchars($trip['city_to_name']) ?></p>
                                             <div class="col-md-12">
 											<h6 class="mb-0">
-    <a class="button" href="#">Book Ride <i class="fa fa-check-circle ms-1"></i></a>
+    <a class="buttonn button float-end" href="#"  >Book Ride <i class="fa fa-check-circle ms-1"></i></a>
 </h6>
                                             </div>
-											
+											<div class="container mt-4">
+    <div class="row">
+        <!-- Điểm đón -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Điểm đón</h5>
+                </div>
+                <div class="card-body">
+                    <form id="booking-form" action="booking_info.php" method="POST">
+                        <input type="hidden" name="id_trip" value="<?= htmlspecialchars($trip['id_trip']) ?>">
+                        <div class="pickup-locations overflow-auto" style="max-height: 300px;">
+                            <?php foreach ($trip['pickup_locations'] as $location): ?>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="radio" name="pickup_location" id="pickup_<?= $location['id_location'] ?>" value="<?= $location['id_location'] ?>" required>
+                                    <label class="form-check-label" for="pickup_<?= $location['id_location'] ?>">
+                                        <strong><?= htmlspecialchars($location['time']) ?></strong> - <?= htmlspecialchars($location['name_location']) ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Điểm trả -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Điểm trả</h5>
+                </div>
+                <div class="card-body">
+                    <div class="dropoff-locations overflow-auto" style="max-height: 300px;">
+                        <?php foreach ($trip['dropoff_locations'] as $location): ?>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="dropoff_location" id="dropoff_<?= $location['id_location'] ?>" value="<?= $location['id_location'] ?>" required>
+                                <label class="form-check-label" for="dropoff_<?= $location['id_location'] ?>">
+                                    <strong><?= htmlspecialchars($location['time']) ?></strong> - <?= htmlspecialchars($location['name_location']) ?>
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Số lượng vé -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Số lượng vé</h5>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="ticket_quantity">Chọn số lượng vé:</label>
+                        <input type="number" id="ticket_quantity" name="ticket_quantity" class="form-control" min="1" max="<?= htmlspecialchars($trip['remaining_seats']) ?>" placeholder="Nhập số lượng vé" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nút đặt hàng -->
+    <div class="row mt-4">
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-primary">Tiếp tục</button>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+
                                         </div>
 										
                                     </div>
@@ -144,16 +221,39 @@ include('layout/header.php');
 </body>
 </html>
 <?php include('layout/footer.php'); ?>
+<!-- <script>
+     document.addEventListener('DOMContentLoaded', function () {
+     const buttons = document.querySelectorAll('.buttonn');
+    
+    buttons.forEach(button => {
+        button.addEventListener('click', function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+                const parentDiv = this.closest('.model_pg1i'); // Tìm div cha cần mở rộng
+                 parentDiv.classList.toggle('expanded'); // Thêm hoặc xóa lớp 'expanded'
+             });
+         });
+     });
+</script> -->
 <script>
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     const buttons = document.querySelectorAll('.button');
-        
-    //     buttons.forEach(button => {
-    //         button.addEventListener('click', function (event) {
-    //             event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
-    //             const parentDiv = this.closest('.model_pg1i'); // Tìm div cha cần mở rộng
-    //             parentDiv.classList.toggle('expanded'); // Thêm hoặc xóa lớp 'expanded'
-    //         });
-    //     });
-    // });
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.buttonn');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của liên kết
+                const parentDiv = this.closest('.model_pg1i'); // Tìm div cha cần mở rộng
+
+                // Thêm hoặc xóa lớp 'expanded' để thay đổi chiều cao
+                parentDiv.classList.toggle('expanded'); 
+
+                // Đổi nội dung của nút
+                if (this.textContent.trim() === 'Book Ride') {
+                    this.innerHTML = 'Đóng <i class="fa fa-times ms-1"></i>';
+                } else {
+                    this.innerHTML = 'Book Ride <i class="fa fa-check-circle ms-1"></i>';
+                }
+            });
+        });
+    });
 </script>
+

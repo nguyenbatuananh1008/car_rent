@@ -1,6 +1,10 @@
 <?php
-session_start();
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,7 +25,7 @@ session_start();
 <div class="main clearfix position-relative">
   <div class="main_1 clearfix position-absolute top-0 w-100">
     <section id="header">
-      <nav class="navbar navbar-expand-md navbar-light custom-navbar" id="navbar_sticky">
+      <nav class="navbar navbar-expand-md navbar-light custom-navbar bg-dark" id="navbar_sticky">
         <div class="container-xl">
           <a class="navbar-brand fs-3 p-0 fw-bold text-white" href="index.php"><i class="fa fa-car col_oran me-1 fs-2 align-middle"></i> Đặt Xe</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

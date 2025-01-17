@@ -51,6 +51,19 @@ class TripSearcher {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total_seats'] ?? 0; 
     }
+    public function getLocations($id_trip, $type) {
+    $stmt = $this->conn->prepare("
+        SELECT id_location, name_location,  DATE_FORMAT(time, '%H:%i') AS time
+        FROM location 
+        WHERE id_trip = :id_trip AND type = :type
+    ");
+    $stmt->execute([
+        ':id_trip' => $id_trip,
+        ':type' => $type,
+    ]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
     
     
     
