@@ -1,20 +1,4 @@
-<?php
-include '../module/auth.php';
-checkAccess(0); 
-include '../module/customerHandler.php';
 
-$id_user = isset($_GET['id_user']) ? intval($_GET['id_user']) : 0;
-
-// Lấy thông tin khách hàng
-$customer = getCustomerById($id_user);
-
-// Lấy lịch sử vé đã đặt
-$tickets = getTicketsByUserId($id_user);
-
-if (!$customer) {
-    die('Khách hàng không tồn tại.');
-}
-?>
 
 <?php include 'layout/header.php'; ?>
 <?php include 'layout/slidebar.php'; ?>

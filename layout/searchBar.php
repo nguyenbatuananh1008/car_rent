@@ -8,7 +8,7 @@ $query = $conn->query("SELECT * FROM city");
 $cities = $query->fetchAll(PDO::FETCH_ASSOC);
 $city_from = isset($city_from) ? $city_from : null;
 $city_to = isset($city_to) ? $city_to : null;
-// $date = isset($date) ? $date : null;
+$date = isset($date) ? $date : null;
 ?>
 ?>
 
@@ -52,6 +52,7 @@ $city_to = isset($city_to) ? $city_to : null;
                     <div class="booking_2i">
                         <h6 class="mb-3"><i class="fa fa-calendar me-1 col_oran"></i> Ngày đi</h6>
                         <input class="form-control" type="date" name="date" value="<?= htmlspecialchars($date) ?>" required>
+                        
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-12 text-center">

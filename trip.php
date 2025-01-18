@@ -4,7 +4,12 @@ require_once 'module/TripSearcher.php';
 $city_from = $_GET['city_from'] ?? null;
 $city_to = $_GET['city_to'] ?? null;
 $date = $_GET['date'] ?? null;
-
+if ($date) {
+    // Chuyển đổi từ 'YYYY-MM-DD' sang 'DD-MM-YYYY'
+    $date = DateTime::createFromFormat('Y-m-d', $date)->format('d-m-Y');
+} else {
+    $date = null; // Xử lý trường hợp không có date
+}   
 $tripSearcher = new TripSearcher();
 $trips = [];
 $errors_location = [];
@@ -32,7 +37,7 @@ if ($city_from && $city_to && $date) {
 
 include('layout/header.php');
 
-include('layout/header.php');
+
 ?>
 <style>
     .model_pg1i {
@@ -47,7 +52,7 @@ include('layout/header.php');
 </style>
 
 
-</style>
+
 <body>
     <div class="main_2 clearfix">
         <section id="center" class="center_o">
@@ -139,10 +144,11 @@ include('layout/header.php');
                     <h5 class="mb-0">Điểm đón</h5>
                 </div>
                 <div class="card-body">
-                    <form id="booking-form" action="booking_info.php" method="POST">
+                    <form id="booking-form" action="booking_info.php?date=<?= htmlspecialchars($date) ?> " method="POST">
                         <input type="hidden" name="id_trip" value="<?= htmlspecialchars($trip['id_trip']) ?>">
                         <div class="pickup-locations overflow-auto" style="max-height: 300px;">
                             <?php foreach ($trip['pickup_locations'] as $location): ?>
+                                <input type="hidden" name="pickup_name_<?= $location['id_location'] ?>" value="<?= htmlspecialchars($location['name_location']) ?>">
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="radio" name="pickup_location" id="pickup_<?= $location['id_location'] ?>" value="<?= $location['id_location'] ?>" required>
                                     <label class="form-check-label" for="pickup_<?= $location['id_location'] ?>">
@@ -165,6 +171,7 @@ include('layout/header.php');
                     <div class="dropoff-locations overflow-auto" style="max-height: 300px;">
                         <?php foreach ($trip['dropoff_locations'] as $location): ?>
                             <div class="form-check mb-3">
+                            <input type="hidden" name="dropoff_name_<?= $location['id_location'] ?>" value="<?= htmlspecialchars($location['name_location']) ?>">
                                 <input class="form-check-input" type="radio" name="dropoff_location" id="dropoff_<?= $location['id_location'] ?>" value="<?= $location['id_location'] ?>" required>
                                 <label class="form-check-label" for="dropoff_<?= $location['id_location'] ?>">
                                     <strong><?= htmlspecialchars($location['time']) ?></strong> - <?= htmlspecialchars($location['name_location']) ?>

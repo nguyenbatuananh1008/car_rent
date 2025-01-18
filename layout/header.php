@@ -1,10 +1,8 @@
-<?php
-
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-?>
-
+  <?php
+  if (session_status() == PHP_SESSION_NONE) {
+      session_start();
+  }
+  ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,6 +15,7 @@ if (session_status() == PHP_SESSION_NONE) {
   <link href="css/trip.css" rel="stylesheet">
   <link href="css/index.css" rel="stylesheet">
   <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/booking_info.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <script src="js/bootstrap.bundle.min.js"></script>
 </head>

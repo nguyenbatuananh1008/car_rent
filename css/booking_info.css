@@ -1,0 +1,27 @@
+.card-header h5 {
+    font-size: 1.25rem;
+}
+
+.summary-box {
+    border-left: 3px solid #0d6efd;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.summary-box .details {
+    font-size: 0.875rem;
+}
+
+.details small {
+    color: #6c757d;
+}
+
+.btn-login {
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+}
+
+.btn-login:hover {
+    background-color: #0b5ed7;
+}

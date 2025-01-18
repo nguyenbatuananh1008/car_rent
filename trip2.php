@@ -1,49 +1,98 @@
 <?php
-require_once 'module/TripSearcher.php';
 
-$city_from = $_GET['city_from'] ?? null;
-$city_to = $_GET['city_to'] ?? null;
-$date = $_GET['date'] ?? null;
-
-$trips = [];
-
-if ($city_from && $city_to && $date) {
-    $tripSearcher = new TripSearcher();
-    $trips = $tripSearcher->searchTrips($city_from, $city_to, $date);
-}
 
 include('layout/header.php');
+
+
 ?>
 
-<div class="container mt-5">
-    <h2>Kết quả tìm kiếm:</h2>
-    <?php if (!empty($trips)): ?>
+
+
+<body>
+<div class="container mt-4">
+        <a href="#" class="text-decoration-none text-primary mb-3 d-block">&larr; Quay lại</a>
+
+        <!-- Main Content -->
         <div class="row">
-            <?php foreach ($trips as $trip): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <img src="uploads/<?= htmlspecialchars($trip['car_image']) ?>" class="card-img-top" alt="Car Image">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($trip['car_house_name']) ?> - <?= htmlspecialchars($trip['car_name']) ?></h5>
-                            <p class="card-text">
-                                Điểm đi: <?= htmlspecialchars($trip['city_from_name']) ?><br>
-                                Điểm đến: <?= htmlspecialchars($trip['city_to_name']) ?><br>
-                                Số chỗ: <?= htmlspecialchars($trip['car_capacity']) ?><br>
-                                Số chỗ còn lại: <?= htmlspecialchars($trip['remaining_seats']) ?><br>
-                                Thời gian đi: <?= htmlspecialchars($trip['t_pick']) ?><br>
-                                Thời gian đến: <?= htmlspecialchars($trip['t_drop']) ?><br>
-                                Giá vé: <?= number_format($trip['price'], 0) ?> đ<br>
-                                Ngày đi: <?= htmlspecialchars($trip['date']) ?>
-                            </p>
-                            <a href="#" class="btn btn-primary">Đặt vé</a>
+            <!-- Thông tin liên hệ -->
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <button class="btn btn-login mb-3 float-end">Đăng nhập</button>
+                        <h5>Thông tin liên hệ</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Tên người đi <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" placeholder="Nhập tên">
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-md-2">
+                                    <label for="phone-prefix" class="form-label">VN</label>
+                                    <input type="text" class="form-control" id="phone-prefix" value="+84" readonly>
+                                </div>
+                                <div class="col-md-10">
+                                    <label for="phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="phone" placeholder="Nhập số điện thoại">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email để nhận thông tin đặt chỗ <span
+                                        class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" placeholder="Nhập email">
+                                <div class="form-text text-success mt-2">
+                                    Số điện thoại và email được sử dụng để gửi thông tin đơn hàng và liên hệ khi cần
+                                    thiết.
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thông tin chuyến đi -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Tạm tính</h5>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-primary">170.000đ</h5>
+                        <hr>
+                        <h5>Thông tin chuyến đi</h5>
+                        <div class="summary-box bg-light mt-3">
+                            <div class="details">
+                                <strong>CN, 19/01/2025</strong>
+                                <br>
+                                <strong>Ninh Bình Car</strong>
+                                <br>
+                                Limousine 12 chỗ
+                                <br>
+                                <small>Số khách: 1</small>
+                            </div>
+                            <hr>
+                            <div class="details">
+                                <strong>Văn phòng Hà Nội</strong>
+                                <br>
+                                <small>19:00 - Số 21, ngõ 42/94/8 phố Thịnh Liệt, Hoàng Mai, Hà Nội</small>
+                                <a href="#" class="text-primary float-end">Thay đổi</a>
+                            </div>
+                            <hr>
+                            <div class="details">
+                                <strong>Nam Định (Ý Yên)</strong>
+                                <br>
+                                <small>19:50 - QL38B, Văn Điển, Thị trấn Lâm, Ý Yên, Nam Định</small>
+                                <a href="#" class="text-primary float-end">Thay đổi</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            </div>
         </div>
-    <?php else: ?>
-        <p>Không tìm thấy chuyến xe nào phù hợp.</p>
-    <?php endif; ?>
-</div>
+    </div>
 
-<?php include('layout/footer.php'); ?>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
