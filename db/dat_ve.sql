@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 14, 2025 lúc 08:53 AM
+-- Thời gian đã tạo: Th1 18, 2025 lúc 02:55 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -68,8 +68,8 @@ CREATE TABLE `car` (
 
 INSERT INTO `car` (`id_car`, `id_c_house`, `c_name`, `img`, `c_plate`, `capacity`) VALUES
 (4, 1, 'Xe 14 chỗ', '1736750467_360x280_1.jpg', '30B-67890', 16),
-(5, 1, 'Xe 16 chỗ', '1736753494_380x280.jpg', '30B-67890', 16),
-(6, 2, 'Xe 16 chỗ', '1736822464_1600x800.jpg', '29A-12345', 16);
+(6, 2, 'Xe 16 chỗ', '1736822464_1600x800.jpg', '29A-12345', 16),
+(8, 3, 'Trag anh', '1736931284_380x280.jpg', '30A-13831', 45);
 
 -- --------------------------------------------------------
 
@@ -91,7 +91,8 @@ CREATE TABLE `car_house` (
 
 INSERT INTO `car_house` (`id_c_house`, `name_c_house`, `address`, `phone`, `email`) VALUES
 (1, 'Nhà xe A', '123 Đường 1, Hà Nội', 123456789, 'nhaxeA@example.com'),
-(2, 'Nhà xe B', '456 Đường 2, Hồ Chí Minh', 987654321, 'nhaxeB@example.com');
+(2, 'Nhà xe B', '456 Đường 2, Hồ Chí Minh', 987654321, 'nhaxeB@example.com'),
+(3, 'Phuong trang', '123 Đường 1, Hà Nội', 337040233, 'nhaxeAC@example.com');
 
 -- --------------------------------------------------------
 
@@ -167,7 +168,8 @@ INSERT INTO `city` (`id_city`, `city_name`) VALUES
 (63, 'Quảng Ninh'),
 (64, 'Bắc Kạn'),
 (65, 'Hà Nam'),
-(66, 'Ninh Bình');
+(66, 'Ninh Bình '),
+(68, 'Hậu Giang');
 
 -- --------------------------------------------------------
 
@@ -179,7 +181,8 @@ CREATE TABLE `location` (
   `id_location` int(11) NOT NULL,
   `id_trip` int(11) NOT NULL,
   `name_location` text NOT NULL,
-  `type` int(11) NOT NULL
+  `time` time NOT NULL,
+  `type` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -197,7 +200,8 @@ CREATE TABLE `ticket` (
   `number_seat` int(11) NOT NULL,
   `total_price` decimal(10,2) NOT NULL,
   `status` varchar(255) NOT NULL DEFAULT '',
-  `method` varchar(255) NOT NULL
+  `method` varchar(255) NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -214,8 +218,19 @@ CREATE TABLE `trip` (
   `t_pick` time NOT NULL,
   `t_drop` time NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `date` date NOT NULL
+  `date` date NOT NULL,
+  `ticket_limit` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `trip`
+--
+
+INSERT INTO `trip` (`id_trip`, `id_car`, `id_city_from`, `id_city_to`, `t_pick`, `t_drop`, `price`, `date`, `ticket_limit`) VALUES
+(7, 8, 19, 14, '10:24:00', '11:24:00', 200000.00, '2025-01-17', 0),
+(22, 6, 8, 21, '18:00:00', '19:00:00', 150000.00, '2025-01-16', 0),
+(27, 6, 21, 61, '10:36:00', '11:36:00', 150000.00, '2025-01-18', 0),
+(28, 6, 21, 8, '09:39:00', '10:38:00', 200000.00, '2025-01-19', 0);
 
 -- --------------------------------------------------------
 
@@ -303,19 +318,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT cho bảng `car`
 --
 ALTER TABLE `car`
-  MODIFY `id_car` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_car` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `car_house`
 --
 ALTER TABLE `car_house`
-  MODIFY `id_c_house` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_c_house` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `city`
 --
 ALTER TABLE `city`
-  MODIFY `id_city` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id_city` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT cho bảng `location`
@@ -333,7 +348,7 @@ ALTER TABLE `ticket`
 -- AUTO_INCREMENT cho bảng `trip`
 --
 ALTER TABLE `trip`
-  MODIFY `id_trip` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_trip` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT cho bảng `user`

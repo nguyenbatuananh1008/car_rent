@@ -3,7 +3,6 @@
 <?php include '../module/Database.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +11,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-
 <body>
     <div id="layoutSidenav_content">
         <div class="container mt-4">
@@ -94,8 +92,8 @@
                     <form action="../module/city_p.php" method="POST">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id_city" id="deleteId_city">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                         <button type="submit" class="btn btn-danger">Xóa</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                     </form>
                 </div>
             </div>
@@ -158,43 +156,6 @@
 </body>
 
 
-<script>
-    document.querySelectorAll('.btnEdit').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const id = e.target.closest('button').getAttribute('data-id');
-            const name = e.target.closest('button').getAttribute('data-city_name');
-            
-            document.getElementById('editId_city').value = id;
-            document.getElementById('edit_city_name').value = name; 
-            
-            new bootstrap.Modal(document.getElementById('editModal')).show();
-        });
-    });
-
-    document.querySelectorAll('.btnDelete').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const id = e.target.closest('button').getAttribute('data-id');
-                document.getElementById('deleteId_city').value = id;
-                new bootstrap.Modal(document.getElementById('deleteModal')).show();
-            });
-        });
-    
-        document.getElementById('btnSearch').addEventListener('click', function() {
-                var searchKeyword = document.getElementById('searchKeyword').value;
-
-                var form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '';
-                var inputAction = document.createElement('input');
-                inputAction.type = 'hidden';
-                inputAction.name = 'search_keyword';
-                inputAction.value = searchKeyword;
-                form.appendChild(inputAction);
-                document.body.appendChild(form);
-                form.submit();
-                
-            });
-
-</script>
-<? include_once 'footer.php'; ?>
+<script src="../js/city.js"></script>
 </html>
+<? include_once 'footer.php'; ?>

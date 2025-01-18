@@ -218,6 +218,8 @@
                     </div>
                     <div class="modal-body">
                         <p>Bạn có chắc chắn muốn xóa xe này không?</p>
+                        </div>
+                        <div class="modal-footer">
                         <form action="../module/car_p.php" method="POST">
                             <input type="hidden" id="delete_id_car" name="id_car">
                             <input type="hidden" name="action" value="delete">

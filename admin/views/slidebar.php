@@ -11,7 +11,7 @@
 
                             <div class="sb-sidenav-menu-heading">Quản lý</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-car"></i></div>
                                 Xe và Nhà xe
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
@@ -54,19 +54,26 @@
                             </div>
                             <div class="sb-sidenav-menu-heading">Chuyến xe</div>
                             <a class="nav-link" href="trip.php">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-route"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-car"></i></div>
                                 Chuyến xe
                             </a>
                             <a class="nav-link" href="Location.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-route"></i></div>
                                 Lộ trình    
                             </a>
                             <a class="nav-link" href="city.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-city"></i></div>
                                 Thành phố
+                            </a>
+
+                            <div class="sb-sidenav-menu-heading">Vé và yêu cầu</div>
+                            <a class="nav-link" href="ticket.php">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-ticket"></i></div>
+                                Vé
                             </a>
                         </div>
                     </div>
+
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
                         Admin

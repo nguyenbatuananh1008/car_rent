@@ -173,8 +173,9 @@
                     <form action="../module/C_house_P.php" method="POST">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="id_c_house" id="deleteId_c_house">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                         <button type="submit" class="btn btn-danger">Xóa</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        
                     </form>
                 </div>
             </div>

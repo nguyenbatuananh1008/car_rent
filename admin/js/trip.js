@@ -1,3 +1,4 @@
+
 document.getElementById("name_c_house").addEventListener("change", function () {
     const id_c_house = this.value;
     const carSelect = document.getElementById("c_plate");
@@ -24,26 +25,32 @@ document.getElementById("name_c_house").addEventListener("change", function () {
         });
 });
 
+document.getElementById("edit_name_c_house").addEventListener("change", function () {
+    const id_c_house = this.value;
+    const carSelect = document.getElementById("edit_c_plate");
 
+    carSelect.innerHTML = "<option value='' disabled selected>Đang tải...</option>";
 
-document.getElementById('btnSearch').addEventListener('click', function () {
-    var searchKeyword = document.getElementById('searchKeyword').value;
-
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '';
-
-    var inputAction = document.createElement('input');
-    inputAction.type = 'hidden';
-    inputAction.name = 'search_keyword';
-    inputAction.value = searchKeyword;
-    form.appendChild(inputAction);
-
-    document.body.appendChild(form);
-    form.submit();
+    fetch("../module/trip_p.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `id_c_house=${id_c_house}`,
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            carSelect.innerHTML = "<option value='' disabled selected>Chọn biển số</option>";
+            data.forEach((car) => {
+                carSelect.innerHTML += `<option value="${car.id_car}">${car.c_plate}</option>`;
+            });
+        })
+        .catch((error) => {
+            console.error("Error fetching cars:", error);
+            carSelect.innerHTML = "<option value='' disabled>Không thể tải dữ liệu</option>";
+        });
 });
-
-
+    
 document.querySelectorAll('.btnEdit').forEach(button => {
     button.addEventListener('click', function () {
         const id = this.getAttribute('data-id');
@@ -76,3 +83,33 @@ document.querySelectorAll('.btnEdit').forEach(button => {
             .catch(error => console.error('Error:', error));
     });
 });
+
+document.querySelectorAll('.btnDelete').forEach(button => {
+    button.addEventListener('click', (e) => {
+        const id = e.target.closest('button').getAttribute('data-id');
+        document.getElementById('deleteId_trip').value = id;
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+    });
+});
+
+document.getElementById('btnSearch').addEventListener('click', function () {
+    var searchKeyword = document.getElementById('searchKeyword').value;
+
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '';
+
+    var inputAction = document.createElement('input');
+    inputAction.type = 'hidden';
+    inputAction.name = 'search_keyword';
+    inputAction.value = searchKeyword;
+    form.appendChild(inputAction);
+
+    document.body.appendChild(form);
+    form.submit();
+});
+
+
+
+
+

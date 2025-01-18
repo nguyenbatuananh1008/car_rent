@@ -1,4 +1,4 @@
-<?php include 'database.php'; ?>
+<?php require 'database.php'; ?>
 <?php
 $city_name = $_POST['city_name'] ?? null;
 $action = $_POST['action'] ?? null;
@@ -49,5 +49,6 @@ if ($stmt->execute()) {
 } else {
     echo "Lỗi: " . $stmt->error;
 }   
-
+$stmt->close();
+$conn->close();
 ?>

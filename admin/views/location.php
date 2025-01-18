@@ -32,6 +32,201 @@
                 </button>
             </div>
 
-            
+            <!--  -->
+            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Tạo lộ trình</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="../module/location_p.php" method="POST">
+                                <div class="mb-3">
+                                    <label for="trip_info" class="form-label">Chuyến xe</label>
+                                    <select class="form-select" id="trip_info" name="trip_info" required>
+                                        <?php
+                                        $query_trip = "
+                                            SELECT 
+                                                trip.id_trip,
+                                                car_house.name_c_house,
+                                                car.c_plate,
+                                                city_from.city_name AS city_from,
+                                                city_to.city_name AS city_to
+                                            FROM 
+                                                trip
+                                            INNER JOIN car ON trip.id_car = car.id_car
+                                            INNER JOIN car_house ON car.id_c_house = car_house.id_c_house
+                                            INNER JOIN city AS city_from ON trip.id_city_from = city_from.id_city
+                                            INNER JOIN city AS city_to ON trip.id_city_to = city_to.id_city";
+                                        $result_trip = $conn->query($query_trip);
+                                        while ($row_trip = $result_trip->fetch_assoc()) {
+                                            $id_trip = $row_trip['id_trip'];
+                                            $name_c_house = $row_trip['name_c_house'];
+                                            $c_plate = $row_trip['c_plate'];
+                                            $city_from = $row_trip['city_from'];
+                                            $city_to = $row_trip['city_to'];
+                                            echo "<option value='$id_trip'>$name_c_house - $c_plate - $city_from → $city_to</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
 
+                                <div class="mb-3">
+                                    <label for="name_location" class="form-label">Tên vị trí</label>
+                                    <input type="text" class="form-control" id="name_location" name="name_location" required>
+                                </div>
 
+                                <div class="mb-3">
+                                    <label for="time" class="form-label">Thời gian</label>
+                                    <input type="time" class="form-control" id="time" name="time" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="type_location" class="form-label">Loại địa điểm</label>
+                                    <select class="form-select" id="type_location" name="type_location" required>
+                                        <option value="0">Điểm đón</option>
+                                        <option value="1">Điểm trả</option>
+                                    </select>
+                                </div>
+
+                                <input type="hidden" name="action" value="add">
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Thêm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<!-- -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Sửa thông tin lộ trình</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="../module/location_p.php" method="POST">
+                    <input type="hidden" name="id_location" id="editId_location">
+                    <input type="hidden" name="id_trip" id="editId_trip">
+                    <div class="mb-3">
+                        <label for="edit_trip_info" class="form-label">Chuyến xe</label>
+                        <input type="text" class="form-control" id="edit_trip_info" name="trip_info" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_name_location" class="form-label">Tên vị trí</label>
+                        <input type="text" class="form-control" id="edit_name_location" name="name_location" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_time" class="form-label">Thời gian</label>
+                        <input type="time" class="form-control" id="edit_time" name="time" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="edit_type_location" class="form-label">Loại địa điểm</label>
+                        <select class="form-select" id="edit_type_location" name="type_location" required>
+                            <option value="0">Điểm đón</option>
+                            <option value="1">Điểm trả</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="action" value="edit">
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!--  -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Xóa địa điểm</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Bạn có chắc chắn muốn xóa điểm này không?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="../module/location_p.php" method="POST">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id_location" id="deleteId_location">
+                                <button type="submit" class="btn btn-danger">Xóa</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--  -->
+            <div class="text-center">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>STT</th>
+                            <th>Thông tin chuyến xe</th>
+                            <th>Tên vị trí</th>
+                            <th>Thời gian</th>
+                            <th>Loại địa điểm</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTable">
+                        <?php
+                        $query = "
+                            SELECT 
+                                location.id_location,
+                                CONCAT(car_house.name_c_house, ' - ', car.c_plate, ' - ', city_from.city_name, ' → ', city_to.city_name) AS trip_info,
+                                location.name_location,
+                                location.time,
+                                CASE location.type
+                                    WHEN 0 THEN 'Điểm đón'
+                                    WHEN 1 THEN 'Điểm trả'
+                                END AS type
+                            FROM 
+                                location
+                            INNER JOIN trip ON location.id_trip = trip.id_trip
+                            INNER JOIN car ON trip.id_car = car.id_car
+                            INNER JOIN car_house ON car.id_c_house = car_house.id_c_house
+                            INNER JOIN city AS city_from ON trip.id_city_from = city_from.id_city
+                            INNER JOIN city AS city_to ON trip.id_city_to = city_to.id_city";
+
+                        $result = $conn->query($query);
+                        if ($result->num_rows > 0) {
+                            $stt = 1;
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>
+                                    <td>" . $stt++ . "</td>
+                                    <td>" . $row['trip_info'] . "</td>
+                                    <td>" . $row['name_location'] . "</td>
+                                    <td>" . $row['time'] . "</td>
+                                    <td>" . $row['type'] . "</td>
+                                    <td>
+                                        <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='" . $row['id_location'] . "'><i class='fas fa-edit'></i> Sửa</button>
+                                        <button class='btn btn-danger btn-sm btnDelete' data-id='" . $row['id_location'] . "'><i class='fas fa-trash-alt'></i> Xóa</button>
+
+                                    </td>
+                                </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='6' class='text-center'>Không có dữ liệu</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src = "../js/location.js"></script>
+</body>
+
+</html>

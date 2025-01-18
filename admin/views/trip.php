@@ -4,6 +4,7 @@
 
     <!DOCTYPE html>
     <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,7 +31,8 @@
                         <i class="fas fa-plus"></i> Thêm mới
                     </button>
                 </div>
-<!-- add -->
+                
+                <!-- add -->
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -192,6 +194,28 @@
                     </div>
                 </div>
 
+                <!--  -->
+                <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteModalLabel">Xóa chuyến xe</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Bạn có chắc chắn muốn xóa nhà xe này không?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <form action="../module/trip_p.php" method="POST">
+                                    <input type="hidden" name="action" value="delete">
+                                    <input type="hidden" name="id_trip" id="deleteId_trip">
+                                    <button type="submit" class="btn btn-danger">Xóa</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!---->
                 <div class="text-center">
@@ -205,13 +229,12 @@
                                 <th>Điểm trả</th>
                                 <th>Giờ đón</th>
                                 <th>Giờ trả</th>
-                                <th>Ngày</th>
+                                <th>Ngày tạo</th>
                                 <th>Giá</th>
                                 <th>Thao tác</th>
                             </tr>
                         </thead>
-
-                    <?php
+                        <?php
                         function formatMoney($amount)
                         {
                             return number_format($amount, 0, ',', '.') . ' đ';
@@ -251,14 +274,14 @@
                                 t.date LIKE ? OR
                                 t.price LIKE ?
                             ";
-                        
+
                             $stmt = $conn->prepare($sql);
                             if ($stmt) {
-                                $searchKeyword = '%' . $searchKeyword . '%'; 
+                                $searchKeyword = '%' . $searchKeyword . '%';
                                 $stmt->bind_param('ssssssss', $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword);
                                 $stmt->execute();
                                 $result = $stmt->get_result();
-                        
+
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
                                         echo "<tr>
@@ -285,7 +308,13 @@
                         }
                         $conn->close();
                         ?>
+                        </table>
+                        </div>
+                        
                         <script src="../js/trip.js"></script>
+                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+    </body>      
     </html>
+    <? require 'footer.php'; ?>   
+   

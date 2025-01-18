@@ -1,4 +1,4 @@
-<?php include 'database.php'; ?>
+<?php require 'database.php'; ?>
 <?php require 'uploads.php'; ?>
 <?php
 $c_name = $_POST['c_name'] ?? null;
@@ -17,6 +17,7 @@ if ($action == 'add') {
     } else {
         echo "Lỗi: " . $stmt->error;
     }
+
 } elseif ($action == 'edit') {
     $id_car = $_POST['id_car'];
     $query = "UPDATE car SET c_name = ?, c_plate = ?, id_c_house = ?, capacity = ?";
@@ -41,6 +42,7 @@ if ($action == 'add') {
     } else {
         echo "Lỗi: " . $stmt->error;
     }
+
 } elseif ($action == 'delete') {
     $id_car = $_POST['id_car'];
     $stmt = $conn->prepare("SELECT img FROM car WHERE id_car = ?");
@@ -59,6 +61,7 @@ if ($action == 'add') {
     } else {
         echo "Lỗi: " . $stmt->error;
     }
+
 } elseif ($action == 'search') {
     $search_keyword = $_POST['search_keyword'];
     $like_keyword = '%' . $search_keyword . '%';
@@ -76,7 +79,6 @@ if ($action == 'add') {
     $rows = [];
     while ($row = $result->fetch_assoc()) {
         $rows[] = $row;
-
         echo json_encode($rows);
     }
 }
