@@ -60,6 +60,7 @@ include('layout/header.php');
                 <div class="container-xl">
                     <div class="row center_o1">
                         <div class="col-md-12">
+                       
                             <h2 class="text-white">Chuyến xe phổ biến</h2>
                             <h6 class="mb-0 mt-3 fw-normal col_oran"><a class="text-light" href="index.php">Home</a>
                                 <span class="mx-2 col_light">/</span> Chuyến xe</h6>
@@ -73,17 +74,25 @@ include('layout/header.php');
     <section id="model_pg" class="p_3">
         <div class="container-xl">
             <div class="row model_pg1">
+           
                 <?php if (!empty($trips)): ?>
 					<p class="text-success">Tìm thấy <strong><?= count($trips) ?></strong> chuyến xe phù hợp.</p>
 
                     <div class="row">
                         <?php foreach ($trips as $trip): ?>
+                            <form id="booking-form" action="booking_info.php?date=<?= htmlspecialchars($date) ?>" method="POST">
+                                
                             <div class="col-md-9 shadow-lg p-3 mb-5 bg-white rounded ms-auto mb-4"> <!-- Thêm class mb-4 -->
                                 <div class="model_pg1i clearfix">
                                     <div class="model_pg1i1">
                                         <div class="grid clearfix"></div>
                                     </div>
-
+                                    <input type="hidden" name="car_house_name" value="<?= htmlspecialchars($trip['car_house_name']) ?>">
+                                    
+                                    <input type="hidden" name="city_from" value="<?= htmlspecialchars($city_from) ?>">
+                                    <input type="hidden" name="city_to" value="<?= htmlspecialchars($city_to) ?>">
+                                    <input type="hidden" name="city_from_name" value="<?= htmlspecialchars($trip['city_from_name']) ?>">
+                                    <input type="hidden" name="city_to_name" value="<?= htmlspecialchars($trip['city_to_name']) ?>">
                                     <div class="model_m p-3 clearfix border-top-0 text-center">
                                         <div class="float-start">
                                             <img src="uploads/<?= htmlspecialchars($trip['car_image']) ?>" class="card-img-top" alt="Car Image">
@@ -144,13 +153,12 @@ include('layout/header.php');
                     <h5 class="mb-0">Điểm đón</h5>
                 </div>
                 <div class="card-body">
-                    <form id="booking-form" action="booking_info.php?date=<?= htmlspecialchars($date) ?> " method="POST">
+                   
                         <input type="hidden" name="id_trip" value="<?= htmlspecialchars($trip['id_trip']) ?>">
                         <div class="pickup-locations overflow-auto" style="max-height: 300px;">
-                            <?php foreach ($trip['pickup_locations'] as $location): ?>
-                                <input type="hidden" name="pickup_name_<?= $location['id_location'] ?>" value="<?= htmlspecialchars($location['name_location']) ?>">
+                            <?php foreach ($trip['pickup_locations'] as $location): ?>                                
                                 <div class="form-check mb-3">
-                                    <input class="form-check-input" type="radio" name="pickup_location" id="pickup_<?= $location['id_location'] ?>" value="<?= $location['id_location'] ?>" required>
+                                    <input class="form-check-input" type="radio" name="pickup_location" id="pickup_<?= $location['id_location'] ?>" value="<?= $location['id_location'] . '|' . $location['time'] . '|' . $location['name_location']?>" required>
                                     <label class="form-check-label" for="pickup_<?= $location['id_location'] ?>">
                                         <strong><?= htmlspecialchars($location['time']) ?></strong> - <?= htmlspecialchars($location['name_location']) ?>
                                     </label>
@@ -170,9 +178,8 @@ include('layout/header.php');
                 <div class="card-body">
                     <div class="dropoff-locations overflow-auto" style="max-height: 300px;">
                         <?php foreach ($trip['dropoff_locations'] as $location): ?>
-                            <div class="form-check mb-3">
-                            <input type="hidden" name="dropoff_name_<?= $location['id_location'] ?>" value="<?= htmlspecialchars($location['name_location']) ?>">
-                                <input class="form-check-input" type="radio" name="dropoff_location" id="dropoff_<?= $location['id_location'] ?>" value="<?= $location['id_location'] ?>" required>
+                            <div class="form-check mb-3">                               
+                                <input class="form-check-input" type="radio" name="dropoff_location" id="dropoff_<?= $location['id_location'] ?>" value="<?= $location['id_location'] . '|' . $location['time']. '|' . $location['name_location'] ?>" required>
                                 <label class="form-check-label" for="dropoff_<?= $location['id_location'] ?>">
                                     <strong><?= htmlspecialchars($location['time']) ?></strong> - <?= htmlspecialchars($location['name_location']) ?>
                                 </label>
@@ -194,7 +201,7 @@ include('layout/header.php');
                 <div class="card-body">
                     <div class="form-group">
                         <label for="ticket_quantity">Chọn số lượng vé:</label>
-                        <input type="number" id="ticket_quantity" name="ticket_quantity" class="form-control" min="1" max="<?= htmlspecialchars($trip['remaining_seats']) ?>" placeholder="Nhập số lượng vé" required>
+                        <input type="number" id="ticket_quantity" name="ticket_quantity" class="form-control" min="1" max="<?= htmlspecialchars($trip['remaining_seats']) ?>" placeholder="Nhập số lượng vé" required  >
                     </div>
                 </div>
             </div>

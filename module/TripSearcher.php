@@ -64,8 +64,9 @@
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     public function createTicket($data) {
-        $sql = "INSERT INTO dat_ve_ticket (id_trip, id_user, name, phone, email, number_seat, total_price, status, method, date)
+        $sql = "INSERT INTO ticket (id_trip, id_user, name, phone, email, number_seat, total_price, status, method, date)
                 VALUES (:id_trip, :id_user, :name, :phone, :email, :number_seat, :total_price, :status, :method, :date)";
+                
         
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([
@@ -78,7 +79,7 @@
             ':total_price' => $data['total_price'], // Tổng giá vé
             ':status' => $data['status'], // Trạng thái (Pending, Confirmed, etc.)
             ':method' => $data['method'], // Phương thức thanh toán (nếu có)
-            ':date' => $data['date'], // Ngày đặt vé
+            ':date' => $data['date'], // Ngày khởi hành
         ]);
     }
     

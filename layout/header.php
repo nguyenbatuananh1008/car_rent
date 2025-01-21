@@ -13,9 +13,8 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/trip.css" rel="stylesheet">
-  <link href="css/index.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/header.css">
-  <link rel="stylesheet" href="css/booking_info.css">
+
+ 
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <script src="js/bootstrap.bundle.min.js"></script>
 </head>
@@ -38,9 +37,7 @@
               <li class="nav-item">
                 <a class="nav-link" href="about.php">About</a>
               </li>  
-              <li class="nav-item">
-                <a class="nav-link" href="trip.php">Chuyến xe</a>
-              </li>
+             
               <li class="nav-item">
                 <a class="nav-link" href="blog.php">Blog</a>
               </li>
@@ -58,6 +55,9 @@
   </li>
   <li class="nav-item">
     <a class="nav-link" href="logout.php">Logout</a>
+  </li>
+  <li class="nav-item">
+  <a class="nav-link" href="my_order.php">Đơn hàng của tôi</a>
   </li>
 <?php else: ?>
   <li class="nav-item">

@@ -309,5 +309,8 @@ font-size:40px;
 padding:150px 150px;
  }
  }
+ .button.btn {
+    background-color: #FF4D30;
+ }
 
 
