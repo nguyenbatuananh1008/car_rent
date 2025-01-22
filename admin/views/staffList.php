@@ -24,6 +24,7 @@ if (isset($_GET['delete_id'])) {
 }
 ?>
 
+
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">
         <div class="content-wrapper">
@@ -108,6 +109,3 @@ if (isset($_GET['delete_id'])) {
             </section>
         </div>
     </div>
-</div>
-
-<?php include 'layout/footer.php'; ?>
