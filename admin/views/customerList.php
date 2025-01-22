@@ -8,8 +8,8 @@ $search = isset($_GET['search']) ? trim($_GET['search']) : null;
 $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm kiếm nếu có)
 ?>
 
-<?php include 'layout/header.php'; ?>
-<?php include 'layout/slidebar.php'; ?>
+<?php include 'navbar.php'; ?>
+<?php include 'slidebar.php'; ?>
 
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">

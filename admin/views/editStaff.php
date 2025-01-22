@@ -1,7 +1,7 @@
 <?php
 include '../module/adminHandler.php';
-include 'layout/header.php';
-include 'layout/slidebar.php';
+include_once 'slidebar.php';
+include_once 'navbar.php';
 include '../module/auth.php';
 checkAccess(0); 
 $id = $_GET['id'];

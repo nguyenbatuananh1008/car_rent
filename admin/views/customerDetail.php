@@ -1,7 +1,7 @@
 
 
-<?php include 'layout/header.php'; ?>
-<?php include 'layout/slidebar.php'; ?>
+<?php include 'navbar.php'; ?>
+<?php include 'slidebar.php'; ?>
             
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">

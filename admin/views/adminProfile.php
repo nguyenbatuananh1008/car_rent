@@ -1,8 +1,8 @@
 <?php
 session_start();
 include '../module/adminHandler.php';
-include '../views/layout/header.php';
-include '../views/layout/slidebar.php';
+include 'navbar.php';
+include 'slidebar.php';
 include '../module/auth.php';
 checkAccess(0); 
 
@@ -135,4 +135,4 @@ if (isset($_POST['update_password'])) {
 </div>
 </div>
 
-<?php include '../views/layout/footer.php'; ?>
+<?php include 'footer.php'; ?>
