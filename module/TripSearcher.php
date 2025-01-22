@@ -64,23 +64,25 @@
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     public function createTicket($data) {
-        $sql = "INSERT INTO ticket (id_trip, id_user, name, phone, email, number_seat, total_price, status, method, date)
-                VALUES (:id_trip, :id_user, :name, :phone, :email, :number_seat, :total_price, :status, :method, :date)";
+        $sql = "INSERT INTO ticket (id_trip, id_user, name, phone, number_seat, total_price, status, method, date)
+        VALUES (:id_trip, :id_user, :name, :phone, :number_seat, :total_price, :status, :method, :date)";
+
                 
         
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute([
             ':id_trip' => $data['id_trip'],
-            ':id_user' => $data['id_user'], // Có thể null nếu không có đăng nhập
+            ':id_user' => $data['id_user'],
             ':name' => $data['name'],
             ':phone' => $data['phone'],
-            ':email' => $data['email'],
             ':number_seat' => $data['number_seat'],
-            ':total_price' => $data['total_price'], // Tổng giá vé
-            ':status' => $data['status'], // Trạng thái (Pending, Confirmed, etc.)
-            ':method' => $data['method'], // Phương thức thanh toán (nếu có)
-            ':date' => $data['date'], // Ngày khởi hành
+            ':total_price' => $data['total_price'],
+            ':status' => $data['status'],
+            ':method' => $data['method'],
+            ':date' => $data['date'],
         ]);
+        
+        
     }
     
     
@@ -96,15 +98,16 @@
                 FROM trip AS trip
                 INNER JOIN car AS car ON trip.id_car = car.id_car
                 INNER JOIN car_house AS car_house ON car.id_c_house = car_house.id_c_house
-                INNER JOIN city AS city_from ON trip.id_city = city_from.id_city
+                INNER JOIN city AS city_from ON trip.id_city_from = city_from.id_city
                 INNER JOIN city AS city_to ON trip.id_city_to = city_to.id_city
                 WHERE trip.id_trip = :id_trip";
-    
+        
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id_trip', $id_trip, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    
     
 
 
