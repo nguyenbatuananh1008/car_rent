@@ -1,6 +1,4 @@
 @charset "UTF-8";
-<<<<<<< HEAD
-=======
 /*!
 * Start Bootstrap - SB Admin v7.0.7 (https://startbootstrap.com/template/sb-admin)
 * Copyright 2013-2023 Start Bootstrap
@@ -12,7 +10,6 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
->>>>>>> 74c2cb7c8612d6e8edf94e5ad3bdf7e68219ef64
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -195,11 +192,7 @@ ul,
 dl {
   margin-top: 0;
   margin-bottom: 1rem;
-<<<<<<< HEAD
-} 
-=======
 }
->>>>>>> 74c2cb7c8612d6e8edf94e5ad3bdf7e68219ef64
 
 ol ol,
 ul ul,
@@ -390,11 +383,7 @@ button,
 [type=button],
 [type=reset],
 [type=submit] {
-<<<<<<< HEAD
 -webkit-appearance: button;
-=======
-  -webkit-appearance: button;
->>>>>>> 74c2cb7c8612d6e8edf94e5ad3bdf7e68219ef64
 }
 button:not(:disabled),
 [type=button]:not(:disabled),
