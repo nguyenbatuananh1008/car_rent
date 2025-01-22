@@ -113,6 +113,7 @@
     <input type="hidden" name="dropoff_name" value="<?= htmlspecialchars($dropoff_name) ?>">
     <input type="hidden" name="trip_price" value="<?= htmlspecialchars($trip_info['price']) ?>">
     <input type="hidden" name="date" value="<?= htmlspecialchars($date) ?>"> 
+    <input type="hidden" name="car_name" value="<?= htmlspecialchars($trip_info['car_name']) ?>">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Tên người đi <span class="text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" id="name" placeholder="Nhập tên" required>

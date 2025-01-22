@@ -13,7 +13,7 @@
   <link href="css/bootstrap.min.css" rel="stylesheet">
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/trip.css" rel="stylesheet">
-
+<link rel="stylesheet" href="css/index.css">
  
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <script src="js/bootstrap.bundle.min.js"></script>

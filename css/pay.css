@@ -1,0 +1,39 @@
+.payment-option {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+.payment-option:hover {
+    background-color: #f9f9f9;
+}
+.trip-info, .discount-info {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+
+.btn-pay {
+background-color: #FF4D30; /* Màu cam */
+color: #fff;
+font-weight: bold;
+border: none;
+border-radius: 8px;
+padding: 15px 20px;
+font-size: 18px; /* Kích thước chữ lớn hơn */
+width: 100%; /* Nút rộng toàn bộ */
+}
+.btn-pay:hover {
+background-color:rgb(209, 103, 87); /* Màu cam đậm hơn khi hover */
+}
+.content-container {
+    margin-top: 100px; /* Hoặc giá trị phù hợp với chiều cao của header */
+}
+.row {
+
+    margin-top: 100px; 
+}
+
+
+
