@@ -66,6 +66,64 @@
                     </div>
                 </div>
             </div>
+ <!-- -->
+ <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Sửa thông tin nhà xe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="../module/C_house_P.php" method="POST">
+                        <input type="hidden" name="id_c_house" id="editId_c_house">
+                        <div class="mb-3">
+                            <label for="edit_name_c_house" class="form-label">Tên nhà xe</label>
+                            <input type="text" class="form-control" id="edit_name_c_house" name="name_c_house" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_address" class="form-label">Địa chỉ</label>
+                            <input type="text" class="form-control" id="edit_address" name="address" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_phone" class="form-label">Số điện thoại</label>
+                            <input type="tel" class="form-control" id="edit_phone" name="phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="edit_email" name="email" required>
+                        </div>
+                        <input type="hidden" name="action" value="edit">
+                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--  -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Xóa nhà xe</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa nhà xe này không?</p>
+                </div>
+                <div class="modal-footer">
+                    <form action="../module/C_house_P.php" method="POST">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="id_c_house" id="deleteId_c_house">
+                        <button type="submit" class="btn btn-danger">Xóa</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
             <!---->
             <div class="text-center">
@@ -123,64 +181,7 @@
     </div>
         
 
-    <!-- -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Sửa thông tin nhà xe</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="../module/C_house_P.php" method="POST">
-                        <input type="hidden" name="id_c_house" id="editId_c_house">
-                        <div class="mb-3">
-                            <label for="edit_name_c_house" class="form-label">Tên nhà xe</label>
-                            <input type="text" class="form-control" id="edit_name_c_house" name="name_c_house" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_address" class="form-label">Địa chỉ</label>
-                            <input type="text" class="form-control" id="edit_address" name="address" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_phone" class="form-label">Số điện thoại</label>
-                            <input type="tel" class="form-control" id="edit_phone" name="phone" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="edit_email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="edit_email" name="email" required>
-                        </div>
-                        <input type="hidden" name="action" value="edit">
-                        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!--  -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Xóa nhà xe</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Bạn có chắc chắn muốn xóa nhà xe này không?</p>
-                </div>
-                <div class="modal-footer">
-                    <form action="../module/C_house_P.php" method="POST">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="id_c_house" id="deleteId_c_house">
-                        <button type="submit" class="btn btn-danger">Xóa</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+   
 
         <script src="../js/c_house.js"></script>
         

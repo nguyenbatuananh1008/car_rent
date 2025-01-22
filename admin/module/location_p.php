@@ -99,6 +99,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "ID địa điểm không hợp lệ.";
     }
+    
+} elseif ($action === 'search') {
+    $search_keyword = $_POST['search_keyword'];
+    $stmt = $conn->prepare("
+        SELECT 
+            location.id_location, 
+            CONCAT(car_house.name_c_house, ' - ', car.c_plate, ' - ', city_from.city_name, ' → ', city_to.city_name) AS trip_info, 
+            location.name_location, 
+            location.time, 
+            CASE location.type 
+                WHEN 0 THEN 'Điểm đón' 
+                WHEN 1 THEN 'Điểm trả' 
+            END AS type 
+        FROM 
+            location 
+        INNER JOIN 
+            trip ON location.id_trip = trip.id_trip 
+        INNER JOIN 
+            car ON trip.id_car = car.id_car 
+        INNER JOIN 
+            car_house ON car.id_c_house = car_house.id_c_house 
+        INNER JOIN 
+            city AS city_from ON trip.id_city_from = city_from.id_city 
+        INNER JOIN 
+            city AS city_to ON trip.id_city_to = city_to.id_city 
+        WHERE 
+            location.name_location LIKE ?
+    ");
+    $like_keyword = '%' . $search_keyword . '%';
+    $stmt->bind_param("s", $like_keyword);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        echo json_encode($row);
+    }
 }
 
 

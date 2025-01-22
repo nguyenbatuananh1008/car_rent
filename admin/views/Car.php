@@ -31,6 +31,7 @@
                     <i class="fas fa-plus"></i> Thêm
                 </button>
             </div>
+            
             <!-- -->
             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div class="modal-dialog">

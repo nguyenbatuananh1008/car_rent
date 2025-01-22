@@ -65,11 +65,16 @@
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-city"></i></div>
                                 Thành phố
                             </a>
+                            
 
-                            <div class="sb-sidenav-menu-heading">Vé và yêu cầu</div>
+                            <div class="sb-sidenav-menu-heading">Vé và Thống kê</div>
                             <a class="nav-link" href="ticket.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-ticket"></i></div>
                                 Vé
+                            </a>
+                            <a class="nav-link" href="report.php">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                                Thống Kê
                             </a>
                         </div>
                     </div>

@@ -29,13 +29,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_city_to = $_POST['id_city_to'];
         $t_pick = $_POST['t_pick'];
         $t_drop = $_POST['t_drop'];
+        $t_limit = $_POST['t_limit'];
         $date = $_POST['date'];
         $price = $_POST['price'];
 
-        $sql = "INSERT INTO trip (id_car, id_city_from, id_city_to, t_pick, t_drop, date, price) 
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO trip (id_car, id_city_from, id_city_to, t_pick, t_drop, t_limit, date, price) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiisssd", $id_car, $id_city_from, $id_city_to, $t_pick, $t_drop, $date, $price);
+        $stmt->bind_param("iiissisd", $id_car, $id_city_from, $id_city_to, $t_pick, $t_drop, $t_limit, $date, $price );
         if ($stmt->execute()) {
             header("Location: ../views/trip.php");
             exit();
@@ -52,14 +53,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_city_to = $_POST['id_city_to'];
         $t_pick = $_POST['t_pick'];
         $t_drop = $_POST['t_drop'];
+        $t_limit = $_POST['t_limit'];
         $date = $_POST['date'];
         $price = $_POST['price'];
 
         $sql = "UPDATE trip 
-                SET id_car = ?, id_city_from = ?, id_city_to = ?, t_pick = ?, t_drop = ?, date = ?, price = ? 
+                SET id_car = ?, id_city_from = ?, id_city_to = ?, t_pick = ?, t_drop = ?, t_limit = ?, date = ?, price = ? 
                 WHERE id_trip = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiisssdi", $id_car, $id_city_from, $id_city_to, $t_pick, $t_drop, $date, $price, $id_trip);
+        $stmt->bind_param("iiissisdi", $id_car, $id_city_from, $id_city_to, $t_pick, $t_drop, $t_limit, $date, $price, $id_trip);
         if ($stmt->execute()) {
             header("Location: ../views/trip.php");
             exit();
@@ -86,13 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } elseif ($action === 'search') {
         $search_keyword = $_POST['search_keyword'];
         $like_keyword = '%' . $search_keyword . '%';
-        $sql = "SELECT * FROM trip WHERE id_car LIKE ? OR id_city_from LIKE ? OR id_city_to LIKE ? OR date LIKE ?";
+        $sql = "SELECT * FROM trip WHERE id_car LIKE ? OR id_city_from LIKE ? OR id_city_to LIKE ? OR t_limit LIKE ? OR date LIKE ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssss", $like_keyword, $like_keyword, $like_keyword, $like_keyword);
+        $stmt->bind_param("sssss", $like_keyword, $like_keyword, $like_keyword, $like_keyword, $like_keyword);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = $result->fetch_all(MYSQLI_ASSOC);
-        echo json_encode($data);
+        $row = $result->fetch_all(MYSQLI_ASSOC);
+        echo json_encode($row);
         exit();
     }
 
@@ -107,8 +109,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $stmt->bind_param("i", $id_trip);
     $stmt->execute();
     $result = $stmt->get_result();
-    $data = $result->fetch_assoc();
-    echo json_encode($data);
+    $row = $result->fetch_assoc();
+    echo json_encode($row);
     exit();
 }
 

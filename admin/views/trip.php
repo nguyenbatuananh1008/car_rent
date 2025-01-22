@@ -96,8 +96,14 @@
                                     </div>
 
                                     <div class="mb-3">
+                                        <label for="t_limit" class="form-label">Số vé</label>
+                                        <input type="number" class="form-control" id="t_limit" name="t_limit" required>
+                                    </div>
+
+                                    <div class="mb-3">
                                         <label for="date" class="form-label">Ngày</label>
                                         <input type="date" class="form-control" id="date" name="date" required>
+                                        
                                     </div>
 
                                     <div class="mb-3">
@@ -177,6 +183,10 @@
                                         <input type="time" class="form-control" id="edit_t_drop" name="t_drop" required>
                                     </div>
                                     <div class="mb-3">
+                                        <label for="edit_t_limit" class="form-label">Số vé</label>
+                                        <input type="number" class="form-control" id="edit_t_limit" name="t_limit" required>
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="edit_date" class="form-label">Ngày</label>
                                         <input type="date" class="form-control" id="edit_date" name="date" required>
                                     </div>
@@ -217,104 +227,113 @@
                     </div>
                 </div>
 
-                <!---->
+                <!-- -->
                 <div class="text-center">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Mã</th>
-                                <th>Nhà xe</th>
-                                <th>Biển số</th>
-                                <th>Điểm đón</th>
-                                <th>Điểm trả</th>
-                                <th>Giờ đón</th>
-                                <th>Giờ trả</th>
-                                <th>Ngày tạo</th>
-                                <th>Giá</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <?php
-                        function formatMoney($amount)
-                        {
-                            return number_format($amount, 0, ',', '.') . ' đ';
-                        }
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>Mã</th>
+                <th>Nhà xe</th>
+                <th>Biển số</th>
+                <th>Điểm đón</th>
+                <th>Điểm trả</th>
+                <th>Giờ đón</th>
+                <th>Giờ trả</th>
+                <th>Số vé</th>
+                <th>Ngày tạo</th>
+                <th>Giá</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            function formatMoney($amount)
+            {
+                return number_format($amount, 0, ',', '.') . ' đ';
+            }
 
-                        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search_keyword'])) {
-                            $searchKeyword = mysqli_real_escape_string($conn, $_POST['search_keyword']);
-                            $sql = "
-                            SELECT 
-                                t.id_trip,
-                                ch.name_c_house AS TênNhàXe,
-                                c.c_plate AS BiểnSố,
-                                cf.city_name AS ĐiểmĐón,
-                                ct.city_name AS ĐiểmTrả,
-                                t.t_pick AS GiờĐón,
-                                t.t_drop AS GiờTrả,
-                                t.date AS Ngày,
-                                t.price AS Giá,
-                                t.id_trip AS MãChuyếnXe
-                            FROM 
-                                trip t
-                            JOIN 
-                                car c ON t.id_car = c.id_car
-                            JOIN 
-                                car_house ch ON c.id_c_house = ch.id_c_house
-                            JOIN 
-                                city cf ON t.id_city_from = cf.id_city
-                            JOIN 
-                                city ct ON t.id_city_to = ct.id_city
-                            WHERE 
-                                ch.name_c_house LIKE ? OR
-                                c.c_plate LIKE ? OR
-                                cf.city_name LIKE ? OR
-                                ct.city_name LIKE ? OR
-                                t.t_pick LIKE ? OR
-                                t.t_drop LIKE ? OR
-                                t.date LIKE ? OR
-                                t.price LIKE ?
-                            ";
+            $searchKeyword = $_POST['search_keyword'] ?? '';
+            $query = "
+            SELECT 
+                t.id_trip,
+                ch.name_c_house AS TênNhàXe,
+                c.c_plate AS BiểnSố,
+                cf.city_name AS ĐiểmĐón,
+                ct.city_name AS ĐiểmTrả,
+                t.t_pick AS GiờĐón,
+                t.t_drop AS GiờTrả,
+                t.t_limit AS SốVé,
+                t.date AS Ngày,
+                t.price AS Giá,
+                t.id_trip AS MãChuyếnXe
+            FROM 
+                trip t
+            JOIN 
+                car c ON t.id_car = c.id_car
+            JOIN 
+                car_house ch ON c.id_c_house = ch.id_c_house
+            JOIN 
+                city cf ON t.id_city_from = cf.id_city
+            JOIN 
+                city ct ON t.id_city_to = ct.id_city";
 
-                            $stmt = $conn->prepare($sql);
-                            if ($stmt) {
-                                $searchKeyword = '%' . $searchKeyword . '%';
-                                $stmt->bind_param('ssssssss', $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword);
-                                $stmt->execute();
-                                $result = $stmt->get_result();
+            if ($searchKeyword) {
+                $query .= "
+                WHERE 
+                    ch.name_c_house LIKE ? OR
+                    c.c_plate LIKE ? OR
+                    cf.city_name LIKE ? OR
+                    ct.city_name LIKE ? OR
+                    t.t_pick LIKE ? OR
+                    t.t_drop LIKE ? OR
+                    t.t_limit LIKE ? OR
+                    t.date LIKE ? OR
+                    t.price LIKE ?";
+            }
 
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>
-                                            <td>{$row['MãChuyếnXe']}</td>
-                                            <td>{$row['TênNhàXe']}</td>
-                                            <td>{$row['BiểnSố']}</td>
-                                            <td>{$row['ĐiểmĐón']}</td>
-                                            <td>{$row['ĐiểmTrả']}</td>
-                                            <td>{$row['GiờĐón']}</td>
-                                            <td>{$row['GiờTrả']}</td>
-                                            <td>{$row['Ngày']}</td>
-                                            <td>" . formatMoney($row['Giá']) . "</td>
-                                            <td>
-                                                <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='{$row['id_trip']}'><i class='fas fa-edit'></i> Sửa</button>
-                                                <button class='btn btn-danger btn-sm btnDelete' data-id='{$row['id_trip']}'><i class='fas fa-trash-alt'></i> Xóa</button>
-                                            </td>
-                                        </tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='10' class='text-center'>Không có dữ liệu</td></tr>";
-                                }
-                                $stmt->close();
-                            }
-                        }
-                        $conn->close();
-                        ?>
-                        </table>
-                        </div>
-                        
-                        <script src="../js/trip.js"></script>
-                        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    </body>      
+            $stmt = $conn->prepare($query);
+
+            if ($stmt) {
+                if ($searchKeyword) {
+                    $searchKeyword = '%' . $searchKeyword . '%';
+                    $stmt->bind_param('sssssssss', $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword);
+                }
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo "<tr>
+                            <td>{$row['MãChuyếnXe']}</td>
+                            <td>{$row['TênNhàXe']}</td>
+                            <td>{$row['BiểnSố']}</td>
+                            <td>{$row['ĐiểmĐón']}</td>
+                            <td>{$row['ĐiểmTrả']}</td>
+                            <td>{$row['GiờĐón']}</td>
+                            <td>{$row['GiờTrả']}</td>
+                            <td>{$row['SốVé']}</td>
+                            <td>{$row['Ngày']}</td>
+                            <td>" . formatMoney($row['Giá']) . "</td>
+                            <td>
+                                <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='{$row['id_trip']}'><i class='fas fa-edit'></i> Sửa</button>
+                                <button class='btn btn-danger btn-sm btnDelete' data-id='{$row['id_trip']}'><i class='fas fa-trash-alt'></i> Xóa</button>
+                            </td>
+                        </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='11' class='text-center'>Không có dữ liệu</td></tr>";
+                }
+                $stmt->close();
+            }
+            $conn->close();
+            ?>
+        </tbody>
+    </table>
+</div>   
+                    <script src="../js/trip.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>    
     </html>
-    <? require 'footer.php'; ?>   
+    <? require 'footer.php'; ?>  
    

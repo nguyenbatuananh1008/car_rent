@@ -65,6 +65,7 @@ document.querySelectorAll('.btnEdit').forEach(button => {
                 document.getElementById('edit_id_city_to').value = data.id_city_to;
                 document.getElementById('edit_t_pick').value = data.t_pick;
                 document.getElementById('edit_t_drop').value = data.t_drop;
+                document.getElementById('edit_t_limit').value = data.t_limit;
                 document.getElementById('edit_date').value = data.date;
                 document.getElementById('edit_price').value = data.price;
 
