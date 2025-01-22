@@ -18,5 +18,17 @@ class Database {
 
         return $this->conn;
     }
+
+    public function connectBee() {
+        $this->conn = null;
+
+        try {
+            $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db_name);
+        } catch (PDOException $exception) {
+            echo "Connection error: " . $exception->getMessage();
+        }
+
+        return $this->conn;
+    }
 }
 ?>
