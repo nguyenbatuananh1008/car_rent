@@ -1,4 +1,7 @@
 <?php require 'database.php'; ?>
+<?php $db = new Database();
+$conn = $db->connectBee();
+?>
 <?php
 $city_name = $_POST['city_name'] ?? null;
 $action = $_POST['action'] ?? null;

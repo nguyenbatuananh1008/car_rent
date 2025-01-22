@@ -1,6 +1,9 @@
 <?php
-require 'Database.php';
-
+include 'Database.php';?>
+<?php $db = new Database();
+$conn = $db->connectBee();
+?>
+<?php
 $id_ticket = $_POST['id_ticket'] ?? null;
 $id_trip = $_POST['id_trip'] ?? null;
 $name = $_POST['name'] ?? null;
@@ -76,3 +79,4 @@ if ($action == 'add') {
 }
 
 $conn->close();
+?>

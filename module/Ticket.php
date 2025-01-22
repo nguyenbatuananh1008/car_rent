@@ -24,8 +24,8 @@
                     trip.id_city_to,
                     car.c_name,
                     car_house.name_c_house,
-                    city_from.name_city AS from_city,
-                    city_to.name_city AS to_city
+                    city_from.city_name AS from_city,
+                    city_to.city_name AS to_city
                 FROM ticket t
                 INNER JOIN trip ON t.id_trip = trip.id_trip
                 INNER JOIN car ON trip.id_car = car.id_car

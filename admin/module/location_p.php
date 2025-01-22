@@ -1,6 +1,11 @@
+
 <?php
 include 'Database.php';
-
+?>
+<?php $db = new Database();
+$conn = $db->connectBee();
+?>
+<?php
 $action = $_POST['action'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

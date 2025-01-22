@@ -1,5 +1,7 @@
 <?php require 'database.php'; ?>
-
+<?php $db = new Database();
+$conn = $db->connectBee();
+?>
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

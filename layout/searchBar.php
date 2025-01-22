@@ -29,7 +29,7 @@ $date = isset($date) ? $date : null;
                             <option value="">Chọn điểm đi</option>
                             <?php foreach ($cities as $city): ?>
                                 <option value="<?= $city['id_city'] ?>" <?= ($city_from == $city['id_city']) ? 'selected' : '' ?>>  
-                                    <?= htmlspecialchars($city['name_city']) ?>
+                                    <?= htmlspecialchars($city['city_name']) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -42,7 +42,7 @@ $date = isset($date) ? $date : null;
                             <option value="">Chọn điểm đến</option>
                             <?php foreach ($cities as $city): ?>
                                 <option value="<?= $city['id_city'] ?>" <?= ($city_to == $city['id_city']) ? 'selected' : '' ?>>
-                                    <?= htmlspecialchars($city['name_city']) ?>
+                                    <?= htmlspecialchars($city['city_name']) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
