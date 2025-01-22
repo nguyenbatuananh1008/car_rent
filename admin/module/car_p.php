@@ -1,5 +1,6 @@
 <?php require 'database.php'; ?>
 <?php require 'uploads.php'; ?>
+
 <?php
 $c_name = $_POST['c_name'] ?? null;
 $c_plate = $_POST['c_plate'] ?? null;
@@ -82,7 +83,6 @@ if ($action == 'add') {
         echo json_encode($rows);
     }
 }
-
 header('Location: ../views/Car.php');
 exit();
 $stmt->close();

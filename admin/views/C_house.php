@@ -179,10 +179,7 @@
             </table>
         </div>
     </div>
-        
-
-   
-
+ 
         <script src="../js/c_house.js"></script>
         
 </body>

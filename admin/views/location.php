@@ -24,13 +24,14 @@
                     </ol>
                 </div>
 
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm lộ trình">
-                    <button class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
+                <form action="" method="get" class="input-group mb-3">
+                    <input type="text" name="searchKeyword" value="<?php echo $_GET['searchKeyword'] ?? "" ?>" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm lộ trình">
+                    <button type="submit" class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
                     <button class="btn btn-primary ms-2" id="btnAdd" data-bs-toggle="modal" data-bs-target="#addModal">
-                        <i class="fas fa-plus"></i> Thêm mới
-                    </button>
-                </div>
+                        <i class="fas fa-plus"></i> Thêm mới </button>
+                </form>
+                
+                        
 
                 <!--  -->
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -169,21 +170,21 @@
 
                 <!--  -->
                 <div class="text-center">
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>STT</th>
-                <th>Thông tin chuyến xe</th>
-                <th>Tên vị trí</th>
-                <th>Thời gian</th>
-                <th>Loại địa điểm</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $search_keyword = $_POST['searchKeyword'] ?? '';
-            $query = "
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>STT</th>
+                                <th>Thông tin chuyến xe</th>
+                                <th>Tên vị trí</th>
+                                <th>Thời gian</th>
+                                <th>Loại địa điểm</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $search_keyword = $_GET['searchKeyword'] ?? '';
+                            $query = "
                 SELECT 
                     location.id_location,
                     CONCAT(car_house.name_c_house, ' - ', car.c_plate, ' - ', city_from.city_name, ' → ', city_to.city_name) AS trip_info,
@@ -202,16 +203,16 @@
                 INNER JOIN city AS city_to ON trip.id_city_to = city_to.id_city
                 WHERE location.name_location LIKE ?";
 
-            $stmt = $conn->prepare($query);
-            $like_keyword = "%" . $search_keyword . "%";
-            $stmt->bind_param("s", $like_keyword);
-            $stmt->execute();
-            $result = $stmt->get_result();
+                            $stmt = $conn->prepare($query);
+                            $like_keyword = "%" . $search_keyword . "%";
+                            $stmt->bind_param("s", $like_keyword);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
-            if ($result->num_rows > 0) {
-                $stt = 1;
-                while ($row = $result->fetch_assoc()) {
-                    echo "<tr>
+                            if ($result->num_rows > 0) {
+                                $stt = 1;
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>
                         <td>" . $stt++ . "</td>
                         <td>" . $row['trip_info'] . "</td>
                         <td>" . $row['name_location'] . "</td>
@@ -222,16 +223,16 @@
                             <button class='btn btn-danger btn-sm btnDelete' data-id='" . $row['id_location'] . "'><i class='fas fa-trash-alt'></i> Xóa</button>
                         </td>
                     </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='6' class='text-center'>Không có dữ liệu</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
+                                }
+                            } else {
+                                echo "<tr><td colspan='6' class='text-center'>Không có dữ liệu</td></tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
 
-        <script src="../js/location.js"></script>
+                <script src="../js/location.js"></script>
     </body>
 
     </html>

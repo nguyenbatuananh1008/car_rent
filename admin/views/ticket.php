@@ -5,7 +5,6 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -211,49 +210,49 @@
 
             <!--  -->
             <div class="text-center">
-    <table class="table table-bordered table-hover">
-        <?php
-        $search_keyword = $_POST['search_keyword'] ?? '';
-        $sql = "SELECT id_ticket, id_trip, name, phone, number_seat, total_price, method, date, status FROM ticket";
+                <table class="table table-bordered table-hover">
+                    <?php
+                    $search_keyword = $_POST['search_keyword'] ?? '';
+                    $sql = "SELECT id_ticket, id_trip, name, phone, number_seat, total_price, method, date, status FROM ticket";
 
-        if ($search_keyword) {
-            $sql .= " WHERE id_ticket LIKE ? OR phone LIKE ?";
-            $stmt = $conn->prepare($sql);
-            $like_keyword = "%" . $search_keyword . "%";
-            $stmt->bind_param("ss", $like_keyword, $like_keyword);
-            $stmt->execute();
-            $result = $stmt->get_result();
-        } else {
-            $result = $conn->query($sql);
-        }
-        ?>
+                    if ($search_keyword) {
+                        $sql .= " WHERE id_ticket LIKE ? OR phone LIKE ?";
+                        $stmt = $conn->prepare($sql);
+                        $like_keyword = "%" . $search_keyword . "%";
+                        $stmt->bind_param("ss", $like_keyword, $like_keyword);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                    } else {
+                        $result = $conn->query($sql);
+                    }
+                    ?>
 
-        <thead class="table-dark">
-            <tr>
-                <th>Mã Vé</th>
-                <th>Mã Chuyến</th>
-                <th>Tên Khách Hàng</th>
-                <th>Số điện thoại</th>
-                <th>Số ghế</th>
-                <th>Tổng tiền</th>
-                <th>Phương thức</th>
-                <th>Ngày</th>
-                <th>Tình trạng</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Mã Vé</th>
+                            <th>Mã Chuyến</th>
+                            <th>Tên Khách Hàng</th>
+                            <th>Số điện thoại</th>
+                            <th>Số ghế</th>
+                            <th>Tổng tiền</th>
+                            <th>Phương thức</th>
+                            <th>Ngày</th>
+                            <th>Tình trạng</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
 
-        <tbody id="dataTable">
-            <?php
-            if ($result && $result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    $methodValue = $row['method'];
-                    $statusValue = $row['status'];
-                    $methodText = isset($method[$methodValue]) ? $method[$methodValue] : 'Chưa xác định';
-                    $statusText = isset($status[$statusValue]) ? $status[$statusValue] : 'Chưa xác định';
-                    $total_price = number_format($row['total_price'], 0, ',', '.') . ' đ';
+                    <tbody id="dataTable">
+                        <?php
+                        if ($result && $result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                            $methodValue = $row['method'];
+                            $statusValue = $row['status'];
+                            $methodText = isset($method[$methodValue]) ? $method[$methodValue] : 'Chưa xác định';
+                            $statusText = isset($status[$statusValue]) ? $status[$statusValue] : 'Chưa xác định';
+                            $total_price = number_format($row['total_price'], 0, ',', '.') . ' đ';
 
-                    echo "<tr>
+                                echo "<tr>
                         <td>{$row['id_ticket']}</td>
                         <td>{$row['id_trip']}</td>
                         <td>{$row['name']}</td>
@@ -278,19 +277,19 @@
                             <button class='btn btn-danger btn-sm btnDelete' data-id='" . $row['id_ticket'] . "'><i class='fas fa-trash-alt'></i> Xóa</button>
                         </td>
                     </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='10' class='text-center'>Không có dữ liệu</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
+                            }
+                        } else {
+                            echo "<tr><td colspan='10' class='text-center'>Không có dữ liệu</td></tr>";
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
 
 
-    <script src="../js/ticket.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="../js/ticket.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
