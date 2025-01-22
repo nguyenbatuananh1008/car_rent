@@ -33,19 +33,19 @@ document.querySelectorAll('.btnDelete').forEach(button => {
     });
 });
 
-document.getElementById('btnSearch').addEventListener('click', function() {
-    var searchKeyword = document.getElementById('searchKeyword').value;
+// document.getElementById('btnSearch').addEventListener('click', function() {
+//     var searchKeyword = document.getElementById('searchKeyword').value;
 
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '';
+//     var form = document.createElement('form');
+//     form.method = 'POST';
+//     form.action = '';
 
-    var inputAction = document.createElement('input');
-    inputAction.type = 'hidden';
-    inputAction.name = 'search_keyword';
-    inputAction.value = searchKeyword;
-    form.appendChild(inputAction);
+//     var inputAction = document.createElement('input');
+//     inputAction.type = 'hidden';
+//     inputAction.name = 'search_keyword';
+//     inputAction.value = searchKeyword;
+//     form.appendChild(inputAction);
 
-    document.body.appendChild(form);
-    form.submit();
-});
+//     document.body.appendChild(form);
+//     form.submit();
+// });
