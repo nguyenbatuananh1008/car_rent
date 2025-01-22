@@ -24,14 +24,21 @@
                     </ol>
                 </div>
 
-                <form action="" method="get" class="input-group mb-3">
-                    <input type="text" name="searchKeyword" value="<?php echo $_GET['searchKeyword'] ?? "" ?>" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm lộ trình">
-                    <button type="submit" class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
-                    <button class="btn btn-primary ms-2" id="btnAdd" data-bs-toggle="modal" data-bs-target="#addModal">
-                        <i class="fas fa-plus"></i> Thêm mới </button>
-                </form>
-                
-                        
+                <div class="row mb-3">
+                    <div class="col">
+                        <form action="" method="get" class="input-group">
+                            <input type="text" name="searchKeyword" value="<?php echo $_GET['searchKeyword'] ?? "" ?>" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm lộ trình">
+                            <button type="submit" class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
+                        </form>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary" id="btnAdd" data-bs-toggle="modal" data-bs-target="#addModal">
+                            <i class="fas fa-plus"></i> Thêm mới
+                        </button>
+                    </div>
+                </div>
+
+
 
                 <!--  -->
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
