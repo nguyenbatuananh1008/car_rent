@@ -1,4 +1,7 @@
 <?php require 'database.php'; ?>
+<?php $db = new Database();
+$conn = $db->connectBee();
+?>
 <?php require 'uploads.php'; ?>
 
 <?php

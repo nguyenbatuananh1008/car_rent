@@ -28,7 +28,7 @@ $data = [
     'total_price' => $total_price,
     'status' => $status,
     'method' => $method,
-    'date' => $date,
+    'date' => DateTime::createFromFormat('d-m-Y', $date)->format('Y-m-d'),
 ];
 
 
@@ -40,7 +40,7 @@ if ($result) {
     echo "
     <script>
         alert('Đặt vé thành công!');
-        window.location.href = '../index.php';
+        // window.location.href = '../index.php';
     </script>
     ";  
 } else {

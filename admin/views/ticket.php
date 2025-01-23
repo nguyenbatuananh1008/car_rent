@@ -2,6 +2,11 @@
 <?php include_once 'slidebar.php'; ?>
 <?php include '../module/Database.php'; ?>
 <?php include '../module/formart.php'; ?>
+<?php 
+$db = new Database();
+$conn = $db->connectBee();
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -169,8 +174,8 @@
                                     <label for="edit_status" class="form-label">Tình trạng</label>
                                     <select class="form-select" id="edit_status" name="status" required>
                                         <option value="" disabled>Chọn tình trạng</option>
-                                        <option value="0">Đã thanh toán</option>
-                                        <option value="1">Chưa thanh toán</option>
+                                        <option value="0">Chưa thanh toán</option>
+                                        <option value="1">Đã thanh toán</option>
                                         <option value="2">Đã hủy</option>
                                         <option value="3">Đã đi</option>
                                     </select>

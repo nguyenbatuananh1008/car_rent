@@ -1,7 +1,9 @@
     <?php include_once 'navbar.php'; ?>
     <?php include_once 'slidebar.php'; ?>
     <?php include '../module/Database.php'; ?>
-
+    <?php $db = new Database();
+    $conn = $db->connectBee();
+    ?>
     <!DOCTYPE html>
     <html lang="en">
 
@@ -31,7 +33,7 @@
                         <i class="fas fa-plus"></i> Thêm mới
                     </button>
                 </div>
-                
+
                 <!-- add -->
                 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -103,7 +105,7 @@
                                     <div class="mb-3">
                                         <label for="date" class="form-label">Ngày</label>
                                         <input type="date" class="form-control" id="date" name="date" required>
-                                        
+
                                     </div>
 
                                     <div class="mb-3">
@@ -229,31 +231,31 @@
 
                 <!-- -->
                 <div class="text-center">
-    <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Mã</th>
-                <th>Nhà xe</th>
-                <th>Biển số</th>
-                <th>Điểm đón</th>
-                <th>Điểm trả</th>
-                <th>Giờ đón</th>
-                <th>Giờ trả</th>
-                <th>Số vé</th>
-                <th>Ngày tạo</th>
-                <th>Giá</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            function formatMoney($amount)
-            {
-                return number_format($amount, 0, ',', '.') . ' đ';
-            }
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Mã</th>
+                                <th>Nhà xe</th>
+                                <th>Biển số</th>
+                                <th>Điểm đón</th>
+                                <th>Điểm trả</th>
+                                <th>Giờ đón</th>
+                                <th>Giờ trả</th>
+                                <th>Số vé</th>
+                                <th>Ngày tạo</th>
+                                <th>Giá</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            function formatMoney($amount)
+                            {
+                                return number_format($amount, 0, ',', '.') . ' đ';
+                            }
 
-            $searchKeyword = $_POST['search_keyword'] ?? '';
-            $query = "
+                            $searchKeyword = $_POST['search_keyword'] ?? '';
+                            $query = "
             SELECT 
                 t.id_trip,
                 ch.name_c_house AS TênNhàXe,
@@ -277,8 +279,8 @@
             JOIN 
                 city ct ON t.id_city_to = ct.id_city";
 
-            if ($searchKeyword) {
-                $query .= "
+                            if ($searchKeyword) {
+                                $query .= "
                 WHERE 
                     ch.name_c_house LIKE ? OR
                     c.c_plate LIKE ? OR
@@ -289,21 +291,21 @@
                     t.t_limit LIKE ? OR
                     t.date LIKE ? OR
                     t.price LIKE ?";
-            }
+                            }
 
-            $stmt = $conn->prepare($query);
+                            $stmt = $conn->prepare($query);
 
-            if ($stmt) {
-                if ($searchKeyword) {
-                    $searchKeyword = '%' . $searchKeyword . '%';
-                    $stmt->bind_param('sssssssss', $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword);
-                }
-                $stmt->execute();
-                $result = $stmt->get_result();
+                            if ($stmt) {
+                                if ($searchKeyword) {
+                                    $searchKeyword = '%' . $searchKeyword . '%';
+                                    $stmt->bind_param('sssssssss', $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword, $searchKeyword);
+                                }
+                                $stmt->execute();
+                                $result = $stmt->get_result();
 
-                if ($result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        echo "<tr>
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<tr>
                             <td>{$row['MãChuyếnXe']}</td>
                             <td>{$row['TênNhàXe']}</td>
                             <td>{$row['BiểnSố']}</td>
@@ -319,21 +321,21 @@
                                 <button class='btn btn-danger btn-sm btnDelete' data-id='{$row['id_trip']}'><i class='fas fa-trash-alt'></i> Xóa</button>
                             </td>
                         </tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='11' class='text-center'>Không có dữ liệu</td></tr>";
-                }
-                $stmt->close();
-            }
-            $conn->close();
-            ?>
-        </tbody>
-    </table>
-</div>   
-                    <script src="../js/trip.js"></script>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
-    </body>    
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='11' class='text-center'>Không có dữ liệu</td></tr>";
+                                }
+                                $stmt->close();
+                            }
+                            $conn->close();
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+                <script src="../js/trip.js"></script>
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+
     </html>
-    <? require 'footer.php'; ?>  
-   
+    <? require 'footer.php'; ?>

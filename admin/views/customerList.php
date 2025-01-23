@@ -7,9 +7,12 @@ include '../module/customerHandler.php';
 $search = isset($_GET['search']) ? trim($_GET['search']) : null;
 $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm kiếm nếu có)
 ?>
+<head>
+<link href="css/styles2.css" rel="stylesheet" />
+</head>
 
-<?php include 'layout/header.php'; ?>
-<?php include 'layout/slidebar.php'; ?>
+<?php include 'navbar.php'; ?>
+<?php include 'slidebar.php'; ?>
 
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">
@@ -45,13 +48,13 @@ $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm k
             </div>
 
             <section class="content">
-                <div class="container-fluid">
+                <div class="container-fluid ">
                     <div class="row">
                         <div class="col-12">
-                            <div class="card">
+                            <div class="card ">
                                 <div class="card-body">
                                     <!-- Hiển thị bảng danh sách khách hàng -->
-                                    <table id="customerTable" class="table table-bordered table-striped">
+                                    <table id="customerTable" class="table table-bordered table-striped ">
                                         <thead>
                                             <tr>
                                                 <th>Mã khách</th>
@@ -74,7 +77,7 @@ $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm k
                                                         <td>
     <a href="editCustomer.php?id_user=<?= $customer['id_user'] ?>" class="btn btn-primary btn-sm">Sửa</a>
     <a href="../module/customerHandler.php?delete_id=<?= $customer['id_user'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
-    <a href="customerDetail.php?id_user=<?= $customer['id_user'] ?>" class="btn btn-info btn-sm">Chi tiết</a>
+   
 </td>
 
                                                     </tr>
@@ -92,4 +95,4 @@ $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm k
     </div>
 </div>
 
-<?php include 'layout/footer.php'; ?>
+<?php include 'footer.php'; ?>

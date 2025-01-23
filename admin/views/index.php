@@ -1,12 +1,11 @@
 <?php
-session_start();
-
 include '../module/auth.php';
 checkAccess(0); 
 ?>
 <?php include 'navbar.php'; ?>
 <?php include 'slidebar.php'; ?>
 <div id="layoutSidenav_content">
+    
 
     <main>
         

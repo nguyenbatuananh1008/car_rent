@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<?php include 'layout/header.php'; ?>
+<?php include 'navbar.php'; ?>
 
-<?php include 'layout/slidebar.php'; ?>
+<?php include 'slidebar.php'; ?>
 
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">
@@ -82,4 +82,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </div>
 
-<?php include 'layout/footer.php'; ?>
+<?php include 'footer.php'; ?>

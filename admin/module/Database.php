@@ -1,9 +1,9 @@
 <?php
 class Database {
     private $host = "localhost";
-    private $db_name = "dat_ve"; // Thay bằng tên cơ sở dữ liệu của bạn
+    private $db_name = "dat_ve"; 
     private $username = "root";
-    private $password = ""; // Thay bằng mật khẩu của bạn
+    private $password = ""; 
     private $conn;
 
     public function connect() {

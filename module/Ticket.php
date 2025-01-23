@@ -20,17 +20,17 @@
                     trip.t_pick, 
                     trip.t_drop, 
                     trip.price, 
-                    trip.id_city, 
+                    trip.id_city_from, 
                     trip.id_city_to,
                     car.c_name,
                     car_house.name_c_house,
-                    city_from.name_city AS from_city,
-                    city_to.name_city AS to_city
+                    city_from.city_name AS from_city,
+                    city_to.city_name AS to_city
                 FROM ticket t
                 INNER JOIN trip ON t.id_trip = trip.id_trip
                 INNER JOIN car ON trip.id_car = car.id_car
                 INNER JOIN car_house ON car.id_c_house = car_house.id_c_house
-                INNER JOIN city city_from ON trip.id_city = city_from.id_city
+                INNER JOIN city city_from ON trip.id_city_from = city_from.id_city
                 INNER JOIN city city_to ON trip.id_city_to = city_to.id_city
                 WHERE t.id_user = :userId
                 ORDER BY t.date DESC";

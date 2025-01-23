@@ -1,9 +1,10 @@
 <?php
-require 'database.php';
+require 'database.php';?>
 
-$db = new Database();
+<?php $db = new Database();
 $conn = $db->connectBee();
-
+?>
+<?php
 $name_c_house = $_POST['name_c_house'];
 $address = $_POST['address'];
 $phone = $_POST['phone'];
