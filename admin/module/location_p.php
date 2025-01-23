@@ -52,6 +52,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "ID địa điểm không hợp lệ.";
         }
+        
+    }elseif ($action === 'delete') {
+        $id_location = $_POST['id_location'] ?? null;
+        if ($id_location) {
+            $stmt = $conn->prepare("DELETE FROM location WHERE id_location = ?");
+            $stmt->bind_param("i", $id_location);
+    
+            if ($stmt->execute()) {
+                header('Location: ../views/location.php');
+            exit();
+            } else {
+                echo "Lỗi khi xóa: " . $conn->error;
+            }
+            $stmt->close();
+        } else {
+            echo "ID địa điểm không hợp lệ.";
+        }
+        
     }
 
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id_location'])) {
@@ -87,25 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $stmt->close();
 
-} elseif ($action === 'delete') {
-    $id_location = $_POST['id_location'] ?? null;
-
-    if ($id_location) {
-        $stmt = $conn->prepare("DELETE FROM location WHERE id_location = ?");
-        $stmt->bind_param("i", $id_location);
-
-        if ($stmt->execute()) {
-            header('Location: ../views/location.php');
-        exit();
-        } else {
-            echo "Lỗi khi xóa: " . $conn->error;
-        }
-        $stmt->close();
-    } else {
-        echo "ID địa điểm không hợp lệ.";
-    }
-    
-} elseif ($action === 'search') {
+}  elseif ($action === 'search') {
     $search_keyword = $_POST['search_keyword'];
     $stmt = $conn->prepare("
         SELECT 
