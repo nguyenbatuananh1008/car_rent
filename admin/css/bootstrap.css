@@ -1,0 +1,112 @@
+/* Đảm bảo phần layout không bị lỗi */
+#layoutSidenav {
+    display: flex;
+}
+
+#layoutSidenav_content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Căn chỉnh chiều rộng form và làm nổi bật */
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+form {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tạo khoảng cách giữa các form-group */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Tăng chiều rộng của các input và nút bấm */
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Tạo khoảng cách giữa các nút */
+.btn-secondary {
+    margin-top: 10px;
+}
+
+/* Xử lý phần ảnh */
+img {
+    max-width: 150px;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+}
+
+/* Header chỉnh giữa và tạo phong cách */
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Đảm bảo sidebar không chiếm quá nhiều không gian */
+.sidebar {
+    width: 250px;
+    background-color: #343a40;
+    color: #fff;
+}
+
+.sidebar a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px 15px;
+}
+
+.sidebar a:hover {
+    background-color: #495057;
+}
+
+/* Đảm bảo khoảng cách cho các thông báo */
+.alert {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 15px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}

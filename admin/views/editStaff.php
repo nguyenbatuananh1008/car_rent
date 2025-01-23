@@ -1,4 +1,5 @@
 <?php
+session_start();
 include '../module/adminHandler.php';
 include_once 'slidebar.php';
 include_once 'navbar.php';
