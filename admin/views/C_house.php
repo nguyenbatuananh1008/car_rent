@@ -1,11 +1,11 @@
 <?php include_once 'navbar.php'; ?>
 <?php include_once 'slidebar.php'; ?>
-<?php include '../module/Database.php'; 
+<?php include '../module/Database.php'; ?>
 
+<?php
 $db = new Database();
 $conn = $db->connectBee();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -184,10 +184,11 @@ $conn = $db->connectBee();
                 </tbody>
             </table>
         </div>
-    </div>
+    </div> 
  
         <script src="../js/c_house.js"></script>
-        
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 <?php include 'footer.php'; ?>

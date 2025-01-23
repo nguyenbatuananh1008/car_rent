@@ -81,4 +81,4 @@
 </div>
 </div>
 
-<?php include 'layout/footer.php'; ?>
+<?php include 'footer.php'; ?>
