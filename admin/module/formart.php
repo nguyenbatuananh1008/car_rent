@@ -1,6 +1,4 @@
 <?php
-require 'Database.php';  
-
 $method = [
     0 => 'Tiền mặt',
     1 => 'Thẻ tín dụng',

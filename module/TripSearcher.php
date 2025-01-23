@@ -93,10 +93,10 @@
                     car_house.name_c_house AS car_house_name,
                     city_from.city_name AS city_from_name, 
                     city_to.city_name AS city_to_name
-                FROM trip AS trip
-                INNER JOIN car AS car ON trip.id_car = car.id_car
-                INNER JOIN car_house AS car_house ON car.id_c_house = car_house.id_c_house
-                INNER JOIN city AS city_from ON trip.id_city = city_from.id_city
+                FROM trip 
+                INNER JOIN car ON trip.id_car = car.id_car
+                INNER JOIN car_house ON car.id_c_house = car_house.id_c_house
+                INNER JOIN city AS city_from ON trip.id_city_from = city_from.id_city
                 INNER JOIN city AS city_to ON trip.id_city_to = city_to.id_city
                 WHERE trip.id_trip = :id_trip";
     
@@ -106,9 +106,5 @@
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
     
-
-
-        
-        
         
     }

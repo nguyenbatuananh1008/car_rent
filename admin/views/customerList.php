@@ -92,4 +92,4 @@ $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm k
     </div>
 </div>
 
-<?php include 'layout/footer.php'; ?>
+<?php include 'footer.php'; ?>

@@ -10,7 +10,7 @@ $city_from = isset($city_from) ? $city_from : null;
 $city_to = isset($city_to) ? $city_to : null;
 $date = isset($date) ? $date : null;
 ?>
-?>
+
 
 
 <div class="container-xl shadow-lg p-3 mb-5 bg-white rounded">

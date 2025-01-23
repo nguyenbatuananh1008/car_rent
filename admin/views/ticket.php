@@ -2,7 +2,8 @@
 <?php include_once 'slidebar.php'; ?>
 <?php include '../module/Database.php'; ?>
 <?php include '../module/formart.php'; ?>
-<?php $db = new Database();
+<?php 
+$db = new Database();
 $conn = $db->connectBee();
 ?>
 
