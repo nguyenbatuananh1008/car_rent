@@ -265,7 +265,7 @@ $conn = $db->connectBee();
                         <td>{$row['number_seat']}</td>
                         <td>{$total_price}</td>
                         <td>{$methodText}</td>
-                        <td>{$row['date']}</td>
+                        <td>" . formatDay($row['date']) . "</td>
                         <td>{$statusText}</td>
                         <td>
                             <button class='btn btn-warning btn-sm me-1 btnEdit'
@@ -290,7 +290,6 @@ $conn = $db->connectBee();
                     </tbody>
                 </table>
             </div>
-
 
             <script src="../js/ticket.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

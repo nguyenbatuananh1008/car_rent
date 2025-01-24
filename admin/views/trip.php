@@ -1,6 +1,7 @@
     <?php include_once 'navbar.php'; ?>
     <?php include_once 'slidebar.php'; ?>
     <?php include '../module/Database.php'; ?>
+    <?php include '../module/formart.php'; ?>
     <?php $db = new Database();
     $conn = $db->connectBee();
     ?>
@@ -103,12 +104,6 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="date" class="form-label">Ngày</label>
-                                        <input type="date" class="form-control" id="date" name="date" required>
-
-                                    </div>
-
-                                    <div class="mb-3">
                                         <label for="price" class="form-label">Giá</label>
                                         <input type="text" class="form-control" id="price" name="price" required>
                                     </div>
@@ -188,10 +183,7 @@
                                         <label for="edit_t_limit" class="form-label">Số vé</label>
                                         <input type="number" class="form-control" id="edit_t_limit" name="t_limit" required>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="edit_date" class="form-label">Ngày</label>
-                                        <input type="date" class="form-control" id="edit_date" name="date" required>
-                                    </div>
+
                                     <div class="mb-3">
                                         <label for="edit_price" class="form-label">Giá</label>
                                         <input type="text" class="form-control" id="edit_price" name="price" required>
@@ -249,10 +241,6 @@
                         </thead>
                         <tbody>
                             <?php
-                            function formatMoney($amount)
-                            {
-                                return number_format($amount, 0, ',', '.') . ' đ';
-                            }
 
                             $searchKeyword = $_POST['search_keyword'] ?? '';
                             $query = "
@@ -314,7 +302,7 @@
                             <td>{$row['GiờĐón']}</td>
                             <td>{$row['GiờTrả']}</td>
                             <td>{$row['SốVé']}</td>
-                            <td>{$row['Ngày']}</td>
+                            <td>" . formatDay($row['Ngày']) . "</td>
                             <td>" . formatMoney($row['Giá']) . "</td>
                             <td>
                                 <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='{$row['id_trip']}'><i class='fas fa-edit'></i> Sửa</button>

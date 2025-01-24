@@ -2,8 +2,8 @@
     <?php include_once 'slidebar.php'; ?>
     <?php include '../module/Database.php'; ?>
     <?php $db = new Database();
-$conn = $db->connectBee();
-?>
+    $conn = $db->connectBee();
+    ?>
     <!DOCTYPE html>
     <html lang="en">
 
