@@ -32,13 +32,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $t_pick = $_POST['t_pick'];
         $t_drop = $_POST['t_drop'];
         $t_limit = $_POST['t_limit'];
-        $date = $_POST['date'];
+
         $price = $_POST['price'];
 
-        $sql = "INSERT INTO trip (id_car, id_city_from, id_city_to, t_pick, t_drop, t_limit, date, price) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO trip (id_car, id_city_from, id_city_to, t_pick, t_drop, t_limit,  price) 
+                VALUES (?, ?, ?, ?, ?, ?,  ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiissisd", $id_car, $id_city_from, $id_city_to, $t_pick, $t_drop, $t_limit, $date, $price );
+        $stmt->bind_param("iiissii", $id_car, $id_city_from, $id_city_to, $t_pick, $t_drop, $t_limit, $price);
         if ($stmt->execute()) {
             header("Location: ../views/trip.php");
             exit();
@@ -47,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->close();
         exit();
-
     } elseif ($action === 'edit') {
         $id_trip = $_POST['id_trip'];
         $id_car = $_POST['c_plate'];
@@ -56,14 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $t_pick = $_POST['t_pick'];
         $t_drop = $_POST['t_drop'];
         $t_limit = $_POST['t_limit'];
-        $date = $_POST['date'];
         $price = $_POST['price'];
 
         $sql = "UPDATE trip 
-                SET id_car = ?, id_city_from = ?, id_city_to = ?, t_pick = ?, t_drop = ?, t_limit = ?, date = ?, price = ? 
+                SET id_car = ?, id_city_from = ?, id_city_to = ?, t_pick = ?, t_drop = ?, t_limit = ?,  price = ? 
                 WHERE id_trip = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iiissisdi", $id_car, $id_city_from, $id_city_to, $t_pick, $t_drop, $t_limit, $date, $price, $id_trip);
+        $stmt->bind_param("iiissisi", $id_car, $id_city_from, $id_city_to, $t_pick, $t_drop, $t_limit,  $price, $id_trip);
         if ($stmt->execute()) {
             header("Location: ../views/trip.php");
             exit();
@@ -72,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->close();
         exit();
-
     } elseif ($action === 'delete') {
         $id_trip = $_POST['id_trip'];
         $sql = "DELETE FROM trip WHERE id_trip = ?";
@@ -86,7 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->close();
         exit();
-        
     } elseif ($action === 'search') {
         $search_keyword = $_POST['search_keyword'];
         $like_keyword = '%' . $search_keyword . '%';
@@ -99,7 +95,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo json_encode($row);
         exit();
     }
-
 } elseif ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id'])) {
 
     $id_trip = $_GET['id'];

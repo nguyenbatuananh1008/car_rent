@@ -46,7 +46,7 @@ $image = isset($_SESSION['image']) ? $_SESSION['image'] : "default.png"; // Defa
                 <?= htmlspecialchars($username) ?> (<?= htmlspecialchars($usertype) ?>)
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+                <li><a class="dropdown-item" href="logout.php">Đăng xuất</a></li>
             </ul>
         </li>
     </ul>

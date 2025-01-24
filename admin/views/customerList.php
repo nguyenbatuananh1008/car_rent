@@ -1,18 +1,20 @@
+<?php include 'navbar.php'; ?>
+<?php include 'slidebar.php'; ?>
 <?php
 include '../module/auth.php';
-checkAccess(0); 
+checkAccess(0);
 include '../module/customerHandler.php';
 
 // Kiểm tra nếu có tìm kiếm
 $search = isset($_GET['search']) ? trim($_GET['search']) : null;
 $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm kiếm nếu có)
 ?>
+
 <head>
-<link href="css/styles2.css" rel="stylesheet" />
+    
 </head>
 
-<?php include 'navbar.php'; ?>
-<?php include 'slidebar.php'; ?>
+
 
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">
@@ -32,11 +34,11 @@ $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm k
                 <div class="row mb-3">
                     <div class="col-12">
                         <form class="input-group" method="GET" action="">
-                            
-                            <input 
-                                type="text" 
-                                name="search" 
-                                class="form-control" 
+
+                            <input
+                                type="text"
+                                name="search"
+                                class="form-control"
                                 placeholder="Tìm kiếm khách hàng..."
                                 value="<?= htmlspecialchars($search) ?>" />
                             <button class="btn btn-primary" type="submit">
@@ -75,10 +77,10 @@ $customers = getCustomers($search); // Lấy danh sách khách hàng (có tìm k
                                                         <td><?= htmlspecialchars($customer['name']) ?></td>
                                                         <td><?= htmlspecialchars($customer['email']) ?></td>
                                                         <td>
-    <a href="editCustomer.php?id_user=<?= $customer['id_user'] ?>" class="btn btn-primary btn-sm">Sửa</a>
-    <a href="../module/customerHandler.php?delete_id=<?= $customer['id_user'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
-   
-</td>
+                                                            <a href="editCustomer.php?id_user=<?= $customer['id_user'] ?>" class="btn btn-primary btn-sm">Sửa</a>
+                                                            <a href="../module/customerHandler.php?delete_id=<?= $customer['id_user'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
+
+                                                        </td>
 
                                                     </tr>
                                                 <?php endforeach; ?>

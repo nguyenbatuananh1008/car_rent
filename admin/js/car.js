@@ -3,6 +3,8 @@
             button.addEventListener('click', () => {
                 const id = button.getAttribute('data-id');
                 const name = button.getAttribute('data-name');
+                const type = button.getAttribute('data-type');
+                const color = button.getAttribute('data-color');
                 const capacity = button.getAttribute('data-capacity');
                 const plate = button.getAttribute('data-plate');
                 const id_c_house = button.getAttribute('data-name2');
@@ -10,6 +12,8 @@
 
                 document.getElementById('edit_id_car').value = id;
                 document.getElementById('edit_c_name').value = name;
+                document.getElementById('edit_c_type').value = type;
+                document.getElementById('edit_c_color').value = color;
                 document.getElementById('edit_capacity').value = capacity;
                 document.getElementById('edit_c_plate').value = plate;
                 document.getElementById('edit_id_c_house').value = id_c_house;

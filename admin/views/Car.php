@@ -5,7 +5,6 @@ $db = new Database();
 $conn = $db->connectBee();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,6 +51,14 @@ $conn = $db->connectBee();
                                     <input type="text" class="form-control" id="c_name" name="c_name" required>
                                 </div>
                                 <div class="mb-3">
+                                    <label for="c_type" class="form-label">Loại xe</label>
+                                    <input type="text" class="form-control" id="c_type" name="c_type" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="c_color" class="form-label">Màu xe</label>
+                                    <input type="text" class="form-control" id="c_color" name="c_color" required>
+                                </div>
+                                <div class="mb-3">
                                     <label for="capacity" class="form-label">Số chỗ</label>
                                     <input type="number" class="form-control" id="capacity" name="capacity" required>
                                 </div>
@@ -88,13 +95,14 @@ $conn = $db->connectBee();
                     </div>
                 </div>
             </div>
-
+           
+<!--  -->
             <div class="text-center">
                 <div>
                     <table class="table table-bordered table-hover">
                         <?php
                         $search_keyword = $_POST['search_keyword'] ?? '';
-                        $sql = "SELECT car.id_car, car.c_name, car.capacity, car.c_plate, car.img, car_house.name_c_house 
+                        $sql = "SELECT car.id_car, car.c_name, car.c_type, car.c_color, car.capacity, car.c_plate, car.img, car_house.name_c_house 
                         FROM car 
                         JOIN car_house ON car.id_c_house = car_house.id_c_house";
 
@@ -119,6 +127,8 @@ $conn = $db->connectBee();
                             <tr>
                                 <th>STT</th>
                                 <th>Tên xe</th>
+                                <th>Loại xe</th>
+                                <th>Màu xe</th>
                                 <th>Sức chứa</th>
                                 <th>Biển số xe</th>
                                 <th>Nhà xe</th>
@@ -134,6 +144,8 @@ $conn = $db->connectBee();
                                     echo "<tr>
                     <td>" . $stt++ . "</td>
                     <td>" . htmlspecialchars($row['c_name']) . "</td>
+                    <td>" . htmlspecialchars($row['c_type']) . "</td>
+                    <td>" . htmlspecialchars($row['c_color']) . "</td>
                     <td>" . htmlspecialchars($row['capacity']) . "</td>
                     <td>" . htmlspecialchars($row['c_plate']) . "</td>
                     <td>" . htmlspecialchars($row['name_c_house']) . "</td>
@@ -141,6 +153,8 @@ $conn = $db->connectBee();
                     <td>
                         <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='" . $row['id_car'] . "' 
                                 data-name='" . htmlspecialchars($row['c_name']) . "' 
+                                data-type='" . htmlspecialchars($row['c_type']) . "' 
+                                data-color='" . htmlspecialchars($row['c_color']) . "' 
                                 data-capacity='" . htmlspecialchars($row['capacity']) . "' 
                                 data-plate='" . htmlspecialchars($row['c_plate']) . "' 
                                 data-name2='" . htmlspecialchars($row['name_c_house']) . "' 
@@ -161,7 +175,9 @@ $conn = $db->connectBee();
                     </table>
                 </div>
             </div>
-            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+          
+ <!--  -->
+ <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -174,6 +190,14 @@ $conn = $db->connectBee();
                                 <div class="mb-3">
                                     <label for="edit_c_name" class="form-label">Tên xe</label>
                                     <input type="text" class="form-control" id="edit_c_name" name="c_name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_c_type" class="form-label">Loại xe</label>
+                                    <input type="text" class="form-control" id="edit_c_type" name="c_type" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_c_color" class="form-label">Màu xe</label>
+                                    <input type="text" class="form-control" id="edit_c_color" name="c_color" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_capacity" class="form-label">Số chỗ</label>
@@ -237,7 +261,6 @@ $conn = $db->connectBee();
             </div>
         </div>
     </div>
-
 
     <script src="../js/car.js"></script>
 
