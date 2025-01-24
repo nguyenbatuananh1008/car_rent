@@ -47,7 +47,7 @@ $conn = $db->connectBee();
                         <div class="modal-body">
                             <form action="../module/car_p.php" method="POST" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="c_name" class="form-label">Tên xe</label>
+                                    <label for="c_name" class="form-label">Hãng xe</label>
                                     <input type="text" class="form-control" id="c_name" name="c_name" required>
                                 </div>
                                 <div class="mb-3">
@@ -126,7 +126,7 @@ $conn = $db->connectBee();
                         <thead class="table-dark">
                             <tr>
                                 <th>STT</th>
-                                <th>Tên xe</th>
+                                <th>Hãng xe</th>
                                 <th>Loại xe</th>
                                 <th>Màu xe</th>
                                 <th>Sức chứa</th>
@@ -188,7 +188,7 @@ $conn = $db->connectBee();
                             <div class="modal-body">
                                 <input type="hidden" id="edit_id_car" name="id_car">
                                 <div class="mb-3">
-                                    <label for="edit_c_name" class="form-label">Tên xe</label>
+                                    <label for="edit_c_name" class="form-label">Hãng xe</label>
                                     <input type="text" class="form-control" id="edit_c_name" name="c_name" required>
                                 </div>
                                 <div class="mb-3">

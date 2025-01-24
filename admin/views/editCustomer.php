@@ -1,3 +1,5 @@
+<?php include 'navbar.php'; ?>
+<?php include 'slidebar.php'; ?>
 <?php
 include '../module/customerHandler.php';
 include '../module/auth.php';
@@ -27,9 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<?php include 'navbar.php'; ?>
 
-<?php include 'slidebar.php'; ?>
 
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">
