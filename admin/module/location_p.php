@@ -1,4 +1,3 @@
-
 <?php
 include 'Database.php';
 ?>
@@ -11,25 +10,36 @@ $action = $_POST['action'] ?? null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'add') {
         $id_trip = $_POST['trip_info'];
-        $name_location = $_POST['name_location'];
-        $time = $_POST['time'];
+        $name_locations = $_POST['name_location'];
+        $time_locations = $_POST['time_location'];
         $type = $_POST['type_location'];
+
+        if (count($name_locations) !== count($time_locations)) {
+            echo "Lỗi: Số lượng tên vị trí và thời gian không khớp!";
+            exit();
+        }
 
         $query_insert = "INSERT INTO location (id_trip, name_location, time, type) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($query_insert);
-        $stmt->bind_param('issi', $id_trip, $name_location, $time, $type);
 
-        if ($stmt->execute()) {
-            
-            header('Location: ../views/location.php');
-            exit();
-        } else {
-            echo "Lỗi khi thêm: " . $conn->error;
+        // Lặp qua các vị trí và thời gian để thêm vào cơ sở dữ liệu
+        for ($i = 0; $i < count($name_locations); $i++) {
+            $name_location = $name_locations[$i];
+            $time_location = $time_locations[$i];
+
+            $stmt->bind_param('issi', $id_trip, $name_location, $time_location, $type);
+            if (!$stmt->execute()) {
+                echo "Lỗi khi thêm: " . $conn->error;
+                $stmt->close();
+                exit();
+            }
         }
+
         $stmt->close();
-
-
+        header('Location: ../views/location.php');
+        exit();
     } elseif ($action === 'edit') {
+
         $id_location = $_POST['id_location'] ?? null;
         $id_trip = $_POST['id_trip'];
         $name_location = $_POST['name_location'];
@@ -52,16 +62,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "ID địa điểm không hợp lệ.";
         }
-        
-    }elseif ($action === 'delete') {
+    } elseif ($action === 'delete') {
+
         $id_location = $_POST['id_location'] ?? null;
         if ($id_location) {
             $stmt = $conn->prepare("DELETE FROM location WHERE id_location = ?");
             $stmt->bind_param("i", $id_location);
-    
+
             if ($stmt->execute()) {
                 header('Location: ../views/location.php');
-            exit();
+                exit();
             } else {
                 echo "Lỗi khi xóa: " . $conn->error;
             }
@@ -69,9 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "ID địa điểm không hợp lệ.";
         }
-        
     }
-
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id_location'])) {
     $id_location = $_GET['id_location'];
     $query = "
@@ -104,8 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(['error' => 'Không tìm thấy địa điểm.']);
     }
     $stmt->close();
-
-}  elseif ($action === 'search') {
+} elseif ($action === 'search') {
     $search_keyword = $_POST['search_keyword'];
     $stmt = $conn->prepare("
         SELECT 
@@ -140,7 +147,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($row);
     }
 }
-
 
 $conn->close();
 ?>

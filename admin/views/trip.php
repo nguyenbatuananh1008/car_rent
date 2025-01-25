@@ -11,7 +11,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Quản lý chuyến xe</title>
+        <title>Quản lý tyến xe</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     </head>
@@ -20,10 +20,10 @@
         <div id="layoutSidenav_content">
             <div class="container mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3>Danh sách chuyến</h3>
+                    <h3>Danh sách tuyến đường</h3>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.php">Trang chủ</a></li>
-                        <li class="breadcrumb-item active">Quản lý chuyến xe</li>
+                        <li class="breadcrumb-item active">Quản lý tuyến đường</li>
                     </ol>
                 </div>
 
@@ -40,7 +40,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addModalLabel">Nhập chuyến xe</h5>
+                                <h5 class="modal-title" id="addModalLabel">Nhập tuyến đường</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -122,7 +122,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editModalLabel">Sửa thông tin chuyến xe</h5>
+                                <h5 class="modal-title" id="editModalLabel">Sửa thông tin tuyến đường</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -203,7 +203,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModalLabel">Xóa chuyến xe</h5>
+                                <h5 class="modal-title" id="deleteModalLabel">Xóa tuyến đường</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
