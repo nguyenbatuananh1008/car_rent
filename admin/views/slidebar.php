@@ -39,8 +39,13 @@
                                     </div>
                                 </nav>
                             </div>
-                            <div class="sb-sidenav-menu-heading">Chuyến xe</div>
+                            
+                            <div class="sb-sidenav-menu-heading">Tuyến xe</div>
                             <a class="nav-link" href="trip.php">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-car"></i></div>
+                                Tuyến xe
+                            </a>
+                            <a class="nav-link" href="trip2.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-car"></i></div>
                                 Chuyến xe
                             </a>
