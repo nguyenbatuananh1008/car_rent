@@ -38,19 +38,31 @@
         
         
         public function numberSeat($id_trip, $date) {
+            // Đảm bảo định dạng ngày là Y-m-d
+            try {
+                $formattedDate = DateTime::createFromFormat('d-m-Y', $date)->format('Y-m-d');
+            } catch (Exception $e) {
+                // Nếu không thể định dạng lại ngày, trả về 0
+                return 0;
+            }
+        
+            // Thực hiện truy vấn
             $stmt = $this->conn->prepare("
                 SELECT SUM(ticket.number_seat) AS total_seats
                 FROM ticket 
                 WHERE ticket.id_trip = :id_trip
                 AND ticket.date = :date
-            ");
+            "); 
             $stmt->execute([
                 ':id_trip' => $id_trip,
-                ':date' => $date,
+                ':date' => $formattedDate, // Sử dụng ngày đã định dạng
             ]);
+        
+            // Lấy kết quả và trả về
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['total_seats'] ?? 0; 
         }
+        
         public function getLocations($id_trip, $type) {
         $stmt = $this->conn->prepare("
             SELECT id_location, name_location,  DATE_FORMAT(time, '%H:%i') AS time

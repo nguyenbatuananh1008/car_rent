@@ -32,7 +32,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mb-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="index.php">Trang chủ</a>
+                <a class="nav-link active" aria-current="page" href="index.php">Trang chủ</a>A
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="about.php">About</a>
@@ -187,10 +187,18 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Đăng ký thành công!');
-                const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
-                registerModal.hide(); // Ẩn modal đăng ký
+                // Hiển thị thông báo và xử lý modal
+                alert('Đăng ký thành công! Vui lòng đăng nhập.');
+                
+                // Ẩn modal đăng ký
+                const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+                registerModal.hide();
+                
+                // Hiển thị modal đăng nhập
+                const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+                loginModal.show();
             } else {
+                // Hiển thị lỗi nếu đăng ký thất bại
                 const errorDiv = document.getElementById('registerError');
                 errorDiv.style.display = 'block';
                 errorDiv.textContent = data.message;
@@ -198,7 +206,7 @@
         });
     });
 });
-
+  
 
 
 </script>

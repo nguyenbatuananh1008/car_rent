@@ -15,7 +15,7 @@ $ticket_quantity = $_POST['ticket_quantity'] ?? null;
 $passenger_name = $_POST['passenger_name'] ?? null;
 $phone = $_POST['phone'] ?? null;
 $email = $_POST['email'] ?? null;
-$date = date('Y-m-d'); // Lấy ngày đặt vé hiện tại
+$date = date('Y-m-d'); 
 
 if (!$id_trip || !$pickup_location || !$dropoff_location || !$ticket_quantity || !$passenger_name || !$phone || !$email) {
     die("Dữ liệu không hợp lệ.");

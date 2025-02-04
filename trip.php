@@ -16,8 +16,8 @@ $errors_location = [];
 if ($city_from && $city_to && $date) {
     $trips = $tripSearcher->searchTrips($city_from, $city_to, $date);
 
-    // Tính toán số ghế còn lại và lấy lộ trình cho mỗi chuyến
-    $trips = array_map(function ($trip) use ($tripSearcher, $date) {
+    // Tính toán số ghế còn lại và lọc ra các chuyến có số ghế còn lại > 0
+    $trips = array_filter(array_map(function ($trip) use ($tripSearcher, $date) {
         $number_seat = $tripSearcher->numberSeat($trip['id_trip'], $date);
         $remaining_seats = (int) $trip['remaining_seats'] - (int) $number_seat;
         $trip['remaining_seats'] = $remaining_seats;
@@ -26,14 +26,14 @@ if ($city_from && $city_to && $date) {
         $trip['pickup_locations'] = $tripSearcher->getLocations($trip['id_trip'], 0);
         $trip['dropoff_locations'] = $tripSearcher->getLocations($trip['id_trip'], 1);
 
-        if (empty($trip['pickup_locations']) || empty($trip['dropoff_locations'])) {
-            $errors_location = "Chuyến xe chưa có lộ trình ";
-        }
-
-
+        // Trả về chuyến xe sau khi xử lý
         return $trip;
-    }, $trips);
+    }, $trips), function ($trip) {
+        // Chỉ giữ lại các chuyến có số ghế còn lại > 0
+        return $trip['remaining_seats'] > 0;
+    });
 }
+
 
 include('layout/header.php');
 
@@ -57,6 +57,7 @@ include('layout/header.php');
 
 
 <body>
+    
     <div class="main_2 clearfix">
         <section id="center" class="center_o">
             <div class="center_om clearfix">
@@ -102,8 +103,8 @@ include('layout/header.php');
                                             value="<?= htmlspecialchars($trip['city_to_name']) ?>">
                                         <div class="model_m p-3 clearfix border-top-0 text-center">
                                             <div class="float-start">
-                                                <img src="uploads/<?= htmlspecialchars($trip['car_image']) ?>"
-                                                    class="card-img-top" alt="Car Image">
+                                                <img src="admin/uploads/<?= htmlspecialchars($trip['car_image']) ?>"
+                                                    class="card-img-top" alt="Car Image" style="width: 200px; height: 100px ;">
                                             </div>
                                             <div class="model_pg1i2 row">
                                                 <div class="col-md-6 col-sm-6">

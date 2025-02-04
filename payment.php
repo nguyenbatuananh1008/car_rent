@@ -19,6 +19,7 @@
     $dropoff_name = $_POST['dropoff_name'] ?? null;
     $date = $_POST['date'] ?? null; // Lấy $date từ POST
     $car_name = $_POST['car_name'] ?? null;
+    
     ?>
 
 
@@ -55,6 +56,7 @@
     <input type="hidden" name="name" value="<?= $name ?>" required>
     <input type="hidden" name="phone" value="<?= $phone ?>" required>
     <input type="hidden" name="email" value="<?= $email ?>" required>
+    <input type="hidden" name="date" value="<?= $date ?>" required>
     <input type="hidden" name="ticket_quantity" value="<?= $ticket_quantity ?>" required><br>
 
                 <h4>Phương thức thanh toán</h4>
