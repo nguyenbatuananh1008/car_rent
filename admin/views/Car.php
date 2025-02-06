@@ -14,7 +14,7 @@ $conn = $db->connectBee();
     <title>Quản lý Xe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 
 <body>
@@ -51,12 +51,12 @@ $conn = $db->connectBee();
                                     <input type="text" class="form-control" id="c_name" name="c_name" list="car_names" required>
                                     <datalist id="car_names">
                                         <?php
-                                        
+
                                         $sql = "SELECT DISTINCT c_name FROM car";
                                         $result = $conn->query($sql);
 
                                         if ($result->num_rows > 0) {
-                                            
+
                                             while ($row = $result->fetch_assoc()) {
                                                 echo '<option value="' . htmlspecialchars($row['c_name']) . '">';
                                             }
@@ -174,8 +174,8 @@ $conn = $db->connectBee();
                                 data-plate='" . htmlspecialchars($row['c_plate']) . "' 
                                 data-name2='" . htmlspecialchars($row['name_c_house']) . "' 
                                 data-img='" . htmlspecialchars($row['img']) . "'>
-                            <i class='fas fa-edit'></i> Sửa
-                        </button>
+                            <i class='fas fa-edit'></i> Sửa </button>
+                        
                         <button class='btn btn-danger btn-sm btnDelete' data-id='" . $row['id_car'] . "'>
                             <i class='fas fa-trash-alt'></i> Xóa
                         </button>
@@ -252,6 +252,7 @@ $conn = $db->connectBee();
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -278,7 +279,7 @@ $conn = $db->connectBee();
     </div>
 
     <script src="../js/car.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

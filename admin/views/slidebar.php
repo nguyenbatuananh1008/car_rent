@@ -40,12 +40,12 @@
                                 </nav>
                             </div>
                             
-                            <div class="sb-sidenav-menu-heading">Tuyến xe</div>
-                            <a class="nav-link" href="trip.php">
+                            <div class="sb-sidenav-menu-heading">Tuyến đường</div>
+                            <a class="nav-link" href="route.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-car"></i></div>
-                                Tuyến xe
+                                Tuyến đường
                             </a>
-                            <a class="nav-link" href="trip2.php">
+                            <a class="nav-link" href="trip.php">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-car"></i></div>
                                 Chuyến xe
                             </a>
