@@ -175,7 +175,6 @@ $conn = $db->connectBee();
                                 data-name2='" . htmlspecialchars($row['name_c_house']) . "' 
                                 data-img='" . htmlspecialchars($row['img']) . "'>
                             <i class='fas fa-edit'></i> Sửa </button>
-                        
                         <button class='btn btn-danger btn-sm btnDelete' data-id='" . $row['id_car'] . "'>
                             <i class='fas fa-trash-alt'></i> Xóa
                         </button>
