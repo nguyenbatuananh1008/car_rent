@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 18, 2025 lúc 02:55 AM
+-- Thời gian đã tạo: Th2 04, 2025 lúc 04:29 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -42,10 +42,9 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`id_admin`, `name`, `email`, `image`, `password`, `usertype`) VALUES
 (29, 'admin', 'admin@gmail.com', '1736562479_2023_05_27_19_30_IMG_4082.PNG', '123', 1),
-(30, 'Nguyễn Bá Tuấn Anhh', 'nhanvien@gmail.com', '1736567225_2023_02_14_00_10_IMG_3217.JPG', '123', 0),
-(31, 'Linh', 'linh@gmial.com', '1736563206_2023_10_20_12_39_IMG_5696.JPG', '123', 0),
 (32, 'Hằng', 'hang@gmail.com', '1736560758_z6068232815213_8b693c5c028e0235e88b1385af981bd2.jpg', '123', 0),
-(33, 'admin', 'admin@gmail.com ', '', '1a', 1);
+(33, 'admin', 'admin@gmail.com ', '', '1a', 1),
+(34, 'hoang1', 'hoang1@gmail.com', '1737601093_33.jpg', '123', 0);
 
 -- --------------------------------------------------------
 
@@ -57,6 +56,8 @@ CREATE TABLE `car` (
   `id_car` int(11) NOT NULL,
   `id_c_house` int(11) NOT NULL,
   `c_name` varchar(255) NOT NULL,
+  `c_type` varchar(255) NOT NULL,
+  `c_color` varchar(255) NOT NULL,
   `img` varchar(255) NOT NULL,
   `c_plate` varchar(255) NOT NULL,
   `capacity` int(11) NOT NULL
@@ -66,10 +67,10 @@ CREATE TABLE `car` (
 -- Đang đổ dữ liệu cho bảng `car`
 --
 
-INSERT INTO `car` (`id_car`, `id_c_house`, `c_name`, `img`, `c_plate`, `capacity`) VALUES
-(4, 1, 'Xe 14 chỗ', '1736750467_360x280_1.jpg', '30B-67890', 16),
-(6, 2, 'Xe 16 chỗ', '1736822464_1600x800.jpg', '29A-12345', 16),
-(8, 3, 'Trag anh', '1736931284_380x280.jpg', '30A-13831', 45);
+INSERT INTO `car` (`id_car`, `id_c_house`, `c_name`, `c_type`, `c_color`, `img`, `c_plate`, `capacity`) VALUES
+(11, 7, 'Huyndai', 'Solati', 'Trắng', '1738633200_Xe-Khach-Hyundai-Solati-16-cho.jpg', '30B-67890', 16),
+(12, 7, 'Ford', 'Transit 2023', 'Bạc', '1738633246_03fordtransitmoi-1641112368-16-2604-9668-1641113158.jpg', '29A-12345', 16),
+(13, 8, 'Thaco ', 'King Long 2021', 'Xám', '1738633846_thaco-king-long.jpg.jpg', '30B-65432', 16);
 
 -- --------------------------------------------------------
 
@@ -90,9 +91,8 @@ CREATE TABLE `car_house` (
 --
 
 INSERT INTO `car_house` (`id_c_house`, `name_c_house`, `address`, `phone`, `email`) VALUES
-(1, 'Nhà xe A', '123 Đường 1, Hà Nội', 123456789, 'nhaxeA@example.com'),
-(2, 'Nhà xe B', '456 Đường 2, Hồ Chí Minh', 987654321, 'nhaxeB@example.com'),
-(3, 'Phuong trang', '123 Đường 1, Hà Nội', 337040233, 'nhaxeAC@example.com');
+(7, 'Nhà xe A', '123 Đường 1, Hà Nội', 12345678, 'nhaxeAC@example.com'),
+(8, 'Phuong trang', 'VJTI, Matunga, Mumbai, Maharashtra', 123731293, 'test@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -110,66 +110,9 @@ CREATE TABLE `city` (
 --
 
 INSERT INTO `city` (`id_city`, `city_name`) VALUES
-(8, 'Hà Nội'),
-(9, 'Hải Phòng'),
-(10, 'Đà Nẵng'),
-(11, 'Hồ Chí Minh'),
-(12, 'Cần Thơ'),
-(13, 'Nha Trang'),
-(14, 'Huế'),
-(15, 'Vũng Tàu'),
-(16, 'Biên Hòa'),
-(17, 'Thủ Dầu Một'),
-(18, 'Đà Lạt'),
-(19, 'Mỹ Tho'),
-(20, 'Vĩnh Long'),
-(21, 'Cà Mau'),
-(22, 'Rạch Giá'),
-(23, 'Long Xuyên'),
-(24, 'Sóc Trăng'),
-(25, 'Bạc Liêu'),
-(26, 'Trà Vinh'),
-(27, 'Bến Tre'),
-(28, 'Quy Nhơn'),
-(29, 'Pleiku'),
-(30, 'Kon Tum'),
-(31, 'Tuy Hòa'),
-(32, 'Phan Thiết'),
-(33, 'Phan Rang-Tháp Chàm'),
-(34, 'Ninh Thuận'),
-(35, 'Quảng Ngãi'),
-(36, 'Tam Kỳ'),
-(37, 'Hội An'),
-(38, 'Đông Hà'),
-(39, 'Huế'),
-(40, 'Sầm Sơn'),
-(41, 'Thanh Hóa'),
-(42, 'Vinh'),
-(43, 'Hà Tĩnh'),
-(44, 'Đồng Hới'),
-(45, 'Ninh Bình'),
-(46, 'Nam Định'),
-(47, 'Hải Dương'),
-(48, 'Hưng Yên'),
-(49, 'Thái Bình'),
-(50, 'Bắc Ninh'),
-(51, 'Bắc Giang'),
-(52, 'Lạng Sơn'),
-(53, 'Cao Bằng'),
-(54, 'Hà Giang'),
-(55, 'Tuyên Quang'),
-(56, 'Yên Bái'),
-(57, 'Sơn La'),
-(58, 'Điện Biên Phủ'),
-(59, 'Lai Châu'),
-(60, 'Lào Cai'),
-(61, 'Hòa Bình'),
-(62, 'Thái Nguyên'),
-(63, 'Quảng Ninh'),
-(64, 'Bắc Kạn'),
-(65, 'Hà Nam'),
-(66, 'Ninh Bình '),
-(68, 'Hậu Giang');
+(72, 'Hà Nội'),
+(73, 'Quảng Ninh'),
+(74, 'Ninh Bình ');
 
 -- --------------------------------------------------------
 
@@ -188,19 +131,42 @@ CREATE TABLE `location` (
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `route`
+--
+
+CREATE TABLE `route` (
+  `id_route` int(11) NOT NULL,
+  `id_c_house` int(11) NOT NULL,
+  `id_city_from` int(11) NOT NULL,
+  `id_city_to` int(11) NOT NULL,
+  `date` date NOT NULL DEFAULT curdate(),
+  `price` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `route`
+--
+
+INSERT INTO `route` (`id_route`, `id_c_house`, `id_city_from`, `id_city_to`, `date`, `price`) VALUES
+(62, 7, 72, 72, '2025-02-04', 100000),
+(63, 7, 72, 73, '2025-02-04', 200000);
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `ticket`
 --
 
 CREATE TABLE `ticket` (
   `id_ticket` int(11) NOT NULL,
   `id_trip` int(11) NOT NULL,
-  `id_user` int(11) NOT NULL,
+  `id_user` int(11) DEFAULT NULL,
   `name` varchar(255) NOT NULL,
   `phone` int(11) NOT NULL,
   `number_seat` int(11) NOT NULL,
-  `total_price` decimal(10,2) NOT NULL,
-  `status` varchar(255) NOT NULL DEFAULT '',
-  `method` varchar(255) NOT NULL,
+  `total_price` decimal(10,0) NOT NULL,
+  `status` int(11) NOT NULL,
+  `method` int(255) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -212,25 +178,14 @@ CREATE TABLE `ticket` (
 
 CREATE TABLE `trip` (
   `id_trip` int(11) NOT NULL,
+  `id_route` int(11) NOT NULL,
+  `id_c_house` int(11) NOT NULL,
   `id_car` int(11) NOT NULL,
-  `id_city_from` int(11) NOT NULL,
-  `id_city_to` int(11) NOT NULL,
   `t_pick` time NOT NULL,
   `t_drop` time NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  `date` date NOT NULL,
-  `ticket_limit` int(11) NOT NULL
+  `t_limit` int(11) NOT NULL,
+  `price` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Đang đổ dữ liệu cho bảng `trip`
---
-
-INSERT INTO `trip` (`id_trip`, `id_car`, `id_city_from`, `id_city_to`, `t_pick`, `t_drop`, `price`, `date`, `ticket_limit`) VALUES
-(7, 8, 19, 14, '10:24:00', '11:24:00', 200000.00, '2025-01-17', 0),
-(22, 6, 8, 21, '18:00:00', '19:00:00', 150000.00, '2025-01-16', 0),
-(27, 6, 21, 61, '10:36:00', '11:36:00', 150000.00, '2025-01-18', 0),
-(28, 6, 21, 8, '09:39:00', '10:38:00', 200000.00, '2025-01-19', 0);
 
 -- --------------------------------------------------------
 
@@ -266,7 +221,8 @@ ALTER TABLE `car`
 -- Chỉ mục cho bảng `car_house`
 --
 ALTER TABLE `car_house`
-  ADD PRIMARY KEY (`id_c_house`);
+  ADD PRIMARY KEY (`id_c_house`),
+  ADD KEY `id_c_house` (`id_c_house`);
 
 --
 -- Chỉ mục cho bảng `city`
@@ -282,6 +238,15 @@ ALTER TABLE `location`
   ADD KEY `location_trip` (`id_trip`);
 
 --
+-- Chỉ mục cho bảng `route`
+--
+ALTER TABLE `route`
+  ADD PRIMARY KEY (`id_route`),
+  ADD KEY `id_city` (`id_city_from`),
+  ADD KEY `id_city_to` (`id_city_to`),
+  ADD KEY `id_c_house` (`id_c_house`);
+
+--
 -- Chỉ mục cho bảng `ticket`
 --
 ALTER TABLE `ticket`
@@ -294,9 +259,9 @@ ALTER TABLE `ticket`
 --
 ALTER TABLE `trip`
   ADD PRIMARY KEY (`id_trip`),
+  ADD UNIQUE KEY `id_trip` (`id_route`,`id_c_house`,`id_car`),
   ADD KEY `id_car` (`id_car`),
-  ADD KEY `id_city` (`id_city_from`),
-  ADD KEY `id_city_to` (`id_city_to`);
+  ADD KEY `id_c_house` (`id_c_house`);
 
 --
 -- Chỉ mục cho bảng `user`
@@ -312,43 +277,43 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT cho bảng `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT cho bảng `car`
 --
 ALTER TABLE `car`
-  MODIFY `id_car` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_car` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `car_house`
 --
 ALTER TABLE `car_house`
-  MODIFY `id_c_house` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_c_house` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `city`
 --
 ALTER TABLE `city`
-  MODIFY `id_city` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id_city` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT cho bảng `location`
 --
 ALTER TABLE `location`
-  MODIFY `id_location` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_location` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- AUTO_INCREMENT cho bảng `route`
+--
+ALTER TABLE `route`
+  MODIFY `id_route` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT cho bảng `ticket`
 --
 ALTER TABLE `ticket`
-  MODIFY `id_ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT cho bảng `trip`
---
-ALTER TABLE `trip`
-  MODIFY `id_trip` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id_ticket` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `user`
@@ -370,22 +335,35 @@ ALTER TABLE `car`
 -- Các ràng buộc cho bảng `location`
 --
 ALTER TABLE `location`
-  ADD CONSTRAINT `location_trip` FOREIGN KEY (`id_trip`) REFERENCES `trip` (`id_trip`);
+  ADD CONSTRAINT `location_trip` FOREIGN KEY (`id_trip`) REFERENCES `route` (`id_route`);
+
+--
+-- Các ràng buộc cho bảng `route`
+--
+ALTER TABLE `route`
+  ADD CONSTRAINT `route_ibfk_3` FOREIGN KEY (`id_city_from`) REFERENCES `city` (`id_city`),
+  ADD CONSTRAINT `route_ibfk_4` FOREIGN KEY (`id_city_to`) REFERENCES `city` (`id_city`),
+  ADD CONSTRAINT `route_ibfk_5` FOREIGN KEY (`id_c_house`) REFERENCES `car_house` (`id_c_house`);
 
 --
 -- Các ràng buộc cho bảng `ticket`
 --
 ALTER TABLE `ticket`
-  ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`),
-  ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`id_trip`) REFERENCES `trip` (`id_trip`);
+  ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`id_trip`) REFERENCES `trip` (`id_trip`);
 
 --
 -- Các ràng buộc cho bảng `trip`
 --
 ALTER TABLE `trip`
   ADD CONSTRAINT `trip_ibfk_1` FOREIGN KEY (`id_car`) REFERENCES `car` (`id_car`),
-  ADD CONSTRAINT `trip_ibfk_3` FOREIGN KEY (`id_city_from`) REFERENCES `city` (`id_city`),
-  ADD CONSTRAINT `trip_ibfk_4` FOREIGN KEY (`id_city_to`) REFERENCES `city` (`id_city`);
+  ADD CONSTRAINT `trip_ibfk_2` FOREIGN KEY (`id_route`) REFERENCES `route` (`id_route`),
+  ADD CONSTRAINT `trip_ibfk_3` FOREIGN KEY (`id_c_house`) REFERENCES `car_house` (`id_c_house`);
+
+--
+-- Các ràng buộc cho bảng `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `user_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `ticket` (`id_user`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

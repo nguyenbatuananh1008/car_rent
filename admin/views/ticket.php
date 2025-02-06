@@ -206,7 +206,6 @@ $conn = $db->connectBee();
                                 <input type="hidden" name="id_ticket" id="deleteId_ticket">
                                 <button type="submit" class="btn btn-danger">Xóa</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-
                             </form>
                         </div>
                     </div>

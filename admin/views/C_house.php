@@ -171,8 +171,8 @@ $conn = $db->connectBee();
                                 <td>" . $row['phone'] . "</td>
                                 <td>" . $row['email'] . "</td>
                                 <td>
-                                    <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='".$row['id_c_house']."' data-name='".$row['name_c_house']."' data-address='".$row['address']."' data-phone='".$row['phone']."' data-email='".$row['email']."'><i class='fas fa-edit'></i> Sửa</button>
-                                    <button class='btn btn-danger btn-sm btnDelete' data-id='".$row['id_c_house']."'><i class='fas fa-trash-alt'></i> Xóa</button>
+                                <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='".$row['id_c_house']."' data-name='".$row['name_c_house']."' data-address='".$row['address']."' data-phone='".$row['phone']."' data-email='".$row['email']."'><i class='fas fa-edit'></i> Sửa</button>
+                                <button class='btn btn-danger btn-sm btnDelete' data-id='".$row['id_c_house']."'><i class='fas fa-trash-alt'></i> Xóa</button>
                                 </td>
                             </tr>";
                         }
