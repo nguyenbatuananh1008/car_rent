@@ -13,10 +13,15 @@ $city_to = isset($_GET['city_to']) ? $_GET['city_to'] : null;
 $city_to_name = isset($_GET['city_to_name']) ? $_GET['city_to_name'] : '';
 $date = isset($_GET['date']) ? $_GET['date'] : null;
 ?>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <title>Ngày tháng năm</title>
+  </head>
 
 <div class="container-xl shadow-lg p-3 mb-5 bg-white rounded">
     <div class="booking_m clearfix bg-white">
-        <form action="trip.php" method="GET">
+        <form action="trip_results.php" method="GET">
             <div class="row booking_1 mb-4">
                 <div class="col-md-12">
                     <h4 class="mb-0">Tìm chuyến xe</h4>

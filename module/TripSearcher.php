@@ -22,19 +22,26 @@
                     DATE_FORMAT(trip.t_pick, '%H:%i') AS t_pick,
                     DATE_FORMAT(trip.t_drop, '%H:%i') AS t_drop
                 FROM trip
-                JOIN city AS city_from ON trip.id_city_from = city_from.id_city
-                JOIN city AS city_to ON trip.id_city_to = city_to.id_city
+                JOIN city AS city_from ON trip.id_route = city_from.id_city -- Tham chiếu từ route thay vì trip
+                JOIN city AS city_to ON trip.id_route = city_to.id_city -- Tham chiếu từ route thay vì trip
                 JOIN car ON trip.id_car = car.id_car
                 JOIN car_house ON car.id_c_house = car_house.id_c_house
-                WHERE trip.id_city_from = :city_from 
-                AND trip.id_city_to = :city_to 
+                LEFT JOIN route_stop rs1 ON trip.id_route = rs1.id_route AND rs1.id_city = :city_from
+                LEFT JOIN route_stop rs2 ON trip.id_route = rs2.id_route AND rs2.id_city = :city_to
+                JOIN route r ON trip.id_route = r.id_route
+                WHERE (r.id_city_from = :city_from OR rs1.id_city = :city_from) 
+                AND (r.id_city_to = :city_to OR rs2.id_city = :city_to)
+                AND trip.t_pick >= :date
             ");
             $stmt->execute([
                 ':city_from' => $city_from,
                 ':city_to' => $city_to,
+                ':date' => $date
             ]);
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+            
+        
         
         
         public function numberSeat($id_trip, $date) {

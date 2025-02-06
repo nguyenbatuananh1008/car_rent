@@ -15,7 +15,8 @@ $trips = [];
 $errors_location = [];
 if ($city_from && $city_to && $date) {
     $trips = $tripSearcher->searchTrips($city_from, $city_to, $date);
-
+    var_dump($trip);
+    
     // Tính toán số ghế còn lại và lọc ra các chuyến có số ghế còn lại > 0
     $trips = array_filter(array_map(function ($trip) use ($tripSearcher, $date) {
         $number_seat = $tripSearcher->numberSeat($trip['id_trip'], $date);
@@ -32,6 +33,7 @@ if ($city_from && $city_to && $date) {
         // Chỉ giữ lại các chuyến có số ghế còn lại > 0
         return $trip['remaining_seats'] > 0;
     });
+
 }
 
 

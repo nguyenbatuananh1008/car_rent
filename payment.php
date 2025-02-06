@@ -68,7 +68,7 @@
                     <div class="mt-2">
                         <span class="badge bg-success">An toàn & Tiện lợi</span>
                         <img src="https://via.placeholder.com/100x20" alt="Các ví điện tử" class="ms-3">
-                    </div>
+                    </div>  
                     <div id="qr-container">
                         
                     </div>

@@ -1,16 +1,15 @@
 <?php
+// search_city.php
 require_once 'db.php';
-
 $db = new Database();
 $conn = $db->connect();
-$query = $_GET['q'] ?? '';
 
-if ($query) {
-    $stmt = $conn->prepare("SELECT id_city, city_name FROM city WHERE city_name LIKE :query LIMIT 10");
-    $stmt->execute(['query' => '%' . $query . '%']);
-    $cities = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($cities);
-} else {
-    echo json_encode([]);
-}
+$q = isset($_GET['q']) ? $_GET['q'] : '';
+
+$query = "SELECT * FROM city WHERE city_name LIKE :q LIMIT 10";
+$stmt = $conn->prepare($query);
+$stmt->execute([':q' => '%' . $q . '%']);
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+echo json_encode($results);
 ?>
