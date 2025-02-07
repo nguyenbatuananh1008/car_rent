@@ -116,7 +116,7 @@ include('layout/header.php');
                                                         </p>
                                                         <span class="font_12 col_yell">
                                                             <i class="fa fa-star"></i>
-                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>  
                                                             <i class="fa fa-star"></i>
                                                             <i class="fa fa-star"></i>
                                                             <i class="fa fa-star-half-o"></i>
