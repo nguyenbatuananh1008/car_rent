@@ -1,4 +1,4 @@
-    <?php
+<?php
     require_once 'db.php';
 
     class TripSearcher {
@@ -10,6 +10,14 @@
         }
 
         public function searchTrips($city_from, $city_to, $date) {
+            // Đảm bảo định dạng ngày là Y-m-d
+            try {
+                $formattedDate = DateTime::createFromFormat('d-m-Y', $date)->format('Y-m-d');
+            } catch (Exception $e) {
+                return [];
+            }
+        
+            // Truy vấn các chuyến xe theo tuyến (route)
             $stmt = $this->conn->prepare("
                 SELECT trip.*, 
                     city_from.city_name AS city_from_name, 
@@ -20,38 +28,104 @@
                     car_house.name_c_house AS car_house_name,
                     trip.t_limit AS remaining_seats,
                     DATE_FORMAT(trip.t_pick, '%H:%i') AS t_pick,
-                    DATE_FORMAT(trip.t_drop, '%H:%i') AS t_drop
+                    DATE_FORMAT(trip.t_drop, '%H:%i') AS t_drop,
+                    r.id_route
                 FROM trip
-                JOIN city AS city_from ON trip.id_route = city_from.id_city -- Tham chiếu từ route thay vì trip
-                JOIN city AS city_to ON trip.id_route = city_to.id_city -- Tham chiếu từ route thay vì trip
+                JOIN route r ON trip.id_route = r.id_route
+                JOIN city city_from ON r.id_city_from = city_from.id_city
+                JOIN city city_to ON r.id_city_to = city_to.id_city
                 JOIN car ON trip.id_car = car.id_car
                 JOIN car_house ON car.id_c_house = car_house.id_c_house
-                LEFT JOIN route_stop rs1 ON trip.id_route = rs1.id_route AND rs1.id_city = :city_from
-                LEFT JOIN route_stop rs2 ON trip.id_route = rs2.id_route AND rs2.id_city = :city_to
-                JOIN route r ON trip.id_route = r.id_route
-                WHERE (r.id_city_from = :city_from OR rs1.id_city = :city_from) 
-                AND (r.id_city_to = :city_to OR rs2.id_city = :city_to)
-                AND trip.t_pick >= :date
+                WHERE 
+                    (r.id_city_from = :city_from OR r.id_city_to = :city_to)
+                    AND trip.t_pick >= :date
             ");
+        
             $stmt->execute([
                 ':city_from' => $city_from,
                 ':city_to' => $city_to,
-                ':date' => $date
+                ':date' => $formattedDate
             ]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+            // Lấy tất cả các chuyến xe
+            $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+            // Kiểm tra nếu không có chuyến nào
+            if (!$trips) {
+                return [];
+            }
+        
+            // Xử lý từng chuyến xe để thêm thông tin tuyến đường đầy đủ
+            foreach ($trips as &$trip) {
+                $number_seat = $this->numberSeat($trip['id_trip'], $formattedDate);
+                $trip['remaining_seats'] = (int) $trip['remaining_seats'] - (int) $number_seat;
+        
+                $trip['pickup_locations'] = $this->getLocations($trip['id_trip'], 0);
+                $trip['dropoff_locations'] = $this->getLocations($trip['id_trip'], 1);
+        
+                // Thêm tuyến đường đầy đủ, nếu không có thì gán mặc định
+                $trip['full_route'] = $this->getFullRoute($trip['id_route']) ?: 'Không xác định';
+            }
+        
+            // Lọc các chuyến xe có số ghế còn lại > 0
+            return array_filter($trips, function ($trip) {
+                return $trip['remaining_seats'] > 0;
+            });
         }
+        
+        
+
+      
+        
+        // Phương thức lấy tên thành phố từ id thành phố
+       public function getFullRoute($id_route) {
+    // Lấy điểm xuất phát và điểm kết thúc
+    $stmt = $this->conn->prepare("
+        SELECT c1.city_name AS start_city, c2.city_name AS end_city
+        FROM route r
+        JOIN city c1 ON r.id_city_from = c1.id_city
+        JOIN city c2 ON r.id_city_to = c2.id_city
+        WHERE r.id_route = :id_route
+    ");
+    $stmt->execute([':id_route' => $id_route]);
+    $route_info = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$route_info) return '';
+
+    // Lấy danh sách điểm dừng theo thứ tự
+    $stmt = $this->conn->prepare("
+        SELECT city.city_name
+        FROM route_stop rs
+        JOIN city ON rs.id_city = city.id_city
+        WHERE rs.id_route = :id_route
+        ORDER BY rs.stop_order ASC
+    ");
+    $stmt->execute([':id_route' => $id_route]);
+    $stops = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    // Ghép tuyến đường đầy đủ (bao gồm điểm đầu, điểm dừng và điểm cuố i)
+    $full_route = array_merge([$route_info['start_city']], $stops, [$route_info['end_city']]);
+    return implode(' > ', $full_route);
+}
+
+        
+        
+        
+        
             
         
         
         
         public function numberSeat($id_trip, $date) {
             // Đảm bảo định dạng ngày là Y-m-d
-            try {
-                $formattedDate = DateTime::createFromFormat('d-m-Y', $date)->format('Y-m-d');
-            } catch (Exception $e) {
-                // Nếu không thể định dạng lại ngày, trả về 0
+            $dateTime = DateTime::createFromFormat('d-m-Y', $date);
+            if ($dateTime === false) {
+                // Nếu không thể chuyển đổi ngày, trả về 0 hoặc thông báo lỗi
+            
                 return 0;
             }
+            // Chuyển ngày hợp lệ thành Y-m-d
+            $formattedDate = $dateTime->format('Y-m-d');
         
             // Thực hiện truy vấn
             $stmt = $this->conn->prepare("
@@ -59,7 +133,7 @@
                 FROM ticket 
                 WHERE ticket.id_trip = :id_trip
                 AND ticket.date = :date
-            "); 
+            ");
             $stmt->execute([
                 ':id_trip' => $id_trip,
                 ':date' => $formattedDate, // Sử dụng ngày đã định dạng
@@ -69,6 +143,8 @@
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['total_seats'] ?? 0; 
         }
+        
+        
         
         public function getLocations($id_trip, $type) {
         $stmt = $this->conn->prepare("
