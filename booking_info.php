@@ -35,16 +35,16 @@ $car_color = $_POST['car_color'] ?? '';
 $pickupData = $_POST["pickup_$route_id"] ?? '';
 $dropoffData = $_POST["dropoff_$route_id"] ?? '';
 
-$pickupLocation = $pickupCity = $dropoffLocation = $dropoffCity = $pickupTime = '';
+$pickupLocation = $pickupCity = $dropoffLocation = $dropoffCity = $pickupTime =$dropoffTime = $id_location_from= $id_location_to = '';
 
 if ($pickupData) {
     // Tách giá trị dựa trên dấu "||"
-    list($pickupLocation, $pickupCity, $pickupTime) = explode('||', $pickupData);
+    list($pickupLocation, $pickupCity, $pickupTime,$id_location_from) = explode('||', $pickupData);
 }
 
 
 if ($dropoffData) {
-    list($dropoffLocation, $dropoffCity, $dropoffTime) = explode('||', $dropoffData);
+    list($dropoffLocation, $dropoffCity, $dropoffTime,$id_location_to) = explode('||', $dropoffData);
 }
 
 
@@ -93,7 +93,8 @@ $total_price  = $_POST['total_price'] ?? 0;  // Ví dụ, nếu bạn gửi trư
 <input type="hidden" name="dropoff_city" value="<?= htmlspecialchars($dropoffCity) ?>">
 <input type="hidden" name="dropoff_time" value="<?= htmlspecialchars($dropoffTime) ?>">
 <input type="hidden" name="total_price" value="<?= htmlspecialchars($total_price) ?>">
-                                
+<input type="hidden" name="id_location_from" value="<?= htmlspecialchars($id_location_from) ?>">
+<input type="hidden" name="id_location_to" value="<?= htmlspecialchars($id_location_to) ?>">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Tên người đi <span class="text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" id="name" placeholder="Nhập tên" required>

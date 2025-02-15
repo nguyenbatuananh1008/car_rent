@@ -38,44 +38,52 @@
                     
                         // Truy vấn chuyến xe với các điều kiện tìm kiếm
                         $stmt = $this->conn->prepare("
-                            SELECT DISTINCT trip.*, 
-                                city_from.city_name AS city_from_name, 
-                                city_to.city_name AS city_to_name, 
-                                car.img AS car_image, 
-                                car.c_name AS car_name, 
-                                car.c_type AS car_type,
-                                car.c_color AS car_color,
-                                car.capacity AS car_capacity,
-                                car_house.name_c_house AS car_house_name,
-                                trip.t_limit AS remaining_seats,
-                                DATE_FORMAT(trip.t_pick, '%H:%i') AS t_pick,
-                                DATE_FORMAT(trip.t_drop, '%H:%i') AS t_drop,
-                                r.id_route
-                            FROM trip
-                            JOIN route r ON trip.id_route = r.id_route
-                            JOIN city city_from ON r.id_city_from = city_from.id_city
-                            JOIN city city_to ON r.id_city_to = city_to.id_city
-                            JOIN car ON trip.id_car = car.id_car
-                            JOIN car_house ON car.id_c_house = car_house.id_c_house
-                            LEFT JOIN route_stop rs ON r.id_route = rs.id_route
-                            LEFT JOIN city city_stop ON rs.id_city = city_stop.id_city
-                            WHERE 
-                                (
-                                    -- Tìm kiếm chuyến xe từ city_from đến city_to
-                                    (r.id_city_from = :city_from AND r.id_city_to = :city_to)  
-                                    OR
-                                    -- Tìm kiếm chuyến xe từ city_from đến city_to có điểm dừng ở city_to
-                                    (r.id_city_from = :city_from AND rs.id_city = :city_to)
-                                    OR
-                                    -- Tìm chuyến xe có điểm dừng ở city_from và city_to
-                                    (rs.id_city = :city_from AND rs.id_city = :city_to) 
-                                    OR
-                                    -- Tìm chuyến xe có điểm dừng ở city_from và điểm cuối ở city_to
-                                    (rs.id_city = :city_from AND r.id_city_to = :city_to) 
-                                )
-                                AND trip.t_pick >= :date
-                            $orderBy
-                        ");
+                                    SELECT DISTINCT trip.*, 
+                                        city_from.city_name AS city_from_name, 
+                                        city_to.city_name AS city_to_name, 
+                                        car.img AS car_image, 
+                                        car.c_name AS car_name, 
+                                        car.c_type AS car_type,
+                                        car.c_color AS car_color,
+                                        car.capacity AS car_capacity,
+                                        car_house.name_c_house AS car_house_name,
+                                        trip.t_limit AS remaining_seats,
+                                        DATE_FORMAT(trip.t_pick, '%H:%i') AS t_pick,
+                                        DATE_FORMAT(trip.t_drop, '%H:%i') AS t_drop,
+                                        r.id_route
+                                    FROM trip
+                                    JOIN route r ON trip.id_route = r.id_route
+                                    JOIN city city_from ON r.id_city_from = city_from.id_city
+                                    JOIN city city_to ON r.id_city_to = city_to.id_city
+                                    JOIN car ON trip.id_car = car.id_car
+                                    JOIN car_house ON car.id_c_house = car_house.id_c_house
+                                    LEFT JOIN route_stop rs ON r.id_route = rs.id_route
+                                    LEFT JOIN city city_stop ON rs.id_city = city_stop.id_city
+                                    WHERE 
+                                        (
+                                            -- Tìm kiếm chuyến xe từ city_from đến city_to
+                                            (r.id_city_from = :city_from AND r.id_city_to = :city_to)  
+                                            OR
+                                            -- Tìm kiếm chuyến xe từ city_from đến city_to có điểm dừng ở city_to
+                                            (r.id_city_from = :city_from AND rs.id_city = :city_to)
+                                            OR
+                                            -- Tìm chuyến xe có điểm dừng ở city_from và city_to
+                                            (rs.id_city = :city_from AND rs.id_city = :city_to) 
+                                            OR
+                                            -- Tìm chuyến xe có điểm dừng ở city_from và điểm cuối ở city_to
+                                            (rs.id_city = :city_from AND r.id_city_to = :city_to)
+                                            OR
+                                            -- Tìm chuyến xe có stop_order = 1 từ city_from đến stop_order = 2 ở city_to
+                                            (rs.stop_order = 1 AND rs.id_city = :city_from AND EXISTS 
+                                                (SELECT 1 FROM route_stop rs2 
+                                                WHERE rs2.id_route = rs.id_route 
+                                                AND rs2.stop_order = 2 
+                                                AND rs2.id_city = :city_to))
+                                        )
+                                        AND trip.t_pick >= :date
+                                    $orderBy
+                                ");
+
                     
                         $stmt->execute([
                             ':city_from' => $city_from,
@@ -251,7 +259,7 @@
         
     public function getPickupLocations($id_route) {
         $stmt = $this->conn->prepare("
-            SELECT loc.name_location, city.city_name, city.id_city, DATE_FORMAT(loc.time, '%H:%i') AS pickup_time
+            SELECT loc.id_location,loc.name_location, city.city_name, city.id_city, DATE_FORMAT(loc.time, '%H:%i') AS pickup_time
             FROM location loc
             JOIN city city ON loc.id_city = city.id_city
             WHERE loc.id_route = :id_route AND loc.type = 1
@@ -264,7 +272,7 @@
     
     public function getDropoffLocations($id_route) {
         $stmt = $this->conn->prepare("
-            SELECT loc.name_location, city.city_name, city.id_city, DATE_FORMAT(loc.time, '%H:%i') AS dropoff_time
+            SELECT loc.id_location,loc.name_location, city.city_name, city.id_city, DATE_FORMAT(loc.time, '%H:%i') AS dropoff_time
             FROM location loc
             JOIN city city ON loc.id_city = city.id_city
             WHERE loc.id_route = :id_route AND loc.type = 2

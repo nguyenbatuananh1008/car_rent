@@ -18,12 +18,12 @@ $id_trip = $_POST['id_trip'];
   $dropoff_city = $_POST['dropoff_city'] ?? '';
   $dropoff_time = $_POST['dropoff_time'] ?? '';
   $total_price = $_POST['total_price'] ?? 0;
-   
+  $id_location_from = $_POST['id_location_from'] ?? '';
+  $id_location_to = $_POST['id_location_to'] ?? '';
     $name = $_POST['name'] ?? null;
     $phone = $_POST['phone'] ?? null;
     $email = $_POST['email'] ?? null;
 
-    var_dump( $formattedDate);
     ?>
 
 
@@ -112,7 +112,8 @@ $id_trip = $_POST['id_trip'];
     <input type="hidden" name="number_seat" value="<?= htmlspecialchars($num_seats) ?>">
     <input type="hidden" name="total_price" value="<?= htmlspecialchars($total_price) ?>">
     <input type="hidden" name="date" value="<?= htmlspecialchars($date) ?>">
-
+    <input type="hidden" name="id_location_from" value="<?= htmlspecialchars($id_location_from) ?>">
+    <input type="hidden" name="id_location_to" value="<?= htmlspecialchars($id_location_to) ?>">
                 <div class="trip-info mb-4">
         <h5 class="mb-3">Thông tin chuyến đi</h5>
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -127,7 +128,7 @@ $id_trip = $_POST['id_trip'];
         <img src="admin/uploads/<?= htmlspecialchars( $car_image) ?>" alt="Car Image" style="width:90px; height:60px; margin-right: 15px;">
             <div>
             
-                <h6 class="mb-1"> <?= htmlspecialchars(  $car_house_name) ?></h6>
+                <h5 class="mb-1"><?= htmlspecialchars(  $car_house_name) ?></h5>
                 <p class="mb-1 text-muted"><?= htmlspecialchars($car_name) ?>(<?= htmlspecialchars($car_color) ?>)</p>
                 <small><?= htmlspecialchars(  $num_seats) ?> hành khách</small>
             </div>
@@ -139,7 +140,7 @@ $id_trip = $_POST['id_trip'];
                 <i class="bi bi-geo-alt-fill text-primary me-2"></i> <!-- Icon khởi hành -->
             </div>
             <div>
-                <strong><h6><?= htmlspecialchars($pickup_city) ?></h6></strong>
+                <strong><h5><?= htmlspecialchars($pickup_city) ?></h5></strong>
                 <p class="mb-0"><strong><?= htmlspecialchars($pickup_time) ?></strong> - <?= htmlspecialchars($pickup_location) ?></p>
                 
             </div>
@@ -154,7 +155,7 @@ $id_trip = $_POST['id_trip'];
                 <i class="bi bi-pin-map-fill text-danger me-2"></i> <!-- Icon điểm đến -->
             </div>
             <div>
-            <strong><h6><?= htmlspecialchars($dropoff_city) ?></h6></strong>
+            <strong><h5><?= htmlspecialchars($dropoff_city) ?></h5></strong>
                 <p class="mb-0"><strong><?= htmlspecialchars($dropoff_time) ?></strong> - <?= htmlspecialchars($dropoff_location ) ?></p>
                 
             </div>

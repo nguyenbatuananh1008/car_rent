@@ -18,6 +18,15 @@
                             <p class="mt-4 mb-4">To contribute to positive change and achieve our sustainability goals with many extraordinary</p>
                         </div>
                     </div>
+                    
+                    <div class="carousel-item active">
+                        <img src="img/bg6.jpg" class="d-block w-100" alt="Slide 2">
+                        <div class="carousel-caption d-md-block">
+                            <h5>Plan your trip now</h5>
+                            <h1 class="font_50 mt-4">Save <span class="col_oran">big</span> with our <br> car rental</h1>
+                            <p class="mt-4 mb-4">To contribute to positive change and achieve our sustainability goals with many extraordinary</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -38,16 +47,16 @@
             <div class="row">
                 <h2 class="text-center">Tuyến đường phổ biến</h2>
                 <div class="col-md-3">
-                    <div class="card" onclick="window.location='trip_results.php?city_from=72&city_to=74&date=<?= date('Y-m-d') ?>'">
+                    <div class="card" onclick="window.location='trip_results.php?city_from=72&city_to=76&date=<?= date('Y-m-d') ?>'">
                         <img src="img/img_hero.png" class="card-img-top" alt="Hà Nội - Ninh Bình">
                         <div class="card-body">
-                            <h5 class="card-title">Hà Nội - Ninh Bình</h5>
+                            <h5 class="card-title">Hà Nội - Thanh Hóa</h5>
                             <p class="card-text">Từ 170.000đ</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card" onclick="window.location='trip_results.php?city_from=75&city_to=74&date=<?= date('Y-m-d') ?>'">
+                    <div class="card" onclick="window.location='trip_results.php?city_from=75&city_to=99&date=<?= date('Y-m-d') ?>'">
                         <img src="img/img_hero (2).png" class="card-img-top" alt="Hà Nội - Hải Phòng">
                         <div class="card-body">
                             <h5 class="card-title">Hà Nội - Hải Phòng</h5>
@@ -56,7 +65,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card" onclick="window.location='trip_results.php?city_from=72&city_to=76&date=<?= date('Y-m-d') ?>'">
+                    <div class="card" onclick="window.location='trip_results.php?city_from=72&city_to=99&date=<?= date('Y-m-d') ?>'">
                         <img src="img/img_hero (1).png" class="card-img-top" alt="Sài Gòn - Đà Lạt">
                         <div class="card-body">
                             <h5 class="card-title">Sài Gòn - Đà Lạt</h5>
@@ -65,7 +74,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <div class="card" onclick="window.location='trip_results.php?city_from=72&city_to=77&date=<?= date('Y-m-d') ?>'">
+                    <div class="card" onclick="window.location='trip_results.php?city_from=72&city_to=99&date=<?= date('Y-m-d') ?>'">
                         <img src="img/img_hero (3).png" class="card-img-top" alt="Sài Gòn - Phan Thiết">
                         <div class="card-body">
                             <h5 class="card-title">Sài Gòn - Phan Thiết</h5>

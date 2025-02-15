@@ -5,7 +5,7 @@
     $city_to = $_GET['city_to'] ?? null;
     $date = $_GET['date'] ?? null;
     $sort = $_GET['sort'] ?? 'default';
-
+  
     if ($date) {
         $date = DateTime::createFromFormat('Y-m-d', $date)->format('d-m-Y');
     } else {
@@ -19,14 +19,13 @@
         $trips = $tripSearcher->searchTrips($city_from, $city_to, $date, $sort);
 
         if (empty($trips)) {
-            echo "<p class='text-danger'>Không có chuyến xe nào tìm thấy.</p>";
+           
         } else {
             // Tính toán số ghế còn lại và lọc chuyến xe
             $trips = array_filter(array_map(function ($trip) use ($tripSearcher, $date) {
                 $number_seat = $tripSearcher->numberSeat($trip['id_trip'], $date);
                 $remaining_seats = (int) $trip['remaining_seats'] - (int) $number_seat;
                 $trip['remaining_seats'] = $remaining_seats;
-           
                 return $trip;
             }, $trips), function ($trip) {
                 return $trip['remaining_seats'] > 0;
@@ -47,7 +46,7 @@
         <style>
        .model_pg1i {
     overflow: hidden;
-    max-height: 470px; /* Trạng thái collapsed: nếu nội dung nhỏ hơn 450px, nó vẫn hiển thị đúng */
+    max-height: 475px; /* Trạng thái collapsed: nếu nội dung nhỏ hơn 450px, nó vẫn hiển thị đúng */
     transition: max-height 0.5s ease;
 }
 
@@ -55,6 +54,18 @@
 .model_pg1i.expanded {
     max-height: 3000px;
 }
+.segment-list {
+    max-height: 100px; /* Đặt chiều cao tối đa cho vùng danh sách, có thể điều chỉnh */
+    overflow-y: auto; /* Cho phép cuộn dọc */
+    padding: 0;
+    list-style-type: none;
+}
+
+.segment-list li {
+    padding: 2px 0; /* Thêm khoảng cách cho mỗi mục */
+    border-bottom: 1px solid #ddd; /* Thêm đường viền dưới mỗi mục */
+}
+
         </style>
         <body>
             <div class="main_2 clearfix">
@@ -163,18 +174,18 @@
                                                                         <?= htmlspecialchars($trip['car_capacity']) ?> chỗ</p>
                                                 
 
-                                                                    <?= isset($trip['full_route']) ? htmlspecialchars($trip['full_route']) : 'Không xác định' ?>
+                                                                   <strong>Tuyến :</strong> <?= isset($trip['full_route']) ? htmlspecialchars($trip['full_route']) : 'Không xác định' ?>
 
-                                                                    <ul>
-                                                                        <?php foreach ($trip['segment_prices'] as $segment): ?>
-                                                                            <li>
-                                                                                <?= htmlspecialchars($segment['city_from_name']) ?> →
-                                                                                <?= htmlspecialchars($segment['city_to_name']) ?> :
-                                                                                <strong><?= number_format($segment['base_price'], 0) ?>
-                                                                                    đ</strong>
-                                                                            </li>
-                                                                        <?php endforeach; ?>
-                                                                    </ul>
+                                                                    <ul class="segment-list">
+    <?php foreach ($trip['segment_prices'] as $segment): ?>
+        <li>
+            <?= htmlspecialchars($segment['city_from_name']) ?> →
+            <?= htmlspecialchars($segment['city_to_name']) ?> :
+            <strong><?= number_format($segment['base_price'], 0) ?> đ</strong>
+        </li>
+    <?php endforeach; ?>
+</ul>
+
                                                                     </p>
 
 
@@ -247,10 +258,10 @@
         <!-- Chọn điểm đón (bên trái) -->
         <div class="pickup-locations" style="flex: 1; padding-right: 20px;">
             <h5>📍 Chọn điểm đón:</h5>
-            <?php foreach ($tripSearcher->getPickupLocations($trip['id_route']) as $pickup): ?>
+            <?php   foreach ($tripSearcher->getPickupLocations($trip['id_route']) as $pickup): ?>
                 <div class="form-check">
                     <input class="form-check-input pickup-radio" type="radio" name="pickup_<?= $trip['id_route'] ?>"
-                        value="<?= htmlspecialchars($pickup['name_location']) . '||' . htmlspecialchars($pickup['city_name']) . '||' . htmlspecialchars($pickup['pickup_time'])?>" data-trip="<?= $trip['id_trip'] ?>"
+                        value="<?= htmlspecialchars($pickup['name_location']) . '||' . htmlspecialchars($pickup['city_name']) . '||' . htmlspecialchars($pickup['pickup_time']). '||' . htmlspecialchars($pickup['id_location'])?>" data-trip="<?= $trip['id_trip'] ?>"
                         data-city-id="<?= htmlspecialchars($pickup['id_city']) ?>"required>
                     <label class="form-check-label">
                         <?= htmlspecialchars($pickup['name_location']) ?> (<?= htmlspecialchars($pickup['city_name']) ?>)- 
@@ -267,7 +278,7 @@
             <?php foreach ($tripSearcher->getDropoffLocations($trip['id_route']) as $dropoff): ?>
                 <div class="form-check">
                     <input class="form-check-input dropoff-radio" type="radio" name="dropoff_<?= $trip['id_route'] ?>"
-                        value="<?= htmlspecialchars($dropoff['name_location']) . '||' . htmlspecialchars($dropoff['city_name']).'||' . htmlspecialchars($dropoff['dropoff_time']) ?>" data-trip="<?= $trip['id_trip'] ?>"
+                        value="<?= htmlspecialchars($dropoff['name_location']) . '||' . htmlspecialchars($dropoff['city_name']).'||' . htmlspecialchars($dropoff['dropoff_time']). '||' . htmlspecialchars( $dropoff['id_location'])  ?>" data-trip="<?= $trip['id_trip']?>"
                         data-city-id="<?= htmlspecialchars($dropoff['id_city']) ?>"required>
                     <label class="form-check-label">    
                         <?= htmlspecialchars($dropoff['name_location']) ?> (<?= htmlspecialchars($dropoff['city_name']) ?>)- 

@@ -20,7 +20,8 @@ $number_seat = $_POST['number_seat'] ?? 0;
 $total_price = $_POST['total_price'] ?? 0;
 $method = $_POST['method'] ?? 0; // Giá trị mặc định là 0 (Tiền mặt)
 $date = $_POST['date'] ?? null;
-
+$id_location_from  = $_POST['id_location_from'] ?? '';
+$id_location_to  = $_POST['id_location_to'] ?? '';
 if (!$id_trip || !$name || !$phone || !$number_seat || !$date) {
     die("Thiếu dữ liệu quan trọng! Vui lòng kiểm tra lại.");
 }
@@ -36,15 +37,17 @@ if ($method == 1) {
 }
 
 // Câu lệnh SQL để chèn dữ liệu vào bảng ticket
-$sql = "INSERT INTO ticket (id_trip, id_user, name, phone, number_seat, total_price, status, method, date)
-        VALUES (:id_trip, :id_user, :name, :phone, :number_seat, :total_price, :status, :method, :date)";
+$sql = "INSERT INTO ticket (id_trip, id_user,id_location_from,id_location_to, name, phone, number_seat, total_price, status, method, date)
+        VALUES (:id_trip, :id_user,:id_location_from,:id_location_to ,:name, :phone, :number_seat, :total_price, :status, :method, :date)";
 
 // Sử dụng chuẩn bị câu lệnh SQL với kết nối PDO
 $stmt = $db->prepare($sql);
 
 // Liên kết tham số với các giá trị trong mảng $data
 $stmt->bindParam(':id_trip', $id_trip);
-$stmt->bindParam(':id_user', $id_user); // Gán id_user là null nếu người dùng chưa đăng nhập
+$stmt->bindParam(':id_user', $id_user);
+$stmt->bindParam(':id_location_from', $id_location_from);
+$stmt->bindParam(':id_location_to', $id_location_to);
 $stmt->bindParam(':name', $name);
 $stmt->bindParam(':phone', $phone);
 $stmt->bindParam(':number_seat', $number_seat);

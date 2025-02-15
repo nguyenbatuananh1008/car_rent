@@ -1,4 +1,43 @@
+<?php
+session_start();
+require_once 'module/Ticket.php';
 
+// Kiểm tra xem người dùng đã đăng nhập chưa
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");  // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
+    exit();
+}
+
+// Lấy id_user từ session
+$userId = $_SESSION['user_id'];
+
+// Khởi tạo đối tượng Ticket
+$ticket = new Ticket();
+// Lấy vé theo các trạng thái khác nhau
+$all = $waitingTickets = $confirmedTickets = $goneTickets = $cancelledTickets ='';
+$waitingTickets = $ticket->getTicketsByUser($userId, 0);  // Trạng thái "Đang chờ"
+$confirmedTickets = $ticket->getTicketsByUser($userId, 1);  // Trạng thái "Đã xác nhận"
+$goneTickets = $ticket->getTicketsByUser($userId, 3);  // Trạng thái "Đã đi"
+$cancelledTickets = $ticket->getTicketsByUser($userId, 2);  // Trạng thái "Đã hủy"
+$noTickets  = empty($waitingTickets) && empty($confirmedTickets) && empty($goneTickets) && empty($cancelledTickets);
+$TicketsAll = $ticket->getTicketsByUser($userId);
+    foreach ($TicketsAll as $Tickets) {
+        $date = $Tickets['date'];  //$Tickets['date'] có định dạng Y-m-d
+
+        // Lấy số thứ tự ngày trong tuần (1 = Thứ 2, ..., 7 = Chủ nhật)
+        $dayOfWeek = date('N', strtotime($date));
+
+        // Mảng ánh xạ số thứ tự ngày trong tuần thành tên ngày
+        $daysOfWeek = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
+
+        // Định dạng lại ngày thành kiểu 'd/m/Y' (22/01/2025)
+        $formattedDate = date('d/m/Y', strtotime($date));
+
+        
+        $date = $daysOfWeek[$dayOfWeek ] . ", " . $formattedDate . "<br>";
+}
+
+?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -43,7 +82,8 @@
                            
                      
                         <div class="tab-pane fade show active" id="Waiting" role="tabpanel" aria-labelledby="Waiting-tab">
-                      
+                        <?php if (!empty($waitingTickets)): ?>
+                            <?php foreach ($waitingTickets as $ticket): ?>
                        
                             <div class="card">
                             
@@ -51,14 +91,15 @@
                                 
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title">Ngày đi </h5>
-                                    <p>Giờ xuất phát:</p>
-                                    <p>Nhà xe: </p>
-                                    <p>Tên xe:</p>
-                                    <p>Điểm đi: </p>
-                                    <p>Điểm đến: </p>
-                                    <p>Số lượng ghế : </p>
-                            
+                                        <h5 class="card-title"> <?= $date?> </h5>
+                                      <p>Giờ xuất phát: <?= $ticket['t_pick'] ?></p>
+                                        <p>Nhà xe: <?= $ticket['name_c_house'] ?></p>
+                                        <p>Tên xe: <?= $ticket['c_name'] ?></p>
+                                        <p>Điểm đi: <?= $ticket['from_location'] ?> (<?= $ticket['from_time'] ?>)</p>
+                                        <p>Điểm đến: <?= $ticket['to_location'] ?> (<?= $ticket['to_time'] ?>)</p>
+                                        <p>Số ghế: <?= $ticket['number_seat'] ?></p>
+                                        <p>Giá: <?= number_format($ticket['total_price']) ?>VNĐ</p>
+                                        <p>Biển số xe : <?= $ticket['c_plate'] ?> </p>
                                         </div>
                                         <div>
                                             <span class="badge bg-success p-2">Đang chờ</span>
@@ -69,30 +110,38 @@
                                 </div>
                                
                             </div>
-                        
+                            <?php endforeach; ?>
+                            <?php else: ?>
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đang chờ xác nhận. 
             <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
+            
         </div>
+        <?php endif; ?>
 
                         </div>
                         
                     
                         <!-- Đã xác nhận -->
                         <div class="tab-pane fade" id="Confirmed" role="tabpanel" aria-labelledby="Confirmed-tab">
-                
+                        <?php if (!empty($confirmedTickets)): ?>
+                            <?php foreach ($confirmedTickets as $ticket): ?>
                             <div class="card">
                            
                                 <div class="card-body">
                                 
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title">Ngày đi :</h5>
-                                    <p>Giờ xuất phát: </p>
-                                    <p>Nhà xe: </p>
-                                    <p>Tên xe: </p>
-                                    <p>Điểm đi: </p>
-                                    <p>Điểm đến: </p>
+                                    
+                                    <h5 class="card-title"><?=$date?></h5>
+                                    <p>Giờ xuất phát: <?= $ticket['t_pick'] ?></p>
+                                    <p>Nhà xe: <?= $ticket['name_c_house'] ?></p>
+                                    <p>Tên xe: <?= $ticket['c_name'] ?></p>
+                                    <p>Điểm đi: <?= $ticket['from_location'] ?> (<?= $ticket['from_time'] ?>)</p>
+                                    <p>Điểm đến: <?= $ticket['to_location'] ?> (<?= $ticket['to_time'] ?>)</p>
+                                    <p>Số ghế: <?= $ticket['number_seat'] ?></p>
+                                    <p>Giá: <?= number_format($ticket['total_price']) ?> VNĐ</p>
+                                    <p>Biển số xe : <?= $ticket['c_plate'] ?> </p>
                                         </div>
                                         <div>
                                             <span class="badge bg-primary p-2">Đã xác nhận</span>
@@ -103,29 +152,36 @@
                                 </div>
                                     
                             </div>
-                        
+                            <?php endforeach; ?>
+                            <?php else: ?>
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã được xác nhận. 
             <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
+        <?php endif; ?>
  
                         </div>
                         
                         
                         <!-- Đã đi -->
                         <div class="tab-pane fade" id="Gone" role="Gone" aria-labelledby="Gone-tab">
-                    
+                        <?php if (!empty($goneTickets)): ?>
+                            <?php foreach ($goneTickets as $ticket): ?>
                             <div class="card">
                                 <div class="card-body">
                                     
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title">Ngày đi :</h5>
-                                    <p>Giờ xuất phát:</p>
-                                    <p>Nhà xe: </p>
-                                    <p>Tên xe: </p>
-                                    <p>Điểm đi:</p>
-                                    <p>Điểm đến:</p>
+                                        
+                                    <h5 class="card-title"><?= $date ?></h5>
+                                    <p>Giờ xuất phát: <?= $ticket['t_pick'] ?></p>
+                                    <p>Nhà xe: <?= $ticket['name_c_house'] ?></p>
+                                    <p>Tên xe: <?= $ticket['c_name'] ?></p>
+                                    <p>Điểm đi: <?= $ticket['from_location'] ?> (<?= $ticket['from_time'] ?>)</p>
+                                    <p>Điểm đến: <?= $ticket['to_location'] ?> (<?= $ticket['to_time'] ?>)</p>
+                                    <p>Số ghế: <?= $ticket['number_seat'] ?></p>
+                                    <p>Giá: <?= number_format($ticket['total_price']) ?>VNĐ</p>
+                                    <p>Biển số xe : <?= $ticket['c_plate'] ?> </p>
                                         </div>
                                         <div>
                                             <span class="badge bg-secondary p-2">Đã đi</span>
@@ -134,26 +190,33 @@
                                     </div>
                                 </div>
                             </div>
-                          
+                            <?php endforeach; ?>
+                            <?php else: ?>             
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã hoàn thành. 
             <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
+        <?php endif; ?>
     
                         </div>
                         <!-- đã hủy -->
                         <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
+                        <?php if (!empty($cancelledTickets)): ?>
+                            <?php foreach ($cancelledTickets as $ticket): ?>
                             <div class="card">
                                 <div class="card-body">
                                     
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title">Ngày đi : </h5>
-                                    <p>Giờ xuất phát: </p>
-                                    <p>Nhà xe: </p>
-                                    <p>Tên xe: </p>
-                                    <p>Điểm đi:</p>
-                                    <p>Điểm đến:</p>    
+                                        <h5 class="card-title"><?= $date ?></h5>
+                                    <p>Giờ xuất phát: <?= $ticket['t_pick'] ?></p>
+                                    <p>Nhà xe: <?= $ticket['name_c_house'] ?></p>
+                                    <p>Tên xe: <?= $ticket['c_name'] ?></p>
+                                    <p>Điểm đi: <?= $ticket['from_location'] ?> (<?= $ticket['from_time'] ?>)</p>
+                                    <p>Điểm đến: <?= $ticket['to_location'] ?> (<?= $ticket['to_time'] ?>)</p>
+                                    <p>Số ghế: <?= $ticket['number_seat'] ?></p>
+                                    <p>Giá: <?= number_format($ticket['total_price']) ?> VNĐ</p>
+                                    <p>Biển số xe : <?= $ticket['c_plate'] ?> </p>
                                         </div>
                                         <div>
                                             <span class="badge bg-danger p-2">Đã Hủy</span>
@@ -162,19 +225,19 @@
                                     </div>
                                 </div>
                             </div>
-                           
+                            <?php endforeach; ?>
+                    <?php else: ?>
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã hủy. 
             <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
+        <?php endif; ?>
 
                         </div>
                        
                     </div>
                     
                 </div>
-             
-            <div class="alert alert-info">Không có lịch sử vé để hiển thị.</div>
             </div>
         </div>
     </div>
