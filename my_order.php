@@ -1,22 +1,4 @@
-<?php
-require_once 'module/db.php';
-require_once 'module/Ticket.php';
 
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Kết nối Database
-$db = (new Database())->connect();
-$ticket = new Ticket($db);
-
-
-// Nếu không có session ID user, mặc định không hiển thị vé
-$userID = $_SESSION['id_user'] ?? null;
-$userID = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-
-$tickets = $userID ? $ticket->getTicketsByUser($userID) : [];
-?>
     <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -36,7 +18,6 @@ $tickets = $userID ? $ticket->getTicketsByUser($userID) : [];
                         <li class="list-group-item"><a href="logout.php">Đăng xuất</a></li>
                     </ul>
                 </div>
-                <?php if ($userID && !empty($tickets)): ?>
                 <!-- Main Content -->
                 <div class="col-md-9">
                     <h4 class="mb-4">Đơn hàng của tôi</h4>
@@ -62,25 +43,21 @@ $tickets = $userID ? $ticket->getTicketsByUser($userID) : [];
                            
                      
                         <div class="tab-pane fade show active" id="Waiting" role="tabpanel" aria-labelledby="Waiting-tab">
-                        <?php
-                        $hasWaitingTickets = false; 
-                        foreach ($tickets as $ticket): ?>
-                            <?php if ($ticket['status'] == 0): 
-                            $hasWaitingTickets = true; 
-                                ?>
+                      
+                       
                             <div class="card">
                             
                                 <div class="card-body">
                                 
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title"><?= htmlspecialchars($ticket['date']) ?></h5>
-                                    <p>Giờ xuất phát: <?= htmlspecialchars($ticket['t_pick']) ?></p>
-                                    <p>Nhà xe: <?= htmlspecialchars($ticket['name_c_house']) ?></p>
-                                    <p>Tên xe: <?= htmlspecialchars($ticket['c_name']) ?></p>
-                                    <p>Điểm đi: <?= htmlspecialchars($ticket['from_city']) ?></p>
-                                    <p>Điểm đến: <?= htmlspecialchars($ticket['to_city']) ?></p>
-                                    <p>Số lượng ghế : <?= htmlspecialchars($ticket['number_seat']) ?></p>
+                                        <h5 class="card-title">Ngày đi </h5>
+                                    <p>Giờ xuất phát:</p>
+                                    <p>Nhà xe: </p>
+                                    <p>Tên xe:</p>
+                                    <p>Điểm đi: </p>
+                                    <p>Điểm đến: </p>
+                                    <p>Số lượng ghế : </p>
                             
                                         </div>
                                         <div>
@@ -92,36 +69,30 @@ $tickets = $userID ? $ticket->getTicketsByUser($userID) : [];
                                 </div>
                                
                             </div>
-                            <?php endif; ?>
-                            <?php endforeach; ?>
-                            <?php if (!$hasWaitingTickets): ?>
+                        
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đang chờ xác nhận. 
             <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
-    <?php endif; ?>
+
                         </div>
                         
                     
                         <!-- Đã xác nhận -->
                         <div class="tab-pane fade" id="Confirmed" role="tabpanel" aria-labelledby="Confirmed-tab">
-                        <?php 
-                        $hasConfirmedTickets = false;
-                        foreach ($tickets as $ticket): ?>
-                            <?php if ($ticket['status'] == 1): 
-                                 $hasConfirmedTickets = true;?>
+                
                             <div class="card">
                            
                                 <div class="card-body">
                                 
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title"><?= htmlspecialchars($ticket['date']) ?></h5>
-                                    <p>Giờ xuất phát: <?= htmlspecialchars($ticket['t_pick']) ?></p>
-                                    <p>Nhà xe: <?= htmlspecialchars($ticket['name_c_house']) ?></p>
-                                    <p>Tên xe: <?= htmlspecialchars($ticket['c_name']) ?></p>
-                                    <p>Điểm đi: <?= htmlspecialchars($ticket['from_city']) ?></p>
-                                    <p>Điểm đến: <?= htmlspecialchars($ticket['to_city']) ?></p>
+                                        <h5 class="card-title">Ngày đi :</h5>
+                                    <p>Giờ xuất phát: </p>
+                                    <p>Nhà xe: </p>
+                                    <p>Tên xe: </p>
+                                    <p>Điểm đi: </p>
+                                    <p>Điểm đến: </p>
                                         </div>
                                         <div>
                                             <span class="badge bg-primary p-2">Đã xác nhận</span>
@@ -132,36 +103,29 @@ $tickets = $userID ? $ticket->getTicketsByUser($userID) : [];
                                 </div>
                                     
                             </div>
-                            <?php endif; ?>
-                        <?php endforeach; ?>
-                        <?php if (!$hasConfirmedTickets): ?>
+                        
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã được xác nhận. 
             <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
-    <?php endif; ?>
+ 
                         </div>
                         
                         
                         <!-- Đã đi -->
                         <div class="tab-pane fade" id="Gone" role="Gone" aria-labelledby="Gone-tab">
-                        <?php
-                         $hasGoneTickets = false;
-                         foreach ($tickets as $ticket): ?>
-                            <?php if ($ticket['status'] == 2): 
-                                $hasGoneTickets = true;
-                                ?>
+                    
                             <div class="card">
                                 <div class="card-body">
                                     
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title"><?= htmlspecialchars($ticket['date']) ?></h5>
-                                    <p>Giờ xuất phát: <?= htmlspecialchars($ticket['t_pick']) ?></p>
-                                    <p>Nhà xe: <?= htmlspecialchars($ticket['name_c_house']) ?></p>
-                                    <p>Tên xe: <?= htmlspecialchars($ticket['c_name']) ?></p>
-                                    <p>Điểm đi: <?= htmlspecialchars($ticket['from_city']) ?></p>
-                                    <p>Điểm đến: <?= htmlspecialchars($ticket['to_city']) ?></p>
+                                        <h5 class="card-title">Ngày đi :</h5>
+                                    <p>Giờ xuất phát:</p>
+                                    <p>Nhà xe: </p>
+                                    <p>Tên xe: </p>
+                                    <p>Điểm đi:</p>
+                                    <p>Điểm đến:</p>
                                         </div>
                                         <div>
                                             <span class="badge bg-secondary p-2">Đã đi</span>
@@ -170,39 +134,26 @@ $tickets = $userID ? $ticket->getTicketsByUser($userID) : [];
                                     </div>
                                 </div>
                             </div>
-                            <?php endif; ?>
-                            
-                            <?php endforeach; ?>
-                            <?php if (!$hasGoneTickets): ?>
+                          
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã hoàn thành. 
             <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
-    <?php endif; ?>
+    
                         </div>
-
-
                         <!-- đã hủy -->
                         <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
-                        <?php 
-                          $hasCancelledTickets = false;
-                        foreach ($tickets as $ticket): 
-
-                            ?>
-                            <?php if ($ticket['status'] == 3): 
-                             $hasCancelledTickets = true; 
-                                ?>
                             <div class="card">
                                 <div class="card-body">
                                     
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title"><?= htmlspecialchars($ticket['date']) ?></h5>
-                                    <p>Giờ xuất phát: <?= htmlspecialchars($ticket['t_pick']) ?></p>
-                                    <p>Nhà xe: <?= htmlspecialchars($ticket['name_c_house']) ?></p>
-                                    <p>Tên xe: <?= htmlspecialchars($ticket['c_name']) ?></p>
-                                    <p>Điểm đi: <?= htmlspecialchars($ticket['from_city']) ?></p>
-                                    <p>Điểm đến: <?= htmlspecialchars($ticket['to_city']) ?></p>    
+                                        <h5 class="card-title">Ngày đi : </h5>
+                                    <p>Giờ xuất phát: </p>
+                                    <p>Nhà xe: </p>
+                                    <p>Tên xe: </p>
+                                    <p>Điểm đi:</p>
+                                    <p>Điểm đến:</p>    
                                         </div>
                                         <div>
                                             <span class="badge bg-danger p-2">Đã Hủy</span>
@@ -211,22 +162,19 @@ $tickets = $userID ? $ticket->getTicketsByUser($userID) : [];
                                     </div>
                                 </div>
                             </div>
-                            <?php endif; ?>
-                            <?php endforeach; ?>
-                            <?php if (!$hasCancelledTickets): ?>
+                           
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã hủy. 
             <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
-    <?php endif; ?>
+
                         </div>
                        
                     </div>
                     
                 </div>
-                <?php else: ?>
+             
             <div class="alert alert-info">Không có lịch sử vé để hiển thị.</div>
-                  <?php endif; ?>
             </div>
         </div>
     </div>

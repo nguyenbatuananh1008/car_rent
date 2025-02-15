@@ -50,7 +50,8 @@ $date = isset($_GET['date']) ? $_GET['date'] : null;
                 <div class="col-md-3 col-sm-6">
                     <div class="booking_2i">
                         <h6 class="mb-3"><i class="fa fa-calendar me-1 col_oran"></i> Ngày đi</h6>
-                        <input class="form-control" type="date" name="date" value="<?= htmlspecialchars($date) ?>" required>
+                        <input class="form-control" type="date" name="date" value="<?= htmlspecialchars($date) ?>" min="<?= date('Y-m-d') ?>" required>
+
                     </div>
                 </div>
                 <!-- Nút tìm -->

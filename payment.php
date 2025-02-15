@@ -1,25 +1,29 @@
     <?php
-    // Lấy dữ liệu từ form trước
-    $id_trip = $_POST['id_trip'] ?? null;
-    $pickup_location = $_POST['pickup_location'] ?? null;
-    $dropoff_location = $_POST['dropoff_location'] ?? null;
-    $ticket_quantity = $_POST['ticket_quantity'] ?? null;
+$id_trip = $_POST['id_trip'];
+  $date = $_POST['date'] ?? '';
+  $formattedDate = $_POST['formatted_date'] ?? '';
+  $trip_id = $_POST['trip_id'] ?? '';
+  $route_id = $_POST['route_id'] ?? '';
+  $car_house_name = $_POST['car_house_name'] ?? '';
+  $car_name = $_POST['car_name'] ?? '';
+  $car_capacity = $_POST['car_capacity'] ?? '';
+  $num_seats = $_POST['num_seats'] ?? '';
+  $car_image = $_POST['car_image'] ?? '';
+  $car_type = $_POST['car_type'] ?? '';
+  $car_color = $_POST['car_color'] ?? '';
+  $pickup_location = $_POST['pickup_location'] ?? '';
+  $pickup_city = $_POST['pickup_city'] ?? '';
+  $pickup_time = $_POST['pickup_time'] ?? '';
+  $dropoff_location = $_POST['dropoff_location'] ?? '';
+  $dropoff_city = $_POST['dropoff_city'] ?? '';
+  $dropoff_time = $_POST['dropoff_time'] ?? '';
+  $total_price = $_POST['total_price'] ?? 0;
+   
     $name = $_POST['name'] ?? null;
     $phone = $_POST['phone'] ?? null;
     $email = $_POST['email'] ?? null;
-    $trip_price = $_POST['trip_price'] ?? 0;
-    $total_price = $ticket_quantity * $trip_price;
 
-    $car_house_name = $_POST['car_house_name'] ?? null;
-    $city_from_name = $_POST['city_from_name'] ?? null;
-    $city_to_name = $_POST['city_to_name'] ?? null;
-    $pickup_time = $_POST['pickup_time'] ?? null;
-    $pickup_name = $_POST['pickup_name'] ?? null;
-    $dropoff_time = $_POST['dropoff_time'] ?? null;
-    $dropoff_name = $_POST['dropoff_name'] ?? null;
-    $date = $_POST['date'] ?? null; // Lấy $date từ POST
-    $car_name = $_POST['car_name'] ?? null;
-    
+    var_dump( $formattedDate);
     ?>
 
 
@@ -50,14 +54,6 @@
             <!-- Cột trái: Phương thức thanh toán -->
             <div class="col-lg-8">
             <form action="module/process_payment.php" method="POST">
-            <input type="hidden" name="id_trip" value="<?= $id_trip ?>">
-    <input type="hidden" name="total_price" value="<?= $total_price ?>">
-    <input type="hidden" name="user_id" value="<?= isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null ?>">
-    <input type="hidden" name="name" value="<?= $name ?>" required>
-    <input type="hidden" name="phone" value="<?= $phone ?>" required>
-    <input type="hidden" name="email" value="<?= $email ?>" required>
-    <input type="hidden" name="date" value="<?= $date ?>" required>
-    <input type="hidden" name="ticket_quantity" value="<?= $ticket_quantity ?>" required><br>
 
                 <h4>Phương thức thanh toán</h4>
                 <!-- QR Chuyển khoản -->
@@ -102,31 +98,38 @@
                 <!-- Tổng tiền -->
                 <div class="trip-info mb-4">
                     <h5 class="mb-2">Tổng tiền</h5>
-                    <h4 class="text-primary"><?= number_format($total_price, 0) ?> đ</h4>
+                    <h4 class="text-primary"><?= number_format(  $total_price) ?> đ</h4>
                 </div>
 
                 <!-- Mã giảm giá -->
             
 
                 <!-- Thông tin chuyến đi -->
+                <input type="hidden" name="id_trip" value="<?= htmlspecialchars($id_trip) ?>">
+    <input type="hidden" name="id_user" value="<?= htmlspecialchars($id_user) ?>">
+    <input type="hidden" name="name" value="<?= htmlspecialchars($name) ?>">
+    <input type="hidden" name="phone" value="<?= htmlspecialchars($phone) ?>">
+    <input type="hidden" name="number_seat" value="<?= htmlspecialchars($num_seats) ?>">
+    <input type="hidden" name="total_price" value="<?= htmlspecialchars($total_price) ?>">
+    <input type="hidden" name="date" value="<?= htmlspecialchars($date) ?>">
+
                 <div class="trip-info mb-4">
         <h5 class="mb-3">Thông tin chuyến đi</h5>
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <p class="mb-0"><strong>Khởi hành : <?= htmlspecialchars($date) ?></strong></p>
+                <p class="mb-0"><strong>Khởi hành : <?= htmlspecialchars( $formattedDate ) ?></strong></p>
             </div>
-            <div>
-                <a href="#" class="text-primary">Chi tiết</a>
-            </div>
+        
         </div>
 
         <!-- Thông tin xe -->
         <div class="d-flex align-items-center mb-3">
-            <img src="" alt="Ninh Binh Car" class="me-3 rounded">
+        <img src="admin/uploads/<?= htmlspecialchars( $car_image) ?>" alt="Car Image" style="width:90px; height:60px; margin-right: 15px;">
             <div>
-                <h6 class="mb-1"> <?= htmlspecialchars($car_house_name) ?></h6>
-                <p class="mb-1 text-muted"><?= htmlspecialchars($car_name) ?></p>
-                <small><?= htmlspecialchars($ticket_quantity) ?> hành khách</small>
+            
+                <h6 class="mb-1"> <?= htmlspecialchars(  $car_house_name) ?></h6>
+                <p class="mb-1 text-muted"><?= htmlspecialchars($car_name) ?>(<?= htmlspecialchars($car_color) ?>)</p>
+                <small><?= htmlspecialchars(  $num_seats) ?> hành khách</small>
             </div>
         </div>
 
@@ -136,8 +139,9 @@
                 <i class="bi bi-geo-alt-fill text-primary me-2"></i> <!-- Icon khởi hành -->
             </div>
             <div>
-                <p class="mb-0"><strong><?= htmlspecialchars($pickup_time) ?></strong> - <?= htmlspecialchars($city_from_name) ?></p>
-                <small class="text-muted"><?= htmlspecialchars($pickup_name) ?></small>
+                <strong><h6><?= htmlspecialchars($pickup_city) ?></h6></strong>
+                <p class="mb-0"><strong><?= htmlspecialchars($pickup_time) ?></strong> - <?= htmlspecialchars($pickup_location) ?></p>
+                
             </div>
             <div class="ms-auto">
                 <a href="#" class="text-primary">Thay đổi</a>
@@ -150,8 +154,9 @@
                 <i class="bi bi-pin-map-fill text-danger me-2"></i> <!-- Icon điểm đến -->
             </div>
             <div>
-                <p class="mb-0"><strong><?= htmlspecialchars($dropoff_time) ?></strong> - <?= htmlspecialchars($city_to_name) ?></p>
-                <small class="text-muted"><?= htmlspecialchars($dropoff_name) ?></small>
+            <strong><h6><?= htmlspecialchars($dropoff_city) ?></h6></strong>
+                <p class="mb-0"><strong><?= htmlspecialchars($dropoff_time) ?></strong> - <?= htmlspecialchars($dropoff_location ) ?></p>
+                
             </div>
             <div class="ms-auto">
                 <a href="#" class="text-primary">Thay đổi</a>
