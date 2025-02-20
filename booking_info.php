@@ -63,7 +63,7 @@ $total_price  = $_POST['total_price'] ?? 0;  // Ví dụ, nếu bạn gửi trư
 
     <div class="container vh-100 d-flex align-items-center justify-content-center">
         <div class="container mt-4">
-            <a href="trip.php" class="text-decoration-none text-primary mb-3 d-block">&larr; Quay lại</a>
+            <a href="trip_results.php" class="text-decoration-none text-primary mb-3 d-block">&larr; Quay lại</a>
 
             <!-- Main Content -->
             <div class="row">
@@ -110,8 +110,8 @@ $total_price  = $_POST['total_price'] ?? 0;  // Ví dụ, nếu bạn gửi trư
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email để nhận thông tin đặt chỗ <span class="text-danger">*</span></label>
-                                    <input type="email" name="email" class="form-control" id="email" placeholder="Nhập email" required>
+                                    <label for="email" class="form-label">Nhập email( nếu có )</label>
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Nhập email">
                                 </div>
                                 
                                 <button class="btn btn-primary" name="confirm_booking" type="submit">Tiếp tục</button>
@@ -152,6 +152,7 @@ $total_price  = $_POST['total_price'] ?? 0;  // Ví dụ, nếu bạn gửi trư
                         <strong><?= htmlspecialchars($dropoffCity) ?></strong><br>
                         <small><?= htmlspecialchars($dropoffTime) ?> - <?= htmlspecialchars($dropoffLocation) ?></small>
                     </div>
+                    
                 </div>
             </div>
         </div>

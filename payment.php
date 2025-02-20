@@ -20,9 +20,9 @@ $id_trip = $_POST['id_trip'];
   $total_price = $_POST['total_price'] ?? 0;
   $id_location_from = $_POST['id_location_from'] ?? '';
   $id_location_to = $_POST['id_location_to'] ?? '';
-    $name = $_POST['name'] ?? null;
-    $phone = $_POST['phone'] ?? null;
-    $email = $_POST['email'] ?? null;
+  $name = $_POST['name'] ?? null;
+  $phone = $_POST['phone'] ?? '';
+  $email = $_POST['email'] ?? null;
 
     ?>
 
@@ -33,11 +33,11 @@ $id_trip = $_POST['id_trip'];
     <?php 
     include "layout/header.php";
     ?>
-        <link rel="stylesheet" href="css/pay.css">
+    <link rel="stylesheet" href="css/pay.css">
     </head>
     <style>
         .img-fluid {
-            width: 100px; /* Đặt chiều rộng cố định cho ảnh QR */
+            width: 1020px; /* Đặt chiều rộng cố định cho ảnh QR */
             height: auto; /* Tự động điều chỉnh chiều cao theo tỷ lệ */
             border: 1px solid #ddd;
             padding: 5px;
@@ -107,13 +107,23 @@ $id_trip = $_POST['id_trip'];
                 <!-- Thông tin chuyến đi -->
                 <input type="hidden" name="id_trip" value="<?= htmlspecialchars($id_trip) ?>">
     <input type="hidden" name="id_user" value="<?= htmlspecialchars($id_user) ?>">
-    <input type="hidden" name="name" value="<?= htmlspecialchars($name) ?>">
+    <input type="hidden" name="name" value="<?= htmlspecialchars($_POST['name'])?>">
+    <input type="hidden" name="email" value="<?= htmlspecialchars($_POST['email'])?>">
     <input type="hidden" name="phone" value="<?= htmlspecialchars($phone) ?>">
     <input type="hidden" name="number_seat" value="<?= htmlspecialchars($num_seats) ?>">
     <input type="hidden" name="total_price" value="<?= htmlspecialchars($total_price) ?>">
     <input type="hidden" name="date" value="<?= htmlspecialchars($date) ?>">
     <input type="hidden" name="id_location_from" value="<?= htmlspecialchars($id_location_from) ?>">
     <input type="hidden" name="id_location_to" value="<?= htmlspecialchars($id_location_to) ?>">
+    <input type="hidden" name="car_name" value="<?= htmlspecialchars($car_name) ?>">
+    <input type="hidden" name="car_house_name" value="<?= htmlspecialchars($car_house_name) ?>">
+    <input type="hidden" name="car_image" value="<?= htmlspecialchars($car_image) ?>">
+    <input type="hidden" name="car_capacity" value="<?= htmlspecialchars($car_capacity) ?>">
+    <input type="hidden" name="car_color" value="<?= htmlspecialchars($car_color) ?>">
+    <input type="hidden" name="car_type" value="<?= htmlspecialchars($car_type) ?>">
+    <input type="hidden" name="pickup_location" value="<?= htmlspecialchars($pickup_location) ?>">
+    <input type="hidden" name="dropoff_location" value="<?= htmlspecialchars($dropoff_location) ?>">
+    <input type="hidden" name="pickup_time" value="<?= htmlspecialchars($pickup_time) ?>">
                 <div class="trip-info mb-4">
         <h5 class="mb-3">Thông tin chuyến đi</h5>
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -170,9 +180,9 @@ $id_trip = $_POST['id_trip'];
                 <!-- Thông tin liên hệ -->
                 <div class="trip-info">
                     <h5>Thông tin liên hệ</h5>
-                    <p class="mb-1"><strong>Hành khách:</strong></strong> <?= htmlspecialchars($name) ?></p>
+                    <p class="mb-1"><strong>Hành khách:</strong><?= htmlspecialchars($_POST['name']) ?></p>
                     <p class="mb-1"><strong>Số điện thoại:</strong> <?= htmlspecialchars($phone) ?></p>
-                    <p class="mb-1"><strong>Email:</strong><?= htmlspecialchars($email) ?></p>
+                    <p class="mb-1"><strong>Email:</strong><?= htmlspecialchars($_POST['email'])?></p>
                     <a href="#" class="text-primary">Chỉnh sửa</a>
                 </div>
             </div>

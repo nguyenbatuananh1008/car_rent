@@ -1,8 +1,41 @@
   <?php
+
   if (session_status() == PHP_SESSION_NONE) {
       session_start();
   }
+  
+  include_once 'module/db.php'; // Bao gồm file kết nối cơ sở dữ liệu
+  include_once 'module/User.php'; // Bao gồm lớp User
+  
+  // Khởi tạo kết nối đến cơ sở dữ liệu
+  $db = new Database();
+  $conn = $db->connect();
+  
+  // Kiểm tra nếu người dùng đã đăng nhập và có session 'user_id'
+  if (isset($_SESSION['user_id'])) {
+      $userId = $_SESSION['user_id']; // Lấy ID người dùng từ session
+  
+      // Khởi tạo đối tượng User và lấy thông tin người dùng
+      $user = new User($conn);
+      $userInfo = $user->getUserInfo($userId);
+  
+      // Kiểm tra nếu truy vấn trả về kết quả
+      if ($userInfo !== false) {
+          $name = $userInfo['name']; // Tên người dùng
+          $email = $userInfo['email']; // Email người dùng
+      } else {
+          // Nếu không tìm thấy người dùng, gán giá trị mặc định
+          $name = 'Guest';
+          $email = '';
+      }
+  } else {
+      // Nếu người dùng chưa đăng nhập, gán giá trị mặc định
+      $name = 'Guest';
+      $email = '';
+  }
   ?>
+  
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +47,7 @@
   <link href="css/font-awesome.min.css" rel="stylesheet">
   <link href="css/trip.css" rel="stylesheet">
   <link href="css/trip_results.css" rel="stylesheet">
+  <link href="css/my_order.css" rel="stylesheet">
  
 <link rel="stylesheet" href="css/index.css">
  
@@ -53,7 +87,7 @@
             <ul class="navbar-nav mb-0 ms-auto">
             <?php if (isset($_SESSION['user_id'])): ?>
   <li class="nav-item">
-    <p class="nav-link"><?= htmlspecialchars($_SESSION['user_name']) ?></p> 
+    <a class="nav-link" href="info.php"><?= htmlspecialchars($name ) ?></a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="logout.php">Logout</a>

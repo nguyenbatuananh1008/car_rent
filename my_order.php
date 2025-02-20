@@ -51,10 +51,9 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                 <!-- Sidebar -->
                 <div class="col-md-3">
                     <ul class="list-group">
-                        <li class="list-group-item fw-bold">Thông tin tài khoản</li>
-                        <li class="list-group-item active"><a href="">Đơn hàng của tôi</a></li>
-                        <li class="list-group-item"><a href="">Nhận xét chuyến đi</a></li>
-                        <li class="list-group-item"><a href="logout.php">Đăng xuất</a></li>
+                        <li class="list-group-item"><img src="https://229a2c9fe669f7b.cmccloud.com.vn/images/Auth/account-circle.svg" width="30" height="22" alt=""><a href="info.php">Thông tin tài khoản</a></li>
+                        <li class="list-group-item" style="background-color: antiquewhite;"><img src="https://229a2c9fe669f7b.cmccloud.com.vn/images/loyalty.svg" width="30" height="22" alt="" >   <a href="">Đơn hàng của tôi</a></li>
+                        <li class="list-group-item"><img src="https://229a2c9fe669f7b.cmccloud.com.vn/images/Auth/logout.svg" width="30" height="22" alt="">    <a href="logout.php">Đăng xuất</a></li>
                     </ul>
                 </div>
                 <!-- Main Content -->
@@ -85,21 +84,19 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                         <?php if (!empty($waitingTickets)): ?>
                             <?php foreach ($waitingTickets as $ticket): ?>
                        
-                            <div class="card">
+                            <div class="card mt-4">
                             
                                 <div class="card-body">
                                 
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title"> <?= $date?> </h5>
-                                      <p>Giờ xuất phát: <?= $ticket['t_pick'] ?></p>
-                                        <p>Nhà xe: <?= $ticket['name_c_house'] ?></p>
-                                        <p>Tên xe: <?= $ticket['c_name'] ?></p>
-                                        <p>Điểm đi: <?= $ticket['from_location'] ?> (<?= $ticket['from_time'] ?>)</p>
-                                        <p>Điểm đến: <?= $ticket['to_location'] ?> (<?= $ticket['to_time'] ?>)</p>
-                                        <p>Số ghế: <?= $ticket['number_seat'] ?></p>
-                                        <p>Giá: <?= number_format($ticket['total_price']) ?>VNĐ</p>
-                                        <p>Biển số xe : <?= $ticket['c_plate'] ?> </p>
+                                        <h5 class="card-title"> <?= $date?></h5>
+                                        <h1><?= $ticket['from_time'] ?></h1>
+                                        <strong><?= $ticket['name_c_house'] ?></strong><br>
+                                        <strong>Tên xe: <?= $ticket['c_name'] ?></strong><br>
+                                        Số ghế: <strong><?= $ticket['number_seat'] ?></strong><br>
+                                        Giá: <strong><?= number_format($ticket['total_price']) ?>VNĐ</strong><br>
+                                        Biển số xe : <strong><?= $ticket['c_plate'] ?></strong>
                                         </div>
                                         <div>
                                             <span class="badge bg-success p-2">Đang chờ</span>
@@ -126,22 +123,19 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                         <div class="tab-pane fade" id="Confirmed" role="tabpanel" aria-labelledby="Confirmed-tab">
                         <?php if (!empty($confirmedTickets)): ?>
                             <?php foreach ($confirmedTickets as $ticket): ?>
-                            <div class="card">
+                            <div class="card mt-4">
                            
                                 <div class="card-body">
                                 
                                     <div class="d-flex justify-content-between">
-                                        <div>
-                                    
-                                    <h5 class="card-title"><?=$date?></h5>
-                                    <p>Giờ xuất phát: <?= $ticket['t_pick'] ?></p>
-                                    <p>Nhà xe: <?= $ticket['name_c_house'] ?></p>
-                                    <p>Tên xe: <?= $ticket['c_name'] ?></p>
-                                    <p>Điểm đi: <?= $ticket['from_location'] ?> (<?= $ticket['from_time'] ?>)</p>
-                                    <p>Điểm đến: <?= $ticket['to_location'] ?> (<?= $ticket['to_time'] ?>)</p>
-                                    <p>Số ghế: <?= $ticket['number_seat'] ?></p>
-                                    <p>Giá: <?= number_format($ticket['total_price']) ?> VNĐ</p>
-                                    <p>Biển số xe : <?= $ticket['c_plate'] ?> </p>
+                                    <div>
+                                        <h5 class="card-title"> <?= $date?></h5>
+                                        <h1><?= $ticket['from_time'] ?></h1>
+                                        <strong><?= $ticket['name_c_house'] ?></strong><br>
+                                        <strong>Tên xe: <?= $ticket['c_name'] ?></strong><br>
+                                        Số ghế: <strong><?= $ticket['number_seat'] ?></strong><br>
+                                        Giá: <strong><?= number_format($ticket['total_price']) ?>VNĐ</strong><br>
+                                        Biển số xe : <strong><?= $ticket['c_plate'] ?></strong>
                                         </div>
                                         <div>
                                             <span class="badge bg-primary p-2">Đã xác nhận</span>
@@ -167,21 +161,18 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                         <div class="tab-pane fade" id="Gone" role="Gone" aria-labelledby="Gone-tab">
                         <?php if (!empty($goneTickets)): ?>
                             <?php foreach ($goneTickets as $ticket): ?>
-                            <div class="card">
+                            <div class="card mt-4">
                                 <div class="card-body">
                                     
                                     <div class="d-flex justify-content-between">
-                                        <div>
-                                        
-                                    <h5 class="card-title"><?= $date ?></h5>
-                                    <p>Giờ xuất phát: <?= $ticket['t_pick'] ?></p>
-                                    <p>Nhà xe: <?= $ticket['name_c_house'] ?></p>
-                                    <p>Tên xe: <?= $ticket['c_name'] ?></p>
-                                    <p>Điểm đi: <?= $ticket['from_location'] ?> (<?= $ticket['from_time'] ?>)</p>
-                                    <p>Điểm đến: <?= $ticket['to_location'] ?> (<?= $ticket['to_time'] ?>)</p>
-                                    <p>Số ghế: <?= $ticket['number_seat'] ?></p>
-                                    <p>Giá: <?= number_format($ticket['total_price']) ?>VNĐ</p>
-                                    <p>Biển số xe : <?= $ticket['c_plate'] ?> </p>
+                                    <div>
+                                        <h5 class="card-title"> <?= $date?></h5>
+                                        <h1><?= $ticket['from_time'] ?></h1>
+                                        <strong><?= $ticket['name_c_house'] ?></strong><br>
+                                        <strong>Tên xe: <?= $ticket['c_name'] ?></strong><br>
+                                        Số ghế: <strong><?= $ticket['number_seat'] ?></strong><br>
+                                        Giá: <strong><?= number_format($ticket['total_price']) ?>VNĐ</strong><br>
+                                        Biển số xe : <strong><?= $ticket['c_plate'] ?></strong>
                                         </div>
                                         <div>
                                             <span class="badge bg-secondary p-2">Đã đi</span>
@@ -203,20 +194,18 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                         <div class="tab-pane fade" id="cancelled" role="tabpanel" aria-labelledby="cancelled-tab">
                         <?php if (!empty($cancelledTickets)): ?>
                             <?php foreach ($cancelledTickets as $ticket): ?>
-                            <div class="card">
+                            <div class="card mt-4">
                                 <div class="card-body">
                                     
                                     <div class="d-flex justify-content-between">
-                                        <div>
-                                        <h5 class="card-title"><?= $date ?></h5>
-                                    <p>Giờ xuất phát: <?= $ticket['t_pick'] ?></p>
-                                    <p>Nhà xe: <?= $ticket['name_c_house'] ?></p>
-                                    <p>Tên xe: <?= $ticket['c_name'] ?></p>
-                                    <p>Điểm đi: <?= $ticket['from_location'] ?> (<?= $ticket['from_time'] ?>)</p>
-                                    <p>Điểm đến: <?= $ticket['to_location'] ?> (<?= $ticket['to_time'] ?>)</p>
-                                    <p>Số ghế: <?= $ticket['number_seat'] ?></p>
-                                    <p>Giá: <?= number_format($ticket['total_price']) ?> VNĐ</p>
-                                    <p>Biển số xe : <?= $ticket['c_plate'] ?> </p>
+                                    <div>
+                                        <h5 class="card-title"> <?= $date?></h5>
+                                        <h1><?= $ticket['from_time'] ?></h1>
+                                        <strong><?= $ticket['name_c_house'] ?></strong><br>
+                                        <strong>Tên xe: <?= $ticket['c_name'] ?></strong><br>
+                                        Số ghế: <strong><?= $ticket['number_seat'] ?></strong><br>
+                                        Giá: <strong><?= number_format($ticket['total_price']) ?>VNĐ</strong><br>
+                                        Biển số xe : <strong><?= $ticket['c_plate'] ?></strong>
                                         </div>
                                         <div>
                                             <span class="badge bg-danger p-2">Đã Hủy</span>

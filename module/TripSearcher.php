@@ -73,11 +73,11 @@
                                             -- Tìm chuyến xe có điểm dừng ở city_from và điểm cuối ở city_to
                                             (rs.id_city = :city_from AND r.id_city_to = :city_to)
                                             OR
-                                            -- Tìm chuyến xe có stop_order = 1 từ city_from đến stop_order = 2 ở city_to
-                                            (rs.stop_order = 1 AND rs.id_city = :city_from AND EXISTS 
-                                                (SELECT 1 FROM route_stop rs2 
+                                            -- Tìm chuyến xe có type = 0 từ city_from đến type = 1 ở city_to
+                                            (rs.type = 0 AND rs.id_city = :city_from AND EXISTS 
+                                                (SELECT 0 FROM route_stop rs2 
                                                 WHERE rs2.id_route = rs.id_route 
-                                                AND rs2.stop_order = 2 
+                                                AND rs2.type = 1 
                                                 AND rs2.id_city = :city_to))
                                         )
                                         AND trip.t_pick >= :date
@@ -178,7 +178,7 @@
                 FROM route_stop rs
                 JOIN city ON rs.id_city = city.id_city
                 WHERE rs.id_route = :id_route
-                ORDER BY rs.stop_order ASC
+                ORDER BY rs.type ASC
             ");
             $stmt->execute([':id_route' => $id_route]);
             $stops = $stmt->fetchAll(PDO::FETCH_COLUMN);
@@ -211,7 +211,7 @@
             
                 return 0;
             }
-            // Chuyển ngày hợp lệ thành Y-m-d
+           
             $formattedDate = $dateTime->format('Y-m-d');
         
             // Thực hiện truy vấn
@@ -232,37 +232,12 @@
         }
         
         
-        
-        public function createTicket($data) {
-            // Định dạng lại ngày thành Y-m-d
-            $formattedDate = date('Y-m-d', strtotime($data['date'])); // Nếu bạn đã có giá trị ngày trong dữ liệu
-        
-            $sql = "INSERT INTO ticket (id_trip, id_user, name, phone, number_seat, total_price, status, method, date)
-                    VALUES (:id_trip, :id_user, :name, :phone, :number_seat, :total_price, :status, :method, :date)";
-        
-            // Sử dụng phương thức prepare với bindParam
-            $stmt = $this->conn->prepare($sql);
-        
-            $stmt->bindParam(':id_trip', $data['id_trip']);
-            $stmt->bindParam(':id_user', $data['id_user']);
-            $stmt->bindParam(':name', $data['name']);
-            $stmt->bindParam(':phone', $data['phone']);
-            $stmt->bindParam(':number_seat', $data['number_seat']);
-            $stmt->bindParam(':total_price', $data['total_price']);
-            $stmt->bindParam(':status', $data['status']);
-            $stmt->bindParam(':method', $data['method']);
-            $stmt->bindParam(':date', $formattedDate); // Truyền ngày đã được định dạng
-        
-            $stmt->execute(); // Thực thi câu lệnh
-        }
-        
-        
     public function getPickupLocations($id_route) {
         $stmt = $this->conn->prepare("
             SELECT loc.id_location,loc.name_location, city.city_name, city.id_city, DATE_FORMAT(loc.time, '%H:%i') AS pickup_time
             FROM location loc
             JOIN city city ON loc.id_city = city.id_city
-            WHERE loc.id_route = :id_route AND loc.type = 1
+            WHERE loc.id_route = :id_route AND loc.type = 0
             ORDER BY loc.time ASC
         ");
         $stmt->execute([':id_route' => $id_route]);
@@ -275,7 +250,7 @@
             SELECT loc.id_location,loc.name_location, city.city_name, city.id_city, DATE_FORMAT(loc.time, '%H:%i') AS dropoff_time
             FROM location loc
             JOIN city city ON loc.id_city = city.id_city
-            WHERE loc.id_route = :id_route AND loc.type = 2
+            WHERE loc.id_route = :id_route AND loc.type = 1
             ORDER BY loc.time ASC
         ");
         $stmt->execute([':id_route' => $id_route]);

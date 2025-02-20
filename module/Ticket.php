@@ -32,9 +32,9 @@ class Ticket
                     city_from.city_name AS from_city,
                     city_to.city_name AS to_city,
                     location_from.name_location AS from_location,
-                    location_from.time AS from_time,
+                     DATE_FORMAT(location_from.time,'%H:%i') AS from_time,
                     location_to.name_location AS to_location,
-                    location_to.time AS to_time
+                    DATE_FORMAT(location_to.time,'%H:%i') AS to_time
                 FROM ticket t
                 INNER JOIN trip ON t.id_trip = trip.id_trip
                 INNER JOIN route ON trip.id_route = route.id_route  

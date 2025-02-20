@@ -16,12 +16,15 @@ $id_user = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null; // Nếu c
 $id_trip = $_POST['id_trip'] ?? null;
 $name = $_POST['name'] ?? null;
 $phone = $_POST['phone'] ?? null;
+$email = !empty($_POST['email']) ? $_POST['email'] : null;
 $number_seat = $_POST['number_seat'] ?? 0;
 $total_price = $_POST['total_price'] ?? 0;
 $method = $_POST['method'] ?? 0; // Giá trị mặc định là 0 (Tiền mặt)
 $date = $_POST['date'] ?? null;
 $id_location_from  = $_POST['id_location_from'] ?? '';
 $id_location_to  = $_POST['id_location_to'] ?? '';
+
+
 if (!$id_trip || !$name || !$phone || !$number_seat || !$date) {
     die("Thiếu dữ liệu quan trọng! Vui lòng kiểm tra lại.");
 }
@@ -37,8 +40,8 @@ if ($method == 1) {
 }
 
 // Câu lệnh SQL để chèn dữ liệu vào bảng ticket
-$sql = "INSERT INTO ticket (id_trip, id_user,id_location_from,id_location_to, name, phone, number_seat, total_price, status, method, date)
-        VALUES (:id_trip, :id_user,:id_location_from,:id_location_to ,:name, :phone, :number_seat, :total_price, :status, :method, :date)";
+$sql = "INSERT INTO ticket (id_trip, id_user,id_location_from,id_location_to, name, phone,email,number_seat, total_price, status, method, date)
+        VALUES (:id_trip, :id_user,:id_location_from,:id_location_to ,:name, :phone,:email,:number_seat, :total_price, :status, :method, :date)";
 
 // Sử dụng chuẩn bị câu lệnh SQL với kết nối PDO
 $stmt = $db->prepare($sql);
@@ -50,6 +53,7 @@ $stmt->bindParam(':id_location_from', $id_location_from);
 $stmt->bindParam(':id_location_to', $id_location_to);
 $stmt->bindParam(':name', $name);
 $stmt->bindParam(':phone', $phone);
+$stmt->bindParam(':email', $email);
 $stmt->bindParam(':number_seat', $number_seat);
 $stmt->bindParam(':total_price', $total_price);
 $stmt->bindParam(':status', $status);
@@ -58,7 +62,31 @@ $stmt->bindParam(':date', $formattedDate);
 
 // Thực thi câu lệnh SQL
 if ($stmt->execute()) {
-    echo "Thanh toán thành công và thông tin đã được lưu vào cơ sở dữ liệu.";
+  // Lưu thông tin vé vào session để hiển thị sau khi chuyển hướng
+    $_SESSION['ticket_info'] = [
+        'id_trip' => $id_trip,
+        'name' => $name,
+        'phone' => $phone,
+        'email' => $email,
+        'number_seat' => $number_seat,
+        'total_price' => $total_price,
+        'status' => $status,
+        'method' => $method,
+        'date' => $formattedDate,
+        'car_name' => $_POST['car_name'] ?? '',
+        'car_house_name' => $_POST['car_house_name'] ?? '',
+        'pickup_location' => $_POST['pickup_location'] ?? '',
+        'dropoff_location' => $_POST['dropoff_location'] ?? '',
+        'pickup_time' => $_POST['pickup_time'] ?? '',
+        'car_color' => $_POST['car_color'] ?? '',
+        'car_capacity' => $_POST['car_capacity'] ?? '',
+        'car_type' => $_POST['car_type'] ?? '',
+        'car_image' => $_POST['car_image'] ?? ''
+       
+    ];
+
+    header("Location:../ticket_details.php");
+    exit();
 } else {
     echo "Đã xảy ra lỗi trong quá trình thanh toán.";
 }

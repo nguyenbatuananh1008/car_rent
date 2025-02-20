@@ -1,0 +1,6 @@
+/* Màu chữ khi chưa chọn */
+.list-group-item li {
+    color: #FF4D30; /* Màu xanh cho liên kết chưa được chọn */
+}
+
+
