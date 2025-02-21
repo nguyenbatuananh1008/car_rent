@@ -37,7 +37,7 @@ $id_trip = $_POST['id_trip'];
     </head>
     <style>
         .img-fluid {
-            width: 1020px; /* Đặt chiều rộng cố định cho ảnh QR */
+            width: 170px; /* Đặt chiều rộng cố định cho ảnh QR */
             height: auto; /* Tự động điều chỉnh chiều cao theo tỷ lệ */
             border: 1px solid #ddd;
             padding: 5px;
@@ -63,7 +63,7 @@ $id_trip = $_POST['id_trip'];
                     <p>Không cần nhập thông tin. Xác nhận thanh toán tức thì, nhanh chóng và ít sai sót.</p>
                     <div class="mt-2">
                         <span class="badge bg-success">An toàn & Tiện lợi</span>
-                        <img src="https://via.placeholder.com/100x20" alt="Các ví điện tử" class="ms-3">
+                        
                     </div>  
                     <div id="qr-container">
                         
@@ -77,8 +77,7 @@ $id_trip = $_POST['id_trip'];
                     <label for="card_payment" class="form-check-label"><strong>Thẻ thanh toán quốc tế</strong></label>
                     <p>Thẻ Visa, MasterCard, JCB</p>
                     <ul class="text-success">
-                        <li>Nhập mã VEXEREHDS50 và VEXEREHDS100 tại Vexere - Giảm 50K và 100K.</li>
-                        <li>Nhập mã VEXERENAMA tại Vexere - Giảm 20% tối đa 60K.</li>
+                        
                     </ul>
                     <a href="#" class="text-primary">Điều kiện sử dụng</a>
                 </div>
@@ -155,7 +154,7 @@ $id_trip = $_POST['id_trip'];
                 
             </div>
             <div class="ms-auto">
-                <a href="#" class="text-primary">Thay đổi</a>
+            <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#myModal">Thay Đổi</a>
             </div>
         </div>
 
@@ -170,7 +169,8 @@ $id_trip = $_POST['id_trip'];
                 
             </div>
             <div class="ms-auto">
-                <a href="#" class="text-primary">Thay đổi</a>
+            <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#myModal">Thay Đổi</a>
+
             </div>
         </div>
     </div>
@@ -179,12 +179,13 @@ $id_trip = $_POST['id_trip'];
 
                 <!-- Thông tin liên hệ -->
                 <div class="trip-info">
-                    <h5>Thông tin liên hệ</h5>
-                    <p class="mb-1"><strong>Hành khách:</strong><?= htmlspecialchars($_POST['name']) ?></p>
-                    <p class="mb-1"><strong>Số điện thoại:</strong> <?= htmlspecialchars($phone) ?></p>
-                    <p class="mb-1"><strong>Email:</strong><?= htmlspecialchars($_POST['email'])?></p>
-                    <a href="#" class="text-primary">Chỉnh sửa</a>
-                </div>
+    <h5>Thông tin liên hệ</h5>
+    <p id="display-name" class="mb-1"><strong>Hành khách:</strong> <?= htmlspecialchars($_POST['name']) ?></p>
+    <p id="display-phone" class="mb-1"><strong>Số điện thoại:</strong> <?= htmlspecialchars($phone) ?></p>
+    <p id="display-email" class="mb-1"><strong>Email:</strong> <?= htmlspecialchars($_POST['email']) ?></p>
+    <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#editModal">Chỉnh sửa</a>
+</div>
+
             </div>
         </div>
 
@@ -260,4 +261,59 @@ $id_trip = $_POST['id_trip'];
 
 
     </script>
+
+
+
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Chỉnh sửa thông tin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Hành khách</label>
+                        <input type="text" class="form-control" id="name" name="name" value="<?= htmlspecialchars($_POST['name']) ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Số điện thoại</label>
+                        <input type="text" class="form-control" id="phone" name="phone" value="<?= htmlspecialchars($phone) ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($_POST['email']) ?>">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" id="saveChangesButton" class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("saveChangesButton").addEventListener("click", function() {
+        // Lấy giá trị từ các trường input trong modal
+        const newName = document.getElementById("name").value;
+        const newPhone = document.getElementById("phone").value;
+        const newEmail = document.getElementById("email").value;
+
+        // Cập nhật phần hiển thị với giá trị mới
+        document.getElementById("display-name").innerHTML = "<strong>Hành khách:</strong> " + newName;
+        document.getElementById("display-phone").innerHTML = "<strong>Số điện thoại:</strong> " + newPhone;
+        document.getElementById("display-email").innerHTML = "<strong>Email:</strong> " + newEmail;
+
+        // Đóng modal
+        const modalElement = document.getElementById('editModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        modalInstance.hide();
+        
+    });
+</script>
+
+
+
 

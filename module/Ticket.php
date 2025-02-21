@@ -70,5 +70,20 @@ class Ticket
         // Trả về tất cả các vé dưới dạng mảng
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function cancelTicket($ticketId, $userId) {
+        // Kiểm tra vé có tồn tại và thuộc về người dùng hiện tại
+        $sql = "UPDATE ticket SET status = 2 WHERE id_ticket = :ticketId AND id_user = :userId";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':ticketId', $ticketId, PDO::PARAM_INT);
+        $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+        // Thực hiện câu lệnh
+        if ($stmt->execute()) {
+            return true; // Nếu thành công
+        } else {
+            return false; // Nếu không thành công
+        }
+    }
 }
 ?>

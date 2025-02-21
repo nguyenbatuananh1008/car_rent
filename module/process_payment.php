@@ -86,6 +86,8 @@ if ($stmt->execute()) {
     ];
 
     header("Location:../ticket_details.php");
+
+
     exit();
 } else {
     echo "Đã xảy ra lỗi trong quá trình thanh toán.";

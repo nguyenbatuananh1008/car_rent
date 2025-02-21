@@ -4,7 +4,7 @@ require_once 'module/Ticket.php';
 
 // Kiểm tra xem người dùng đã đăng nhập chưa
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");  // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
+    header("Location: index.php");  // Chuyển hướng đến trang đăng nhập nếu chưa đăng nhập
     exit();
 }
 
@@ -100,7 +100,8 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                                         </div>
                                         <div>
                                             <span class="badge bg-success p-2">Đang chờ</span>
-                                            <a href="#" class="d-block mt-2 text-primary">Hủy</a>
+                                            <a href="module/cancel_ticket.php?ticketId=<?= $ticket['id_ticket'] ?>" class="d-block mt-2 text-primary">Hủy</a>
+
                                         </div>
                                     </div>
                                     
@@ -111,7 +112,7 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                             <?php else: ?>
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đang chờ xác nhận. 
-            <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
+            <a href="index.php" class="text-primary">Đặt chuyến ngay</a>.
             
         </div>
         <?php endif; ?>
@@ -150,7 +151,7 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                             <?php else: ?>
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã được xác nhận. 
-            <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
+            <a href="index.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
         <?php endif; ?>
  
@@ -185,7 +186,7 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                             <?php else: ?>             
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã hoàn thành. 
-            <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
+            <a href="index.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
         <?php endif; ?>
     
@@ -218,7 +219,7 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                     <?php else: ?>
         <div class="alert alert-info mt-3">
             Bạn chưa có chuyến đi nào đã hủy. 
-            <a href="search_trip.php" class="text-primary">Đặt chuyến ngay</a>.
+            <a href="index.php" class="text-primary">Đặt chuyến ngay</a>.
         </div>
         <?php endif; ?>
 

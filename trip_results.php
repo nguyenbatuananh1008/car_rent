@@ -70,7 +70,7 @@
         <body>
             <div class="main_2 clearfix">
                 <section id="center" class="center_o">
-                    <div class="center_om clearfix">
+                 
                         <div class="container-xl">
                             <div class="row center_o1">
                                 <div class="col-md-12">
@@ -82,7 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    
                 </section>
             </div>
 
@@ -186,7 +186,7 @@
     <?php endforeach; ?>
 </ul>
 
-                                                                    </p>
+                                                                
 
 
                                                                 </div>
