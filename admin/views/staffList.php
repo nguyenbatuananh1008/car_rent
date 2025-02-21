@@ -6,19 +6,16 @@ include_once 'navbar.php';
 include '../module/auth.php';
 checkAccess(1); 
 
-// Kiểm tra nếu có từ khóa tìm kiếm
 $search = isset($_GET['search']) ? trim($_GET['search']) : null;
 
-// Lấy danh sách nhân viên (có tìm kiếm nếu có)
 $staffList = getStaffList($search);
 
-// Xử lý xóa nhân viên
 if (isset($_GET['delete_id'])) {
     $id = $_GET['delete_id'];
 
     if (deleteUser($id)) {
         $success_message = "Xóa nhân viên thành công!";
-        $staffList = getStaffList($search); // Cập nhật lại danh sách
+        $staffList = getStaffList($search); 
     } else {
         $error_message = "Không thể xóa. Nhân viên không tồn tại hoặc không hợp lệ.";
     }
@@ -56,7 +53,7 @@ if (isset($_GET['delete_id'])) {
                                 placeholder="Tìm kiếm nhân viên..."
                                 value="<?= htmlspecialchars($search) ?>" />
                             <button class="btn btn-primary" type="submit">
-                                <i class="fas fa-search"></i> <!-- Icon FontAwesome -->
+                                <i class="fas fa-search"></i> 
                             </button>
                         </form>
                     </div>

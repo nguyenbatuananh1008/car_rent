@@ -38,7 +38,6 @@ $conn = $db->connectBee();
                 </button>
             </div>
 
-
             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -97,7 +96,6 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
-
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -108,7 +106,6 @@ $conn = $db->connectBee();
                         <div class="modal-body">
                             <form action="../module/route_p.php" method="POST">
                                 <input type="hidden" name="id_route" id="editId_route">
-
                                 <div class="mb-3">
                                     <label for="edit_id_c_house" class="form-label">Nhà xe</label>
                                     <select class="form-select" id="edit_id_c_house" name="id_c_house" required>
@@ -158,7 +155,6 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
-
             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -180,7 +176,7 @@ $conn = $db->connectBee();
                     </div>
                 </div>
             </div>
-
+                                        
             <div class="text-center">
                 <table class="table table-bordered table-hover">
                     <thead class="table-dark">
@@ -219,7 +215,6 @@ $conn = $db->connectBee();
                                     cf.city_name LIKE ? OR
                                     ct.city_name LIKE ? OR
                                     t.date LIKE ? ";
-                                    
                         }
 
                         $stmt = $conn->prepare($query);
@@ -259,9 +254,9 @@ $conn = $db->connectBee();
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <script src="../js/route.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../js/route.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>

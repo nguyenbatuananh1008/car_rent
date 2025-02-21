@@ -37,5 +37,26 @@ class User {
 
         return $stmt->execute();
     }
+    public function getUserInfo($id_user) {
+        // Truy vấn để lấy thông tin người dùng
+        $sql = "SELECT name, email FROM user WHERE id_user = :id_user";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_user', $id_user);
+        $stmt->execute();
+        
+        // Trả về thông tin người dùng dưới dạng mảng associative
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateProfile($id_user, $name, $email) {
+        // Cập nhật tên người dùng
+        $sql = "UPDATE user SET name = :name, email = :email WHERE id_user = :id_user";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':id_user', $id_user);
+
+        return $stmt->execute(); // Trả về true nếu cập nhật thành công
+    }
 }
 ?>

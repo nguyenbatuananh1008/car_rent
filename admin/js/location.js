@@ -1,14 +1,20 @@
-document.getElementById('add-location').addEventListener('click', function () {
+document.getElementById('add-location').addEventListener('click', async function () {
     const container = document.getElementById('location-container');
     const newField = document.createElement('div');
     newField.classList.add('d-flex', 'align-items-center', 'mb-2');
 
+    const cityOptions = await fetch('../module/location_p.php?get_city')
+        .then(response => response.text())
+        .catch(error => console.error("Lỗi lấy danh sách thành phố:", error));
+        console.log(cityOptions);
+
     newField.innerHTML = `
-        <input type="text" class="form-control" name="name_location[]" placeholder="Tên vị trí" required>
+        <input type="text" class="form-control" name="name_location[]" placeholder="Tên địa điểm" required>
+        <input list="cities" name="city_name[]" placeholder = "Tên thành phố" required class="form-control ms-2">
+        <datalist id="cities"> ${cityOptions}</datalist>
         <input type="time" class="form-control ms-2" name="time_location[]" required>
         <button type="button" class="btn btn-danger ms-2 remove-location">-</button>
     `;
-
     container.appendChild(newField);
 
     newField.querySelector('.remove-location').addEventListener('click', function () {
@@ -16,31 +22,21 @@ document.getElementById('add-location').addEventListener('click', function () {
     });
 });
 
-document.querySelectorAll('.btnEdit').forEach(button => {
-    button.addEventListener('click', function () {
 
-        const id_location = this.getAttribute('data-id');
-        console.log(id_location);
+document.addEventListener("DOMContentLoaded", function () {
+    const editButtons = document.querySelectorAll(".btnEdit");
 
-
-        fetch(`../module/location_p.php?id_location=${id_location}`)
-            .then(response => response.json())
-            .then(data => {
-
-                document.getElementById('editId_location').value = data.id_location;
-                document.getElementById('editId_trip').value = data.id_trip;
-                document.getElementById('edit_trip_info').value = data.trip_info;
-                document.getElementById('edit_name_location').value = data.name_location;
-                document.getElementById('edit_time').value = data.time;
-                document.getElementById('edit_type_location').value = data.type_location;
-
-
-                new bootstrap.Modal(document.getElementById('editModal')).show();
-            })
-            .catch(error => console.error('Lỗi khi lấy dữ liệu:', error));
+    editButtons.forEach(button => {
+        button.addEventListener("click", function () {
+            document.getElementById("editId_location").value = this.dataset.id;
+            document.getElementById("edit_route_info").value = this.dataset.route;
+            document.getElementById("edit_name_location").value = this.dataset.name;
+            document.getElementById("edit_city_name").value = this.dataset.city;
+            document.getElementById("edit_time").value = this.dataset.time;
+            document.getElementById("edit_type_location").value = this.dataset.type;
+        });
     });
 });
-
 
 
 document.querySelectorAll('.btnDelete').forEach(button => {

@@ -1,16 +1,14 @@
 <?php
-include '../module/auth.php';
-checkAccess(0); 
-?>
+include '../module/auth.php'; checkAccess(0); ?>
 <?php include 'navbar.php'; ?>
 <?php include 'slidebar.php'; ?>
+
 <div id="layoutSidenav_content">
-    
     <main>
         <div class="container-fluid px-4">
             <h1 class="mt-4">Dashboard</h1>
             <ol class="breadcrumb mb-4">
-                <li class="breadcrumb-item active">Dashboard</li>  
+                <li class="breadcrumb-item active">Dashboard</li>
             </ol>
             <div class="row">
                 <div class="col-xl-3 col-md-6">
@@ -52,25 +50,25 @@ checkAccess(0);
             </div>
 
             <div class="row">
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                        Doanh thu
-                                    </div>
-                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        Số vé
-                                    </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-area me-1"></i>
+                            Doanh thu
                         </div>
+                        <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
+                    </div>
+                </div>
+                <div class="col-xl-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar me-1"></i>
+                            Số vé
+                        </div>
+                        <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
+                    </div>
+                </div>
+            </div>
 
             <div class="card mb-4">
                 <div class="card-header">
@@ -89,7 +87,7 @@ checkAccess(0);
                                 <th>Salary</th>
                             </tr>
                         </thead>
-                       
+
                         <tr>
                             <td>Tiger Nixon</td>
                             <td>System Architect</td>
@@ -121,7 +119,8 @@ checkAccess(0);
                             <td>63</td>
                             <td>2011/07/25</td>
                             <td>$170,750</td>
-                        </tr><tr>
+                        </tr>
+                        <tr>
                             <td>Tiger Nixon</td>
                             <td>System Architect</td>
                             <td>Edinburgh</td>
@@ -136,7 +135,8 @@ checkAccess(0);
                             <td>63</td>
                             <td>2011/07/25</td>
                             <td>$170,750</td>
-                        </tr><tr>
+                        </tr>
+                        <tr>
                             <td>Tiger Nixon</td>
                             <td>System Architect</td>
                             <td>Edinburgh</td>
@@ -151,7 +151,8 @@ checkAccess(0);
                             <td>63</td>
                             <td>2011/07/25</td>
                             <td>$170,750</td>
-                        </tr><tr>
+                        </tr>
+                        <tr>
                             <td>Tiger Nixon</td>
                             <td>System Architect</td>
                             <td>Edinburgh</td>
@@ -159,7 +160,7 @@ checkAccess(0);
                             <td>2011/04/25</td>
                             <td>$320,800</td>
                         </tr>
-                        
+
                         <!-- <span class="badge rounded-pill bg-primary">Primary</span>
                         <span class="badge bg-primary">Primary</span>
                         <span class="badge bg-secondary">Secondary</span>
@@ -169,7 +170,7 @@ checkAccess(0);
                         <span class="badge bg-info">Info</span>
                         <span class="badge bg-light">Light</span>
                         <span class="badge bg-dark">Dark</span> -->
-                        
+
                     </table>
                 </div>
             </div>
@@ -180,11 +181,9 @@ checkAccess(0);
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="../js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="../assets/demo/chart-area-demo.js"></script>
-        <script src="../assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="../js/datatables-simple-demo.js"></script>
-
-
+<script src="../js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="../assets/demo/chart-area-demo.js"></script>
+<script src="../assets/demo/chart-bar-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="../js/datatables-simple-demo.js"></script>

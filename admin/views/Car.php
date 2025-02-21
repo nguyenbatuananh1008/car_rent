@@ -14,7 +14,6 @@ $conn = $db->connectBee();
     <title>Quản lý Xe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
 </head>
 
 <body>
@@ -27,7 +26,6 @@ $conn = $db->connectBee();
                     <li class="breadcrumb-item active">Quản lý xe</li>
             </div>
 
-            <!--  -->
             <div class="input-group mb-3">
                 <input type="text" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm theo tên xe">
                 <button class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
@@ -36,7 +34,7 @@ $conn = $db->connectBee();
                 </button>
             </div>
 
-            <!-- -->
+            <!-- Add -->
             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -51,10 +49,8 @@ $conn = $db->connectBee();
                                     <input type="text" class="form-control" id="c_name" name="c_name" list="car_names" required>
                                     <datalist id="car_names">
                                         <?php
-
                                         $sql = "SELECT DISTINCT c_name FROM car";
                                         $result = $conn->query($sql);
-
                                         if ($result->num_rows > 0) {
 
                                             while ($row = $result->fetch_assoc()) {
@@ -111,7 +107,7 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
-            <!--  -->
+            <!-- table -->
             <div class="text-center">
                 <div>
                     <table class="table table-bordered table-hover">
@@ -183,7 +179,7 @@ $conn = $db->connectBee();
                 </tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='7' class='text-center'>Không có dữ liệu</td></tr>";
+                                echo "<tr><td colspan='9' class='text-center'>Không có dữ liệu</td></tr>";
                             }
                             ?>
                         </tbody>
@@ -191,7 +187,7 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
-            <!--  -->
+            <!-- Edit -->
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -279,6 +275,7 @@ $conn = $db->connectBee();
     </div>
 
     <script src="../js/car.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

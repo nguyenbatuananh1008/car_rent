@@ -38,6 +38,7 @@ $(document).ready(function () {
         }
     }
 
+    // Load data for edit modal
     function loadCarPlates(carSelectId, plateSelectId) {
         var id_car = $(carSelectId).val();
 
@@ -111,7 +112,7 @@ $(document).ready(function () {
         });
     });
 });
-
+    // Search
     document.getElementById('btnSearch').addEventListener('click', function() {
         var searchKeyword = document.getElementById('searchKeyword').value;
 

@@ -23,7 +23,7 @@ class Admin {
             return $admin; // Trả về thông tin admin nếu đúng
         }
 
-        return false; // Trả về false nếu sai thông tin
+        return false; 
     }
 }
 ?>

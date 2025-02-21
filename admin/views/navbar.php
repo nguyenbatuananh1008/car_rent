@@ -14,6 +14,7 @@
 
 <body class="sb-nav-fixed">
 <?php
+
 // Khởi động session nếu chưa khởi động
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -22,13 +23,13 @@ if (session_status() === PHP_SESSION_NONE) {
 // Lấy tên tài khoản, loại tài khoản và ảnh từ session (nếu tồn tại)
 $username = isset($_SESSION['name']) ? $_SESSION['name'] : "Khách";
 $usertype = isset($_SESSION['usertype']) && $_SESSION['usertype'] == 1 ? "Admin" : "Nhân viên";
-$image = isset($_SESSION['image']) ? $_SESSION['image'] : "default.png"; // Default image nếu không có ảnh
+$image = isset($_SESSION['image']) ? $_SESSION['image'] : "default.png"; 
 
 ?>
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark ">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="index.php">Admin Panel</a>
+    <a class="navbar-brand ps-3" href="index.php">Admin Ticket</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->

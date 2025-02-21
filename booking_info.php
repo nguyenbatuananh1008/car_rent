@@ -1,96 +1,69 @@
-    <?php
-    require_once 'module/TripSearcher.php';
+<?php
+$date = $_GET['date'] ?? '';
+// Định dạng lại ngày thành "T2, ngày x tháng y năm z"
+$dayOfWeek = date('l', strtotime($date)); // Lấy tên thứ bằng tiếng Anh
+$daysInVietnameseShort = [
+    'Sunday' => 'CN',
+    'Monday' => 'T2',
+    'Tuesday' => 'T3',
+    'Wednesday' => 'T4',
+    'Thursday' => 'T5',
+    'Friday' => 'T6',
+    'Saturday' => 'T7'
+];
+$formattedDate = $daysInVietnameseShort[$dayOfWeek] . ', ' . date('d', strtotime($date)) . '/' . date('m', strtotime($date)) . '/' . date('Y', strtotime($date));
+//
+$id_trip         = $_POST['id_trip'] ?? '';
+$route_id        = $_POST['route_id'] ?? '';
+$car_house_name  = $_POST['car_house_name'] ?? '';
+$car_name        = $_POST['car_name'] ?? 'Thông tin xe không có';
+$full_route      = $_POST['full_route'] ?? 'Không xác định';
 
-    if (session_status() == PHP_SESSION_NONE) {
-        session_start();
-    }
+$pick_city       =$_POST['pick_city'] ?? '';
+$city_from       = $_POST['city_from'] ?? '';
+$city_to         = $_POST['city_to'] ?? '';
+$city_from_name  = $_POST['city_from_name'] ?? '';
+$city_to_name    = $_POST['city_to_name'] ?? '';
+$car_capacity    = $_POST['car_capacity'] ?? '';
+$num_seats_field = "num_seats_" . $route_id;
+$num_seats       = $_POST[$num_seats_field] ?? 1;
+$carImage = $_POST['car_image'] ?? '';
+$car_type = $_POST['car_type'] ?? '';
+$car_color = $_POST['car_color'] ?? '';
 
-    $id_user = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+//
+$pickupData = $_POST["pickup_$route_id"] ?? '';
+$dropoffData = $_POST["dropoff_$route_id"] ?? '';
 
-    // Lấy dữ liệu từ POST
-    $id_trip = $_POST['id_trip'] ?? null;
-    $pickup_location = $_POST['pickup_location'] ?? null;
-    $dropoff_location = $_POST['dropoff_location'] ?? null;
-    $time_location_pick = $_POST['location_time_pick'] ?? null;
-    $time_location_drop = $_POST['location_time_drop'] ?? null;
-    $ticket_quantity = $_POST['ticket_quantity'] ?? null;
-    $date = $_GET['date'] ?? null;
+$pickupLocation = $pickupCity = $dropoffLocation = $dropoffCity = $pickupTime =$dropoffTime = $id_location_from= $id_location_to = '';
 
-    $car_house_name = $_POST['car_house_name'] ?? null;
-    $city_from_name = $_POST['city_from_name'] ?? null;
-    $city_to_name = $_POST['city_to_name'] ?? null;
+if ($pickupData) {
+    // Tách giá trị dựa trên dấu "||"
+    list($pickupLocation, $pickupCity, $pickupTime,$id_location_from) = explode('||', $pickupData);
+}
 
-    $pickup_data = $_POST['pickup_location'] ?? null;
-    $dropoff_data = $_POST['dropoff_location'] ?? null;
 
-    // Tách ID và thời gian từ value
-    // Tách dữ liệu điểm đón
-    list($pickup_id, $pickup_time, $pickup_name) = explode('|', $pickup_data);
+if ($dropoffData) {
+    list($dropoffLocation, $dropoffCity, $dropoffTime,$id_location_to) = explode('||', $dropoffData);
+}
 
-    // Tách dữ liệu điểm trả
-    list($dropoff_id, $dropoff_time, $dropoff_name) = explode('|', $dropoff_data);
 
-    // Kiểm tra nếu thiếu dữ liệu đầu vào
-    if (!$id_trip || !$pickup_location || !$dropoff_location || !$ticket_quantity) {
-        die("Thiếu dữ liệu cần thiết để xử lý đặt vé.");
-    }
 
-    // Khởi tạo đối tượng TripSearcher
-    $tripSearcher = new TripSearcher();
 
-    // Lấy thông tin chuyến xe
-    $trip_info = $tripSearcher->getTripById($id_trip);
+// Giá vé: Bạn có thể gửi thêm một trường hidden "price" hoặc tự tính lại dựa trên dữ liệu từ CSDL
+$total_price  = $_POST['total_price'] ?? 0;  // Ví dụ, nếu bạn gửi trường hidden giá vé của chuyến xe
 
-    if (!$trip_info) {
-        die("Không tìm thấy thông tin chuyến xe với ID: " . htmlspecialchars($id_trip));
-    }
-
-    // Xử lý thông tin vé khi người dùng xác nhận
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirm_booking'])) {
-        $user_name = $_POST['name'] ?? null;
-        $user_email = $_POST['email'] ?? null;
-        $user_phone = $_POST['phone'] ?? null;
-      
-
-        // Kiểm tra dữ liệu người dùng nhập vào
-        if (!$user_name || !$user_email || !$user_phone ) {
-            echo "<p style='color:red;'>Vui lòng điền đầy đủ thông tin cá nhân và chọn phương thức thanh toán.</p>";
-        } else {
-            // Xác định giá trị của phương thức thanh toán
-           
-            $date = DateTime::createFromFormat('d-m-Y', $date)->format('Y-m-d');
-            // Thêm thông tin vào bảng `ticket`
-            $result = $tripSearcher->createTicket([
-                'id_trip' => $id_trip,
-                'id_user' => $id_user, // Nếu không có đăng nhập, để null
-                'name' => $user_name,
-                'phone' => $user_phone,
-                'email' => $user_email,
-                'number_seat' => $ticket_quantity, // Số lượng ghế
-                'total_price' => $ticket_quantity * $trip_info['price'], // Tổng tiền
-                'status' => '0', // Trạng thái ban đầu
-                'method' =>'1', 
-                'date' => $date, // Ngày khởi hành  
-            ]);
-
-            if ($result) {
-                echo "<p style='color:green;'>Đặt vé thành công!</p>";
-                // Chuyển hướng hoặc xử lý sau khi đặt vé thành công
-            } else {
-                echo "<p style='color:red;'>Đặt vé thất bại, vui lòng thử lại.</p>";
-            }
-        }
-    }
-    ?>
+?>
 
     <?php 
     include('layout/header.php');
+    
     ?>
     <body>
 
     <div class="container vh-100 d-flex align-items-center justify-content-center">
         <div class="container mt-4">
-            <a href="trip.php" class="text-decoration-none text-primary mb-3 d-block">&larr; Quay lại</a>
+            <a href="trip_results.php" class="text-decoration-none text-primary mb-3 d-block">&larr; Quay lại</a>
 
             <!-- Main Content -->
             <div class="row">
@@ -100,20 +73,28 @@
                         <div class="card-body">
                             <h5>Thông tin liên hệ</h5>
                             <form method="POST" action="payment.php">
-                            <input type="hidden" name="id_trip" value="<?= htmlspecialchars($id_trip) ?>">
-    <input type="hidden" name="pickup_location" value="<?= htmlspecialchars($pickup_location) ?>">
-    <input type="hidden" name="dropoff_location" value="<?= htmlspecialchars($dropoff_location) ?>">
-    <input type="hidden" name="ticket_quantity" value="<?= htmlspecialchars($ticket_quantity) ?>">
-    <input type="hidden" name="car_house_name" value="<?= htmlspecialchars($car_house_name) ?>">
-    <input type="hidden" name="city_from_name" value="<?= htmlspecialchars($city_from_name) ?>">
-    <input type="hidden" name="city_to_name" value="<?= htmlspecialchars($city_to_name) ?>">
-    <input type="hidden" name="pickup_time" value="<?= htmlspecialchars($pickup_time) ?>">
-    <input type="hidden" name="pickup_name" value="<?= htmlspecialchars($pickup_name) ?>">
-    <input type="hidden" name="dropoff_time" value="<?= htmlspecialchars($dropoff_time) ?>">
-    <input type="hidden" name="dropoff_name" value="<?= htmlspecialchars($dropoff_name) ?>">
-    <input type="hidden" name="trip_price" value="<?= htmlspecialchars($trip_info['price']) ?>">
-    <input type="hidden" name="date" value="<?= htmlspecialchars($date) ?>"> 
-    <input type="hidden" name="car_name" value="<?= htmlspecialchars($trip_info['car_name']) ?>">
+                                <!-- Các thông tin chuyến xe được gửi qua POST -->
+<input type="hidden" name="id_trip" value="<?= htmlspecialchars($id_trip) ?>">
+<input type="hidden" name="date" value="<?= htmlspecialchars($date) ?>">
+<input type="hidden" name="formatted_date" value="<?= htmlspecialchars($formattedDate) ?>">
+<input type="hidden" name="trip_id" value="<?= htmlspecialchars($trip_id) ?>">
+<input type="hidden" name="route_id" value="<?= htmlspecialchars($route_id) ?>">
+<input type="hidden" name="car_house_name" value="<?= htmlspecialchars($car_house_name) ?>">
+<input type="hidden" name="car_name" value="<?= htmlspecialchars($car_name) ?>">
+<input type="hidden" name="car_capacity" value="<?= htmlspecialchars($car_capacity) ?>">
+<input type="hidden" name="num_seats" value="<?= htmlspecialchars($num_seats) ?>">
+<input type="hidden" name="car_image" value="<?= htmlspecialchars($carImage) ?>">
+<input type="hidden" name="car_type" value="<?= htmlspecialchars($car_type) ?>">
+<input type="hidden" name="car_color" value="<?= htmlspecialchars($car_color) ?>">
+<input type="hidden" name="pickup_location" value="<?= htmlspecialchars($pickupLocation) ?>">
+<input type="hidden" name="pickup_city" value="<?= htmlspecialchars($pickupCity) ?>">
+<input type="hidden" name="pickup_time" value="<?= htmlspecialchars($pickupTime) ?>">
+<input type="hidden" name="dropoff_location" value="<?= htmlspecialchars($dropoffLocation) ?>">
+<input type="hidden" name="dropoff_city" value="<?= htmlspecialchars($dropoffCity) ?>">
+<input type="hidden" name="dropoff_time" value="<?= htmlspecialchars($dropoffTime) ?>">
+<input type="hidden" name="total_price" value="<?= htmlspecialchars($total_price) ?>">
+<input type="hidden" name="id_location_from" value="<?= htmlspecialchars($id_location_from) ?>">
+<input type="hidden" name="id_location_to" value="<?= htmlspecialchars($id_location_to) ?>">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Tên người đi <span class="text-danger">*</span></label>
                                     <input type="text" name="name" class="form-control" id="name" placeholder="Nhập tên" required>
@@ -129,8 +110,8 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="email" class="form-label">Email để nhận thông tin đặt chỗ <span class="text-danger">*</span></label>
-                                    <input type="email" name="email" class="form-control" id="email" placeholder="Nhập email" required>
+                                    <label for="email" class="form-label">Nhập email( nếu có )</label>
+                                    <input type="email" name="email" class="form-control" id="email" placeholder="Nhập email">
                                 </div>
                                 
                                 <button class="btn btn-primary" name="confirm_booking" type="submit">Tiếp tục</button>
@@ -141,40 +122,40 @@
 
                 <!-- Thông tin chuyến đi -->
                 <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5>Tạm tính</h5>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="text-primary"> <?= number_format($trip_info['price'] * $ticket_quantity, 0) ?>đ</h5>
-                            <hr>
-                            <h5>Thông tin chuyến đi</h5>
-                            <div class="summary-box bg-light mt-3">
-                                <div class="details">
-                                    <strong>Ngày khởi hành : <?= htmlspecialchars($date) ?></strong>
-                                    <br>
-                                    <strong><?= htmlspecialchars($car_house_name) ?></strong>
-                                    <br>
-                                    <?= htmlspecialchars($trip_info['car_name']) ?>
-                                    <br>
-                                    <small>Số khách: <?= htmlspecialchars($ticket_quantity) ?></small>
-                                </div>
-                                <hr>
-                                <div class="details">
-                                    <strong><?= htmlspecialchars($city_from_name) ?></strong>
-                                    <br>
-                                    <small><?= htmlspecialchars($pickup_time) ?> - <?= htmlspecialchars($pickup_name) ?></small>
-                                </div>
-                                <hr>
-                                <div class="details">
-                                    <strong><?= htmlspecialchars($city_to_name) ?></strong>
-                                    <br>
-                                    <small><?= htmlspecialchars($dropoff_time) ?>  - <?= htmlspecialchars($dropoff_name) ?></small>
-                                </div>
-                            </div>
+        <div class="card">
+            <div class="card-header">
+                <h5>Tạm tính</h5>
+            </div>
+            <div class="card-body">
+                <h5 class="text-primary"><?= number_format($total_price) ?>đ</h5>
+                <hr>
+                <div>
+                <strong>Khởi hành: <?= htmlspecialchars($formattedDate) ?></strong>
+            </div>
+                <h5>Thông tin chuyến đi</h5>
+                <div class="summary-box bg-light mt-3">
+                    <div class="details d-flex align-items-center">
+                        <img src="admin/uploads/<?= htmlspecialchars($carImage) ?>" alt="Car Image" style="width:90px; height:60px; margin-right: 15px;">
+                        <div>
+                            <strong><?= htmlspecialchars($car_house_name) ?></strong><br>
+                            <?= htmlspecialchars($car_name) ?>(<?= htmlspecialchars($car_color) ?>)-<?= htmlspecialchars($car_capacity) ?> chỗ<br>
+                            <small>Số khách: <?= htmlspecialchars($num_seats) ?></small>
                         </div>
                     </div>
+                    <hr>
+                    <div class="details">
+                        <strong><?= htmlspecialchars($pickupCity) ?></strong><br>
+                        <small><?= htmlspecialchars($pickupTime) ?> - <?= htmlspecialchars($pickupLocation) ?></small>
+                    </div>
+                    <hr>
+                    <div class="details">
+                        <strong><?= htmlspecialchars($dropoffCity) ?></strong><br>
+                        <small><?= htmlspecialchars($dropoffTime) ?> - <?= htmlspecialchars($dropoffLocation) ?></small>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
                 
             </div>
         </div>
