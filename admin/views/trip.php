@@ -174,7 +174,9 @@ $conn = $db->connectBee();
                                     <input type="text" class="form-control" id="edit_price" name="price" required>
                                 </div>
                                 <input type="hidden" name="action" value="edit">
-                                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -203,6 +205,7 @@ $conn = $db->connectBee();
                     </div>
                 </div>
             </div>
+            
             <!--Search -->
             <div class="text-center">
                 <table class="table table-bordered table-hover">

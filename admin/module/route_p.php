@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id_c_house = $_POST['id_c_house'];
         $id_city_from = $_POST['id_city_from'];
         $id_city_to = $_POST['id_city_to'];
-        
+        var_dump($id_city_from);
 
         $sql = "INSERT INTO route (id_c_house, id_city_from, id_city_to) 
                 VALUES (?, ?, ?)";
@@ -51,6 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->close();
         exit();
+
     } elseif ($action === 'edit') {
         $id_route = $_POST['id_route'];
         $id_c_house  = $_POST['id_c_house'];
@@ -71,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->close();
         exit();
+
     } elseif ($action === 'delete') {
         $id_route = $_POST['id_route'];
         $sql = "DELETE FROM route WHERE id_route = ?";
@@ -84,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         $stmt->close();
         exit();
+        
     } elseif ($action === 'search') {
         $search_keyword = $_POST['search_keyword'];
         $like_keyword   = '%' . $search_keyword . '%';
@@ -98,7 +101,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-if (isset($stmt)) {
-    $stmt->close();
-}
-$conn->close();
+?>

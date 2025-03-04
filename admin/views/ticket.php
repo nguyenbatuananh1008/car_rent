@@ -31,9 +31,9 @@ $conn = $db->connectBee();
             <div class="input-group mb-3">
                 <input type="text" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm">
                 <button class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
-                <button class="btn btn-primary ms-2" id="btnAdd" data-bs-toggle="modal" data-bs-target="#addModal">
+                <!-- <button class="btn btn-primary ms-2" id="btnAdd" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="fas fa-plus"></i> Thêm mới
-                </button>
+                </button> -->
             </div>
             <!--  -->
             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -115,6 +115,7 @@ $conn = $db->connectBee();
                     </div>
                 </div>
             </div>
+            
             <!--edit  -->
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">

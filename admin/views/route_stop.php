@@ -167,7 +167,6 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
-
             <!-- Edit -->
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -308,9 +307,16 @@ $conn = $db->connectBee();
                             echo "<td>{$routeDetails}</td>";
                             // echo "<td>{$stopsDetails}</td>";
                             echo "<td>
-                        <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='{$row['id_route_stop']}'>
-                            <i class='fas fa-edit'></i> Sửa
-                        </button>
+                        <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='{$row['id_route_stop']}' disabled>
+                        <i class='fas fa-edit'></i> Sửa </button>
+                        <style>
+                            .btnEdit:disabled {
+                                background-color: #d6d6d6; 
+                                border-color: #ccc; 
+                                color: #777; 
+                            }
+                        </style>
+
                         <button class='btn btn-danger btn-sm btnDelete' data-id='{$row['id_route']}'>
                             <i class='fas fa-trash-alt'></i> Xóa
                         </button>

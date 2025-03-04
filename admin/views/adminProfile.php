@@ -73,78 +73,101 @@ if (isset($_POST['update_password'])) {
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý Khách Hàng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lý Tài Khoản Cá Nhân</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <div id="layoutSidenav_content">
-        <div class="content-wrapper">
-            <section class="content-header">
-                <div class="container-fluid">
-                    <div class="row mb-2">
-                        <div class="col-sm-6"></div>
-<div class="container">
-    <h1>Quản lý tài khoản cá nhân </h1>
-    <?php if (isset($success_message)): ?>
-        <div class="alert alert-success"><?= $success_message ?></div>
-    <?php elseif (isset($error_message)): ?>
-        <div class="alert alert-danger"><?= $error_message ?></div>
-    <?php endif; ?>
+  <div id="layoutSidenav_content">
+    <div class="content-wrapper">
+      <div class="container py-4">
+        <h1 class="mb-4">Quản lý Tài khoản Cá nhân</h1>
+        
+        <?php if (isset($success_message)): ?>
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= $success_message ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php elseif (isset($error_message)): ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= $error_message ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php endif; ?>
 
-    <!-- Form cập nhật tên và ảnh -->
-    <form method="POST" enctype="multipart/form-data">
-        <h3>Thông tin tài khoản</h3>
-        <div class="form-group">
-            <label for="name">Tên</label>
-            <input type="text" id="name" name="name" class="form-control" value="<?= htmlspecialchars($admin['name']) ?>" required>
-        </div>
-        <div class="form-group">
-            <label for="label">Ảnh</label>
-            <input type="file" name="image" class="form-control">
-            <?php if (!empty($admin['image'])): ?>
-                <img src="../uploads/<?= htmlspecialchars($admin['image']) ?>" alt="Ảnh admin" style="width: 100px; height: 100px; margin-top: 10px; border-radius: 10%;">
-            <?php else: ?>
-                <p>Chưa có ảnh</p>
-            <?php endif; ?>
-        </div>
-        <div class="form-group">
-            <label>Loại tài khoản</label>
-            <input type="text" class="form-control" value="<?= $admin['usertype'] == 1 ? 'Admin' : 'Nhân viên' ?>" readonly>
-        </div>
-        <button type="submit" name="update_name" class="btn btn-primary">Cập nhật thông tin</button>
-    </form>
+        <div class="row">
+          <!-- Form cập nhật thông tin tài khoản -->
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">Cập nhật Thông tin Tài khoản</h5>
+              </div>
+              <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                  <div class="mb-3">
+                    <label for="name" class="form-label">Tên</label>
+                    <input type="text" id="name" name="name" class="form-control" value="<?= htmlspecialchars($admin['name']) ?>" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="image" class="form-label">Ảnh</label>
+                    <input type="file" name="image" class="form-control">
+                    <?php if (!empty($admin['image'])): ?>
+                      <div class="mt-2">
+                        <img src="../uploads/<?= htmlspecialchars($admin['image']) ?>" alt="Ảnh admin" class="img-thumbnail" style="width: 100px; height: 100px;">
+                      </div>
+                    <?php else: ?>
+                      <p class="mt-2">Chưa có ảnh</p>
+                    <?php endif; ?>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Loại Tài khoản</label>
+                    <input type="text" class="form-control" value="<?= $admin['usertype'] == 1 ? 'Admin' : 'Nhân viên' ?>" readonly>
+                  </div>
+                  <button type="submit" name="update_name" class="btn btn-primary">
+                    <i class="fas fa-save me-1"></i> Cập nhật thông tin
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
 
-    <hr>
+          <!-- Form cập nhật mật khẩu -->
+          <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">Đổi Mật khẩu</h5>
+              </div>
+              <div class="card-body">
+                <form method="POST">
+                  <div class="mb-3">
+                    <label for="current_password" class="form-label">Mật khẩu hiện tại</label>
+                    <input type="password" id="current_password" name="current_password" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="new_password" class="form-label">Mật khẩu mới</label>
+                    <input type="password" id="new_password" name="new_password" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="confirm_password" class="form-label">Xác nhận mật khẩu mới</label>
+                    <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                  </div>
+                  <button type="submit" name="update_password" class="btn btn-warning">
+                    <i class="fas fa-key me-1"></i> Cập nhật mật khẩu
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div> <!-- end row -->
 
-    <!-- Form cập nhật mật khẩu -->
-    <form method="POST">
-        <h3>Đổi mật khẩu</h3>
-        <div class="form-group">
-            <label for="current_password">Mật khẩu hiện tại</label>
-            <input type="password" id="current_password" name="current_password" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="new_password">Mật khẩu mới</label>
-            <input type="password" id="new_password" name="new_password" class="form-control" required>
-        </div>
-        <div class="form-group">
-            <label for="confirm_password">Xác nhận mật khẩu mới</label>
-            <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
-        </div>
-        <button type="submit" name="update_password" class="btn btn-primary">Cập nhật mật khẩu</button>
-    </form>
-</div>
-</div>
-</div>
-</div>
-</div>
+      </div> <!-- end container -->
+    </div> <!-- end content-wrapper -->
+  </div> <!-- end layoutSidenav_content -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
-

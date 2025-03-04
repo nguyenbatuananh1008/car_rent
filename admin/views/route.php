@@ -144,7 +144,6 @@ $conn = $db->connectBee();
                                         ?>
                                     </select>
                                 </div>
-
                                 <input type="hidden" name="action" value="edit">
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary">Lưu thay đổi</button>

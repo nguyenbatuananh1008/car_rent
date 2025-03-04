@@ -61,7 +61,7 @@
     <section id="header">
       <nav class="navbar navbar-expand-md navbar-light custom-navbar bg-dark" id="navbar_sticky">
         <div class="container-xl">
-          <a class="navbar-brand fs-3 p-0 fw-bold text-white" href="index.php"><i class="fa fa-car col_oran me-1 fs-2 align-middle"></i> Đặt Xe</a>
+          <a class="navbar-brand fs-3 p-0 fw-bold text-white" href="index.php"><i class="fa fa-car col_oran me-1 fs-2 align-middle"></i> VietCar </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -97,10 +97,10 @@
   </li>
 <?php else: ?>
   <li class="nav-item">
-    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Sign In</a>
+    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Đăng nhập</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link button_2 ms-2 me-2" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register <i class="fa fa-check-circle ms-1"></i></a>
+    <a class="nav-link button_2 ms-2 me-2" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Đăng ký <i class="fa fa-check-circle ms-1"></i></a>
   </li>
 <?php endif; ?>
 
@@ -111,6 +111,51 @@
     </section>
   </div>
 </div>
+
+<style>
+.modal-content {
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+  border-radius: 15px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  color: #333;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.btn-close {
+  filter: none;
+}
+
+.form-control {
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 10px rgba(255,75,43,0.3);
+  border-color: #ff4b2b;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255,75,43,0.4);
+}
+
+.alert-danger {
+  border-radius: 10px;
+}
+
+</style>
 
 <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -124,22 +169,20 @@
         <form id="loginForm">
           <div class="mb-3">
             <label for="loginEmail" class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" id="loginEmail" required>
+            <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Nhập email của bạn" required>
           </div>
           <div class="mb-3">
             <label for="loginPassword" class="form-label">Mật khẩu</label>
-            <input type="password" name="password" class="form-control" id="loginPassword" required>
+            <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Nhập mật khẩu của bạn" required>
           </div>
-          <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Đăng Nhập</button>  
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
 
 
 
@@ -178,12 +221,7 @@
   </div>
 </div>
 
-
-
-
 </body>
-
-
 
 </html>
 <script>
@@ -207,7 +245,6 @@
         });
     });
 });
-
 
 </script>
 <script>
@@ -243,7 +280,6 @@
     });
 });
   
-
 
 </script>
 

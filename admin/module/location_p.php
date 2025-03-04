@@ -3,7 +3,7 @@ include 'Database.php';
 $db = new Database();
 $conn = $db->connectBee();
 
-//  danh sách thành phố js
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['get_city'])) {
     $query_city = "SELECT id_city, city_name FROM city";
     $result_city = $conn->query($query_city);
@@ -89,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: ../views/location.php');
         exit();
     
-
     } elseif ($action === 'delete') {
         $id_location = $_POST['id_location'] ?? null;
         if ($id_location) {

@@ -28,7 +28,7 @@ $conn = $db->connectBee();
                     <li class="breadcrumb-item active">Quản lý nhà xe</li>
             </div>
 
-            <!--  -->
+            <!-- Search bar -->
             <div class="input-group mb-3">
                 <input type="text" class="form-control w-50" value="<?php echo $_GET['searchKeyword'] ?? "" ?>" id="searchKeyword" placeholder="Tìm kiếm theo tên nhà xe">
                 <button class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
@@ -37,7 +37,7 @@ $conn = $db->connectBee();
                 </button>
             </div>
 
-            <!-- -->
+            <!--Add-->
             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -74,7 +74,7 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
-            <!-- -->
+            <!--Edit-->
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -109,7 +109,7 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
-            <!--  -->
+            <!-- Delete -->
             <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
