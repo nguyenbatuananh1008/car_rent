@@ -14,10 +14,11 @@
 
     $tripSearcher = new TripSearcher();
     $trips = [];
+
     
     if ($city_from && $city_to && $date) {
         $trips = $tripSearcher->searchTrips($city_from, $city_to, $date, $sort);
-
+            
         if (empty($trips)) {
            
         } else {
@@ -148,6 +149,7 @@
                                                     <input type="hidden" name="full_route" value="<?= htmlspecialchars($trip['full_route'] ?? 'Không xác định') ?>">
                                                     <input type="hidden" name="route_id" value="<?= htmlspecialchars($trip['id_route']) ?>">
                                                     <input type="hidden" name="car_capacity" value="<?= htmlspecialchars($trip['car_capacity']) ?>">
+                                                    <input type="hidden" name="car_plate" value="<?= htmlspecialchars($trip['car_plate']) ?>">
                                                     <input type="hidden" name="city_location" value="<?= htmlspecialchars($pickup['city_name']) ?>">
                                                     <input type="hidden" name="car_image" value="<?= htmlspecialchars($trip['car_image']) ?>">
                                                     <input type="hidden" name="car_type" value="<?= htmlspecialchars($trip['car_type']) ?>">
@@ -171,7 +173,7 @@
                                                                 <div class="model_pg1i2l">
                                                                     <h4><?= htmlspecialchars($trip['car_house_name']) ?></h4>
                                                                    <p> <strong>Thông tin xe :</strong><?= htmlspecialchars($trip['car_name']) ?>(<?= htmlspecialchars($trip['car_color']) ?>) -<?= htmlspecialchars($trip['car_type']) ?>-
-                                                                        <?= htmlspecialchars($trip['car_capacity']) ?> chỗ</p>
+                                                                        <?= htmlspecialchars($trip['car_capacity']) ?> chỗ-  <?= htmlspecialchars($trip['v_type']) ?></p>
                                                 
 
                                                                    <strong>Tuyến :</strong> <?= isset($trip['full_route']) ? htmlspecialchars($trip['full_route']) : 'Không xác định' ?>

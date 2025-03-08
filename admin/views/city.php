@@ -1,6 +1,8 @@
 <?php include_once 'navbar.php'; ?>
 <?php include_once 'slidebar.php'; ?>
-<?php include '../module/Database.php'; ?>
+<?php include '../module/Database.php'; 
+include '../module/auth.php';
+checkAccess(1); ?>
 <?php $db = new Database();
 $conn = $db->connectBee();
 ?>
@@ -12,7 +14,7 @@ $conn = $db->connectBee();
     <title>Quản lý thành phố</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    
 </head>
 <body>
     <div id="layoutSidenav_content">
@@ -80,7 +82,7 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
-             <!--  -->
+    <!--  -->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -136,13 +138,12 @@ $conn = $db->connectBee();
                             echo '<td>' . $stt++ . '</td>';
                             echo '<td>' . htmlspecialchars($row['city_name'], ENT_QUOTES) . '</td>';
                             echo '<td>
-                                    <button class="btn btn-warning btnEdit" data-id="' . $row['id_city'] . '" data-city_name="' . htmlspecialchars($row['city_name'], ENT_QUOTES) . '">
-                                        <i class="fas fa-edit"></i> Sửa
-                                    </button>
-                                    <button class="btn btn-danger btnDelete" data-id="' . $row['id_city'] . '">
-                                        <i class="fas fa-trash"></i> Xóa
-                                    </button>
-                                </td>';
+                            <button class="btn btn-warning btnEdit" data-id="' . $row['id_city'] . '" data-city_name="' . htmlspecialchars($row['city_name'], ENT_QUOTES) . '"><i class="fas fa-edit"></i> Sửa          
+                            </button>
+                            <button class="btn btn-danger btnDelete" data-id="' . $row['id_city'] . '">
+                            <i class="fas fa-trash"></i> Xóa
+                            </button></td>';
+                                
                             echo '</tr>';
                         }
                     } else {
@@ -158,7 +159,7 @@ $conn = $db->connectBee();
     </div>
 </body>
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/city.js"></script>
 </html>
 <? include_once 'footer.php'; ?>

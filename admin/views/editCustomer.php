@@ -1,7 +1,8 @@
+<?php include 'navbar.php'; ?>
+<?php include 'slidebar.php'; ?>
 <?php
 include '../module/customerHandler.php';
-include '../module/auth.php';
-checkAccess(0); 
+ 
 // Lấy thông tin khách hàng cần sửa
 if (isset($_GET['id_user'])) {
     $id_user = $_GET['id_user'];
@@ -27,9 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<?php include 'navbar.php'; ?>
 
-<?php include 'slidebar.php'; ?>
 
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">

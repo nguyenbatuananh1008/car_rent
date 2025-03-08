@@ -1,33 +1,65 @@
 <?php
 // Kết nối cơ sở dữ liệu
-$host = 'localhost'; // Thay đổi với host của bạn
-$dbname = 'dat_ve'; // Thay đổi với tên cơ sở dữ liệu của bạn
-$username = 'root'; // Thay đổi với tên người dùng của bạn
-$password = ''; // Thay đổi với mật khẩu của bạn
+$host = 'localhost';
+$dbname = 'dat_ve';
+$username = 'root';
+$password = '';
 
 try {
-    // Kết nối PDO
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Truy vấn SQL
-    $sql = "SELECT 
-                DATE_FORMAT(date, '%Y-%m') AS month, 
-                SUM(total_price) AS total_revenue
-            FROM 
-                ticket
-            GROUP BY 
-                DATE_FORMAT(date, '%Y-%m')
-            ORDER BY 
-                month";
+    // Lấy danh sách nhà xe
+    $houseQuery = "SELECT id_c_house, name_c_house FROM car_house ORDER BY name_c_house";
+    $stmtHouse = $pdo->prepare($houseQuery);
+    $stmtHouse->execute();
+    $carHouses = $stmtHouse->fetchAll(PDO::FETCH_ASSOC);
 
-    // Thực thi truy vấn và lấy kết quả
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute();
-    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Lấy tham số từ người dùng
+    $selectedHouse = isset($_GET['house']) ? $_GET['house'] : '';
+    $type = isset($_GET['type']) ? $_GET['type'] : 'month';
+
+    $chartData = [];
+
+    if ($selectedHouse) {
+        // Truy vấn SQL dựa trên loại thống kê
+        if ($type == 'year') {
+            $sql = "SELECT 
+                        DATE_FORMAT(t.date, '%Y') AS period, 
+                        SUM(t.total_price) AS total_revenue
+                    FROM ticket t
+                    JOIN trip tr ON t.id_trip = tr.id_trip
+                    WHERE tr.id_c_house = :house
+                    GROUP BY DATE_FORMAT(t.date, '%Y')
+                    ORDER BY period DESC";
+        } elseif ($type == 'week') {
+            $sql = "SELECT 
+                        CONCAT(YEAR(t.date), '-W', WEEK(t.date, 3)) AS period, 
+                        SUM(t.total_price) AS total_revenue
+                    FROM ticket t
+                    JOIN trip tr ON t.id_trip = tr.id_trip
+                    WHERE tr.id_c_house = :house
+                    GROUP BY YEAR(t.date), WEEK(t.date, 3)
+                    ORDER BY period DESC";
+        } else {
+            $sql = "SELECT 
+                        DATE_FORMAT(t.date, '%Y-%m') AS period, 
+                        SUM(t.total_price) AS total_revenue
+                    FROM ticket t
+                    JOIN trip tr ON t.id_trip = tr.id_trip
+                    WHERE tr.id_c_house = :house
+                    GROUP BY DATE_FORMAT(t.date, '%Y-%m')
+                    ORDER BY period DESC";
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['house' => $selectedHouse]);
+        $chartData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    $chartData = json_encode($chartData);
 } catch (PDOException $e) {
-    echo "Kết nối thất bại: " . $e->getMessage();
-    exit;
+    die("Kết nối thất bại: " . $e->getMessage());
 }
 ?>
 
@@ -36,56 +68,92 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thống kê doanh thu theo tháng</title>
+    <title>Thống kê doanh thu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* CSS cho biểu đồ cột */
-        .bar {
-            display: inline-block;
-            width: 50px; /* Chiều rộng của mỗi cột */
-            margin: 0 5px;
-            background-color: rgba(54, 162, 235, 0.6); /* Màu cột */
-            text-align: center;
-            color: white;
-            border-radius: 5px;
-            position: relative;
-        }
-        .bar span {
-            position: absolute;
-            bottom: -20px;
-            width: 100%;
-            text-align: center;
-        }
-        .chart-container {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: flex-end;
-            height: 300px; /* Chiều cao của biểu đồ */
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Thống kê doanh thu theo tháng</h1>
+        <h1 class="text-center mb-4">Thống kê doanh thu theo nhà xe</h1>
 
-        <div class="chart-container">
-            <?php
-            $maxRevenue = max(array_column($results, 'total_revenue')); // Lấy giá trị doanh thu cao nhất để tính tỷ lệ
-            foreach ($results as $row) {
-                $height = ($row['total_revenue'] / $maxRevenue) * 100; // Tính chiều cao cột tương ứng với doanh thu
-                echo "<div class='bar' style='height: {$height}%;'>
-                        <span>{$row['month']}</span>
-                        <div>" . number_format($row['total_revenue'], 0, ',', '.') . " VND</div>
-                    </div>";
-            }
-            ?>
+        <!-- Chọn nhà xe -->
+        <div class="mb-3">
+            <label class="form-label">Chọn nhà xe:</label>
+            <select id="houseSelect" class="form-select">
+                <option value="">Chọn nhà xe</option>
+                <?php foreach ($carHouses as $house) : ?>
+                    <option value="<?= $house['id_c_house']; ?>" <?= ($house['id_c_house'] == $selectedHouse) ? 'selected' : ''; ?>>
+                        <?= htmlspecialchars($house['name_c_house']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
         </div>
 
-        <div class="text-center mt-4">
-            <a href="index.php" class="btn btn-primary">Quay lại trang chủ</a>
+        <!-- Chọn kiểu thống kê -->
+        <div class="mb-3">
+            <label class="form-label">Thống kê theo:</label>
+            <select id="typeSelect" class="form-select">
+                <option value="week" <?= $type == 'week' ? 'selected' : '' ?>>Tuần</option>
+                <option value="month" <?= $type == 'month' ? 'selected' : '' ?>>Tháng</option>
+                <option value="year" <?= $type == 'year' ? 'selected' : '' ?>>Năm</option>
+            </select>
         </div>
+
+        <!-- Nút xem thống kê -->
+        <div class="text-center">
+            <button id="filterButton" class="btn btn-primary">Xem thống kê</button>
+        </div>
+
+        <canvas id="revenueChart" class="mt-4"></canvas>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const houseSelect = document.getElementById("houseSelect");
+                const typeSelect = document.getElementById("typeSelect");
+                const filterButton = document.getElementById("filterButton");
+
+                // Khi nhấn nút "Xem thống kê"
+                filterButton.addEventListener("click", function () {
+                    const house = houseSelect.value;
+                    const type = typeSelect.value;
+
+                    if (!house) {
+                        alert("Vui lòng chọn nhà xe.");
+                        return;
+                    }
+
+                    window.location.href = `?house=${house}&type=${type}`;
+                });
+
+                // Hiển thị dữ liệu biểu đồ
+                const data = <?= $chartData; ?>;
+                const labels = data.map(row => row.period);
+                const revenues = data.map(row => row.total_revenue);
+
+                const ctx = document.getElementById('revenueChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Doanh thu (VND)',
+                            data: revenues,
+                            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

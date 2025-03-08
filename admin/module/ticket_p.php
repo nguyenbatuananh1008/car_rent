@@ -8,6 +8,7 @@ $id_ticket = $_POST['id_ticket'] ?? null;
 $id_trip = $_POST['id_trip'] ?? null;
 $name = $_POST['name'] ?? null;
 $phone = $_POST['phone'] ?? null;
+$email = $_POST['email'] ?? null;
 $number_seat = $_POST['number_seat'] ?? null;
 $method = $_POST['method'] ?? null;
 $date = $_POST['date'] ?? null;
@@ -16,10 +17,10 @@ $status = $_POST['status'] ?? null;
 $action = $_POST['action'] ?? null;
 
 if ($action == 'add') {
-    $stmt = $conn->prepare("INSERT INTO ticket (id_trip, name, phone, number_seat, total_price, method, date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO ticket (id_trip, name, phone, email, number_seat, total_price, method, date, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
     if ($stmt) {
-        $stmt->bind_param("issdisss", $id_trip, $name, $phone, $number_seat, $total_price, $method, $date, $status);
+        $stmt->bind_param("isssdisss", $id_trip, $name, $phone, $email, $number_seat, $total_price, $method, $date, $status);
         if ($stmt->execute()) {
             header('Location: ../views/ticket.php');
             exit();
@@ -30,10 +31,10 @@ if ($action == 'add') {
     }
 } elseif ($action == 'edit') {
     if ($id_ticket) {
-        $stmt = $conn->prepare("UPDATE ticket SET id_trip = ?, name = ?, phone = ?, number_seat = ?, total_price = ?, method = ?, date = ?, status = ? WHERE id_ticket = ?");
+        $stmt = $conn->prepare("UPDATE ticket SET id_trip = ?, name = ?, phone = ?, email = ?, number_seat = ?, total_price = ?, method = ?, date = ?, status = ? WHERE id_ticket = ?");
 
         if ($stmt) {
-            $stmt->bind_param("issdisssi", $id_trip, $name, $phone, $number_seat, $total_price, $method, $date, $status, $id_ticket);
+            $stmt->bind_param("isssdisssi", $id_trip, $name, $phone, $email, $number_seat, $total_price, $method, $date, $status, $id_ticket);
             if ($stmt->execute()) {
                 header('Location: ../views/ticket.php');
                 exit();

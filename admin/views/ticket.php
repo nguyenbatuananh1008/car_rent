@@ -1,12 +1,12 @@
 <?php include_once 'navbar.php'; ?>
 <?php include_once 'slidebar.php'; ?>
 <?php include '../module/Database.php'; ?>
-<?php include '../module/formart.php'; ?>
+<?php include '../module/formart.php';
+ ?>
 <?php 
 $db = new Database();
 $conn = $db->connectBee();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,9 +32,9 @@ $conn = $db->connectBee();
             <div class="input-group mb-3">
                 <input type="text" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm">
                 <button class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
-                <button class="btn btn-primary ms-2" id="btnAdd" data-bs-toggle="modal" data-bs-target="#addModal">
+                <!-- <button class="btn btn-primary ms-2" id="btnAdd" data-bs-toggle="modal" data-bs-target="#addModal">
                     <i class="fas fa-plus"></i> Thêm mới
-                </button>
+                </button> -->
             </div>
             <!--  -->
             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -71,6 +71,10 @@ $conn = $db->connectBee();
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Số điện thoại</label>
                                     <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Nhập số email" >
                                 </div>
                                 <div class="mb-3">
                                     <label for="number_seat" class="form-label">Số ghế</label>
@@ -112,7 +116,8 @@ $conn = $db->connectBee();
                     </div>
                 </div>
             </div>
-            <!--  -->
+            
+            <!--edit  -->
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -148,6 +153,10 @@ $conn = $db->connectBee();
                                 <div class="mb-3">
                                     <label for="edit_phone" class="form-label">Số điện thoại</label>
                                     <input type="tel" class="form-control" id="edit_phone" name="phone" placeholder="Nhập số điện thoại" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_email" class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="edit_email" name="email" placeholder="Nhập số email" >
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_number_seat" class="form-label">Số ghế</label>
@@ -206,19 +215,18 @@ $conn = $db->connectBee();
                                 <input type="hidden" name="id_ticket" id="deleteId_ticket">
                                 <button type="submit" class="btn btn-danger">Xóa</button>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!--  -->
+            <!-- Table -->
             <div class="text-center">
                 <table class="table table-bordered table-hover">
                     <?php
                     $search_keyword = $_POST['search_keyword'] ?? '';
-                    $sql = "SELECT id_ticket, id_trip, name, phone, number_seat, total_price, method, date, status FROM ticket";
+                    $sql = "SELECT id_ticket, id_trip, name, phone, email, number_seat, total_price, method, date, status FROM ticket";
 
                     if ($search_keyword) {
                         $sql .= " WHERE id_ticket LIKE ? OR phone LIKE ?";
@@ -238,6 +246,7 @@ $conn = $db->connectBee();
                             <th>Mã Chuyến</th>
                             <th>Tên Khách Hàng</th>
                             <th>Số điện thoại</th>
+                            <th>Email</th>
                             <th>Số ghế</th>
                             <th>Tổng tiền</th>
                             <th>Phương thức</th>
@@ -262,10 +271,11 @@ $conn = $db->connectBee();
                         <td>{$row['id_trip']}</td>
                         <td>{$row['name']}</td>
                         <td>{$row['phone']}</td>
+                        <td>{$row['email']}</td>
                         <td>{$row['number_seat']}</td>
                         <td>{$total_price}</td>
                         <td>{$methodText}</td>
-                        <td>{$row['date']}</td>
+                        <td>" . formatDay($row['date']) . "</td>
                         <td>{$statusText}</td>
                         <td>
                             <button class='btn btn-warning btn-sm me-1 btnEdit'
@@ -273,6 +283,7 @@ $conn = $db->connectBee();
                                 data-id_trip='" . $row['id_trip'] . "'
                                 data-name='" . htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8') . "'
                                 data-phone='" . htmlspecialchars($row['phone'], ENT_QUOTES, 'UTF-8') . "'
+                                data-email='" . htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8') . "'
                                 data-number_seat='" . $row['number_seat'] . "'
                                 data-total_price='" . $row['total_price'] . "'
                                 data-method='" . $row['method'] . "'
@@ -284,17 +295,15 @@ $conn = $db->connectBee();
                     </tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='10' class='text-center'>Không có dữ liệu</td></tr>";
+                            echo "<tr><td colspan='11' class='text-center'>Không có dữ liệu</td></tr>";
                         }
                         ?>
                     </tbody>
                 </table>
             </div>
 
-
             <script src="../js/ticket.js"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

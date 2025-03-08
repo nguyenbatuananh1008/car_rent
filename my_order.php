@@ -13,29 +13,24 @@ $userId = $_SESSION['user_id'];
 
 // Khởi tạo đối tượng Ticket
 $ticket = new Ticket();
+
 // Lấy vé theo các trạng thái khác nhau
 $all = $waitingTickets = $confirmedTickets = $goneTickets = $cancelledTickets ='';
 $waitingTickets = $ticket->getTicketsByUser($userId, 0);  // Trạng thái "Đang chờ"
 $confirmedTickets = $ticket->getTicketsByUser($userId, 1);  // Trạng thái "Đã xác nhận"
 $goneTickets = $ticket->getTicketsByUser($userId, 3);  // Trạng thái "Đã đi"
 $cancelledTickets = $ticket->getTicketsByUser($userId, 2);  // Trạng thái "Đã hủy"
+
 $noTickets  = empty($waitingTickets) && empty($confirmedTickets) && empty($goneTickets) && empty($cancelledTickets);
-$TicketsAll = $ticket->getTicketsByUser($userId);
-    foreach ($TicketsAll as $Tickets) {
-        $date = $Tickets['date'];  //$Tickets['date'] có định dạng Y-m-d
 
-        // Lấy số thứ tự ngày trong tuần (1 = Thứ 2, ..., 7 = Chủ nhật)
-        $dayOfWeek = date('N', strtotime($date));
-
-        // Mảng ánh xạ số thứ tự ngày trong tuần thành tên ngày
-        $daysOfWeek = ["CN", "T2", "T3", "T4", "T5", "T6", "T7"];
-
-        // Định dạng lại ngày thành kiểu 'd/m/Y' (22/01/2025)
-        $formattedDate = date('d/m/Y', strtotime($date));
-
-        
-        $date = $daysOfWeek[$dayOfWeek ] . ", " . $formattedDate . "<br>";
+if (isset($_GET['msg'])) {
+    if ($_GET['msg'] == 'success') {
+        echo "<script>alert('Hủy vé thành công!');</script>";
+    } elseif ($_GET['msg'] == 'error') {
+        echo "<script>alert('Hủy vé thất bại, vui lòng thử lại.');</script>";
+    }
 }
+
 
 ?>
     <!DOCTYPE html>
@@ -90,7 +85,7 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                                 
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                        <h5 class="card-title"> <?= $date?></h5>
+                                        <h5 class="card-title"> <?= $ticket['formatted_date'] ; ?></h5>
                                         <h1><?= $ticket['from_time'] ?></h1>
                                         <strong><?= $ticket['name_c_house'] ?></strong><br>
                                         <strong>Tên xe: <?= $ticket['c_name'] ?></strong><br>
@@ -130,7 +125,7 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                                 
                                     <div class="d-flex justify-content-between">
                                     <div>
-                                        <h5 class="card-title"> <?= $date?></h5>
+                                        <h5 class="card-title"> <?= $ticket['formatted_date'] ; ?></h5>
                                         <h1><?= $ticket['from_time'] ?></h1>
                                         <strong><?= $ticket['name_c_house'] ?></strong><br>
                                         <strong>Tên xe: <?= $ticket['c_name'] ?></strong><br>
@@ -167,7 +162,7 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                                     
                                     <div class="d-flex justify-content-between">
                                     <div>
-                                        <h5 class="card-title"> <?= $date?></h5>
+                                        <h5 class="card-title"><?= $ticket['formatted_date'] ;?></h5>
                                         <h1><?= $ticket['from_time'] ?></h1>
                                         <strong><?= $ticket['name_c_house'] ?></strong><br>
                                         <strong>Tên xe: <?= $ticket['c_name'] ?></strong><br>
@@ -200,7 +195,7 @@ $TicketsAll = $ticket->getTicketsByUser($userId);
                                     
                                     <div class="d-flex justify-content-between">
                                     <div>
-                                        <h5 class="card-title"> <?= $date?></h5>
+                                        <h5 class="card-title"><?= $ticket['formatted_date'] ;?></h5>
                                         <h1><?= $ticket['from_time'] ?></h1>
                                         <strong><?= $ticket['name_c_house'] ?></strong><br>
                                         <strong>Tên xe: <?= $ticket['c_name'] ?></strong><br>

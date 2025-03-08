@@ -1,10 +1,9 @@
 <?php include_once 'navbar.php'; ?>
 <?php include_once 'slidebar.php'; ?>
-<?php include '../module/Database.php'; 
+<?php include '../module/Database.php';
 $db = new Database();
 $conn = $db->connectBee();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +14,6 @@ $conn = $db->connectBee();
     <title>Quản lý Xe</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body>
@@ -28,7 +26,6 @@ $conn = $db->connectBee();
                     <li class="breadcrumb-item active">Quản lý xe</li>
             </div>
 
-            <!--  -->
             <div class="input-group mb-3">
                 <input type="text" class="form-control w-50" id="searchKeyword" placeholder="Tìm kiếm theo tên xe">
                 <button class="btn btn-outline-secondary" id="btnSearch"><i class="fas fa-search"></i> Tìm kiếm</button>
@@ -36,8 +33,8 @@ $conn = $db->connectBee();
                     <i class="fas fa-plus"></i> Thêm
                 </button>
             </div>
-            
-            <!-- -->
+
+            <!-- Add -->
             <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -48,8 +45,28 @@ $conn = $db->connectBee();
                         <div class="modal-body">
                             <form action="../module/car_p.php" method="POST" enctype="multipart/form-data">
                                 <div class="mb-3">
-                                    <label for="c_name" class="form-label">Tên xe</label>
-                                    <input type="text" class="form-control" id="c_name" name="c_name" required>
+                                    <label for="c_name" class="form-label">Hãng xe</label>
+                                    <input type="text" class="form-control" id="c_name" name="c_name" list="car_names" required>
+                                    <datalist id="car_names">
+                                        <?php
+                                        $sql = "SELECT DISTINCT c_name FROM car";
+                                        $result = $conn->query($sql);
+                                        if ($result->num_rows > 0) {
+
+                                            while ($row = $result->fetch_assoc()) {
+                                                echo '<option value="' . htmlspecialchars($row['c_name']) . '">';
+                                            }
+                                        }
+                                        ?>
+                                    </datalist>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="c_type" class="form-label">Loại xe</label>
+                                    <input type="text" class="form-control" id="c_type" name="c_type" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="c_color" class="form-label">Màu xe</label>
+                                    <input type="text" class="form-control" id="c_color" name="c_color" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="capacity" class="form-label">Số chỗ</label>
@@ -75,8 +92,9 @@ $conn = $db->connectBee();
                                     }
                                     ?>
                                 </select>
+                                <br>
                                 <div class="mb-3">
-                                    <label class="form-label" for="img"></label>
+                                    <label class="form-label" for="img">Hình ảnh</label>
                                     <input type="file" name="img" class="form-control" id="img" required />
                                 </div>
                                 <input type="hidden" name="action" value="add">
@@ -89,12 +107,13 @@ $conn = $db->connectBee();
                 </div>
             </div>
 
+            <!-- table -->
             <div class="text-center">
                 <div>
                     <table class="table table-bordered table-hover">
                         <?php
                         $search_keyword = $_POST['search_keyword'] ?? '';
-                        $sql = "SELECT car.id_car, car.c_name, car.capacity, car.c_plate, car.img, car_house.name_c_house 
+                        $sql = "SELECT car.id_car, car.c_name, car.c_type, car.c_color, car.capacity, car.c_plate, car.img, car_house.name_c_house 
                         FROM car 
                         JOIN car_house ON car.id_c_house = car_house.id_c_house";
 
@@ -118,7 +137,9 @@ $conn = $db->connectBee();
                         <thead class="table-dark">
                             <tr>
                                 <th>STT</th>
-                                <th>Tên xe</th>
+                                <th>Hãng xe</th>
+                                <th>Loại xe</th>
+                                <th>Màu xe</th>
                                 <th>Sức chứa</th>
                                 <th>Biển số xe</th>
                                 <th>Nhà xe</th>
@@ -134,6 +155,8 @@ $conn = $db->connectBee();
                                     echo "<tr>
                     <td>" . $stt++ . "</td>
                     <td>" . htmlspecialchars($row['c_name']) . "</td>
+                    <td>" . htmlspecialchars($row['c_type']) . "</td>
+                    <td>" . htmlspecialchars($row['c_color']) . "</td>
                     <td>" . htmlspecialchars($row['capacity']) . "</td>
                     <td>" . htmlspecialchars($row['c_plate']) . "</td>
                     <td>" . htmlspecialchars($row['name_c_house']) . "</td>
@@ -141,12 +164,14 @@ $conn = $db->connectBee();
                     <td>
                         <button class='btn btn-warning btn-sm me-1 btnEdit' data-id='" . $row['id_car'] . "' 
                                 data-name='" . htmlspecialchars($row['c_name']) . "' 
+                                data-type='" . htmlspecialchars($row['c_type']) . "' 
+                                data-color='" . htmlspecialchars($row['c_color']) . "' 
                                 data-capacity='" . htmlspecialchars($row['capacity']) . "' 
                                 data-plate='" . htmlspecialchars($row['c_plate']) . "' 
                                 data-name2='" . htmlspecialchars($row['name_c_house']) . "' 
                                 data-img='" . htmlspecialchars($row['img']) . "'>
-                            <i class='fas fa-edit'></i> Sửa
-                        </button>
+                            <i class='fas fa-edit'></i> Sửa </button>
+                        
                         <button class='btn btn-danger btn-sm btnDelete' data-id='" . $row['id_car'] . "'>
                             <i class='fas fa-trash-alt'></i> Xóa
                         </button>
@@ -154,13 +179,15 @@ $conn = $db->connectBee();
                 </tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='7' class='text-center'>Không có dữ liệu</td></tr>";
+                                echo "<tr><td colspan='9' class='text-center'>Không có dữ liệu</td></tr>";
                             }
                             ?>
                         </tbody>
                     </table>
                 </div>
             </div>
+
+            <!-- Edit -->
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -172,8 +199,16 @@ $conn = $db->connectBee();
                             <div class="modal-body">
                                 <input type="hidden" id="edit_id_car" name="id_car">
                                 <div class="mb-3">
-                                    <label for="edit_c_name" class="form-label">Tên xe</label>
+                                    <label for="edit_c_name" class="form-label">Hãng xe</label>
                                     <input type="text" class="form-control" id="edit_c_name" name="c_name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_c_type" class="form-label">Loại xe</label>
+                                    <input type="text" class="form-control" id="edit_c_type" name="c_type" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="edit_c_color" class="form-label">Màu xe</label>
+                                    <input type="text" class="form-control" id="edit_c_color" name="c_color" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="edit_capacity" class="form-label">Số chỗ</label>
@@ -213,6 +248,7 @@ $conn = $db->connectBee();
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -224,8 +260,8 @@ $conn = $db->connectBee();
                     </div>
                     <div class="modal-body">
                         <p>Bạn có chắc chắn muốn xóa xe này không?</p>
-                        </div>
-                        <div class="modal-footer">
+                    </div>
+                    <div class="modal-footer">
                         <form action="../module/car_p.php" method="POST">
                             <input type="hidden" id="delete_id_car" name="id_car">
                             <input type="hidden" name="action" value="delete">
@@ -238,9 +274,9 @@ $conn = $db->connectBee();
         </div>
     </div>
 
-
     <script src="../js/car.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

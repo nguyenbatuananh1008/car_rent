@@ -11241,3 +11241,42 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+/* Addon */
+/* Ảnh nền login */
+.bg-image {
+  background: url('../photo/bg-login.jpg') no-repeat center center;
+  background-size: cover;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Header */
+.card-header {
+  background: linear-gradient(135deg, #4e73df, #1cc88a);
+  color: white;
+}
+
+/* Nút đăng nhập */
+.btn-primary {
+  background-color: #1cc88a;
+  border-color: #1cc88a;
+}
+
+.btn-primary:hover {
+  background-color: #17a673;
+  border-color: #17a673;
+}
+
+/* Footer */
+footer a {
+  text-decoration: none;
+  color: #4e73df;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+/* End Addon */

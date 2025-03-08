@@ -65,9 +65,9 @@ if ($stmt->execute()) {
   // Lưu thông tin vé vào session để hiển thị sau khi chuyển hướng
     $_SESSION['ticket_info'] = [
         'id_trip' => $id_trip,
-        'name' => $name,
-        'phone' => $phone,
-        'email' => $email,
+        'name' => $_POST['name'] ,
+        'phone' =>  $_POST['phone'],
+        'email' =>  $_POST['email'],
         'number_seat' => $number_seat,
         'total_price' => $total_price,
         'status' => $status,
@@ -81,8 +81,8 @@ if ($stmt->execute()) {
         'car_color' => $_POST['car_color'] ?? '',
         'car_capacity' => $_POST['car_capacity'] ?? '',
         'car_type' => $_POST['car_type'] ?? '',
-        'car_image' => $_POST['car_image'] ?? ''
-       
+        'car_image' => $_POST['car_image'] ?? '',
+       'car_plate' => $_POST['car_plate'] ?? ''
     ];
 
     header("Location:../ticket_details.php");

@@ -32,7 +32,7 @@ class Ticket
                     city_from.city_name AS from_city,
                     city_to.city_name AS to_city,
                     location_from.name_location AS from_location,
-                     DATE_FORMAT(location_from.time,'%H:%i') AS from_time,
+                    DATE_FORMAT(location_from.time,'%H:%i') AS from_time,
                     location_to.name_location AS to_location,
                     DATE_FORMAT(location_to.time,'%H:%i') AS to_time
                 FROM ticket t
@@ -45,31 +45,73 @@ class Ticket
                 LEFT JOIN location location_from ON t.id_location_from = location_from.id_location
                 LEFT JOIN location location_to ON t.id_location_to = location_to.id_location
                 WHERE t.id_user = :userId";
-
+    
         // Nếu có tham số $status, thêm điều kiện lọc vào câu truy vấn
         if ($status !== null) {
             $query .= " AND t.status = :status";
         }
-
-        $query .= " ORDER BY t.date DESC";
-        
+    
         $stmt = $this->db->prepare($query);
         $stmt->bindParam(':userId', $userId, PDO::PARAM_INT);
-
+    
         // Nếu có điều kiện status, thêm tham số status vào câu lệnh
         if ($status !== null) {
             $stmt->bindParam(':status', $status, PDO::PARAM_INT);
         }
-
+    
         // Kiểm tra và in lỗi nếu truy vấn không thực thi thành công
         if (!$stmt->execute()) {
             print_r($stmt->errorInfo());
             return [];
         }
     
-        // Trả về tất cả các vé dưới dạng mảng
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Lấy tất cả các vé dưới dạng mảng
+        $tickets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Định dạng lại ngày cho mỗi vé sau khi truy vấn
+        foreach ($tickets as &$ticket) {
+            $date = $ticket['date'];
+    
+            // Lấy tên ngày trong tuần (ví dụ: Thứ 2, Thứ 3, ...)
+            $dayOfWeek = date('l', strtotime($date));
+    
+            // Chuyển đổi tên ngày trong tuần sang tiếng Việt
+            $dayOfWeekInVietnamese = '';
+            switch ($dayOfWeek) {
+                case 'Sunday':
+                    $dayOfWeekInVietnamese = 'CN';
+                    break;
+                case 'Monday':
+                    $dayOfWeekInVietnamese = 'T2';
+                    break;
+                case 'Tuesday':
+                    $dayOfWeekInVietnamese = 'T3';
+                    break;
+                case 'Wednesday':
+                    $dayOfWeekInVietnamese = 'T4';
+                    break;
+                case 'Thursday':
+                    $dayOfWeekInVietnamese = 'T5';
+                    break;
+                case 'Friday':
+                    $dayOfWeekInVietnamese = 'T6';
+                    break;
+                case 'Saturday':
+                    $dayOfWeekInVietnamese = 'T7';
+                    break;
+            }
+    
+            // Định dạng ngày thành kiểu 'd/m/Y' (22/01/2025)
+            $formattedDate = date('d/m/Y', strtotime($date));
+    
+            // Kết hợp tên ngày và ngày tháng
+            $ticket['formatted_date'] = $dayOfWeekInVietnamese . ", " . $formattedDate;
+        }
+    
+        // Trả về tất cả các vé đã được định dạng ngày
+        return $tickets;
     }
+    
 
     public function cancelTicket($ticketId, $userId) {
         // Kiểm tra vé có tồn tại và thuộc về người dùng hiện tại

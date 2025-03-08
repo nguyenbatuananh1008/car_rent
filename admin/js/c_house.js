@@ -1,3 +1,12 @@
+//Fix araia hidden
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (document.activeElement) {
+            document.activeElement.blur();
+        }
+    });
+});
+
 document.querySelectorAll('.btnEdit').forEach(button => 
     {
         button.addEventListener('click', (e) => {

@@ -11,14 +11,18 @@ if (isset($_SESSION['ticket_info'])) {
 // Lấy thông tin vé từ session
 $id_trip = $ticket_info['id_trip'];
 $name = $ticket_info['name'];
+
 $phone = $ticket_info['phone'];
+
 $email = $ticket_info['email'];
+
 $number_seat = $ticket_info['number_seat'];
 $total_price = $ticket_info['total_price'];
 $status = $ticket_info['status'];
 $method = $ticket_info['method'];
 $date = $ticket_info['date'];
 $car_name = $ticket_info['car_name'];
+$car_color = $ticket_info['car_color'];
 $car_house_name = $ticket_info['car_house_name'];
 $pickup_location = $ticket_info['pickup_location'];
 $dropoff_location = $ticket_info['dropoff_location'];
@@ -26,8 +30,11 @@ $pickup_time = $ticket_info['pickup_time'];
 $car_capacity = $ticket_info['car_capacity'];
 $car_type = $ticket_info['car_type'];
 $car_image = $ticket_info['car_image'];
+$car_plate = $ticket_info['car_plate'];
 ?>
-
+ <?php 
+    include "layout/header.php";
+    ?>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -37,9 +44,7 @@ $car_image = $ticket_info['car_image'];
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
 </head>
-    <?php 
-    include "layout/header.php";  // Đảm bảo header đã được bao gồm ở đây
-    ?>
+    
 
 <body>
     
@@ -64,13 +69,15 @@ $car_image = $ticket_info['car_image'];
                 <p><strong>Số ghế:</strong> <?php echo htmlspecialchars($number_seat); ?></p>
             </div>
             <div class="col-md-6">
-                <p><strong>Tổng giá trị:</strong> <?php echo htmlspecialchars($total_price); ?></p>
+                <p><strong>Tổng giá trị:</strong> <?php echo  number_format($total_price); ?> VNĐ</p>
                 <p><strong>Phương thức thanh toán:</strong> <?php echo $method == 1 ? 'Thẻ' : 'Tiền mặt'; ?></p>
                 <p><strong>Ngày:</strong> <?php echo htmlspecialchars($date); ?></p>
-                <p><strong>Xe:</strong> <?php echo htmlspecialchars($car_name); ?></p>
+                <p><strong>Xe:</strong> <?php echo htmlspecialchars($car_name); ?>(<?php echo htmlspecialchars($car_color); ?>)-<?php echo htmlspecialchars($car_type); ?>-<?php echo htmlspecialchars($car_capacity); ?> chỗ</p>
                 <p><strong>Nhà xe:</strong> <?php echo htmlspecialchars($car_house_name); ?></p>
                 <p><strong>Điểm đón:</strong> <?php echo htmlspecialchars($pickup_location); ?></p>
+                <p><strong>Đón vào lúc :<?php echo htmlspecialchars($pickup_time); ?></strong></p>
                 <p><strong>Điểm trả:</strong> <?php echo htmlspecialchars($dropoff_location); ?></p>
+                <p><strong>Biển số xe :</strong> <?php echo htmlspecialchars($car_plate); ?></p>
             </div>
         </div>
     </div>

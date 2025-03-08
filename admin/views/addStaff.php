@@ -4,7 +4,8 @@ include '../module/adminHandler.php';
 include_once 'slidebar.php';
 include_once 'navbar.php';
 include '../module/auth.php';
-checkAccess(0);
+checkAccess(1); 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -20,8 +21,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!is_dir('../uploads/')) {
             mkdir('../uploads/', 0777, true);
         }
-
-        // Di chuyển file vào thư mục uploads
         if (move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
             if (addStaff($name, $email, $password, $usertype, $imageName)) {
                 $success_message = "Thêm nhân viên thành công!";
@@ -36,52 +35,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <div id="layoutSidenav">
     <div id="layoutSidenav_content">
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
-                        <div class="col-sm-6"></div>
-                        <div class="container">
-                            <h1>Thêm nhân viên</h1>
-                            <?php if (isset($success_message)): ?>
-                                <div class="alert alert-success"><?= $success_message ?></div>
-                            <?php elseif (isset($error_message)): ?>
-                                <div class="alert alert-danger"><?= $error_message ?></div>
-                            <?php endif; ?>
-
-                            <form method="POST" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label for="name">Tên</label>
-                                    <input type="text" id="name" name="name" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" id="email" name="email" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="label">Ảnh</label>
-                                    <input type="file" name="image" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="password">Mật khẩu</label>
-                                    <input type="password" id="password" name="password" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="usertype">Loại tài khoản</label>
-                                    <select id="usertype" name="usertype" class="form-control" required>
-                                        <option value="0">Nhân viên</option>
-                                        <option value="1">Admin</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Thêm</button>
-                                <a href="staffList.php" class="btn btn-secondary">Hủy</a>
-                            </form>
+                        <div class="col-sm-6">
+                            <!-- Optionally add title here -->
                         </div>
                     </div>
+                    <div class="container">
+                        <h1>Thêm nhân viên</h1>
+                        <?php if (isset($success_message)): ?>
+                            <div class="alert alert-success"><?= $success_message ?></div>
+                        <?php elseif (isset($error_message)): ?>
+                            <div class="alert alert-danger"><?= $error_message ?></div>
+                        <?php endif; ?>
+
+                        <form method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="name">Tên</label>
+                                <input type="text" id="name" name="name" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="label">Ảnh</label>
+                                <input type="file" name="image" class="form-control" accept="image/*" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Mật khẩu</label>
+                                <input type="password" id="password" name="password" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="usertype">Loại tài khoản</label>
+                                <select id="usertype" name="usertype" class="form-control" required>
+                                    <option value="0">Nhân viên</option>
+                                    <option value="1">Admin</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                            <a href="staffList.php" class="btn btn-secondary">Hủy</a>
+                        </form>
+                    </div>
                 </div>
+            </section>
         </div>
     </div>
 </div>
+
 <?php include 'footer.php'; ?>

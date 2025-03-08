@@ -4,7 +4,7 @@ include '../module/adminHandler.php';
 include_once 'slidebar.php';
 include_once 'navbar.php';
 include '../module/auth.php';
-checkAccess(0); 
+checkAccess(1); 
 $id = $_GET['id'];
 $staff = getStaffById($id);
 

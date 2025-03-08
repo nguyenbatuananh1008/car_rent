@@ -21,13 +21,15 @@ class Database {
 
     public function connectBee() {
         $this->conn = null;
-
-        try {
-            $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db_name);
-        } catch (PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
+    
+        
+        $this->conn = new mysqli($this->host, $this->username, $this->password, $this->db_name);
+    
+        
+        if ($this->conn->connect_error) {
+            die("Connection error: " . $this->conn->connect_error);
         }
-
+    
         return $this->conn;
     }
 }

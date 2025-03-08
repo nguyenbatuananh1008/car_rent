@@ -1,5 +1,7 @@
 <?php
+if(empty($_SESSION)) {
 session_start();
+}
 
 function checkAccess($requiredType) {
     // Kiểm tra nếu chưa đăng nhập

@@ -1,9 +1,9 @@
 <?php
-require 'database.php';?>
-
-<?php $db = new Database();
+require 'database.php';
+ $db = new Database();
 $conn = $db->connectBee();
 ?>
+
 <?php
 $name_c_house = $_POST['name_c_house'];
 $address = $_POST['address'];
@@ -46,7 +46,6 @@ if ($action == 'add') {
 }
 
 if ($stmt->execute()) {
-    echo "Thành công!";
     header('Location: ../views/C_house.php');
     exit();
 } else {

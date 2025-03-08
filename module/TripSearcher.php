@@ -42,8 +42,10 @@
                                         city_from.city_name AS city_from_name, 
                                         city_to.city_name AS city_to_name, 
                                         car.img AS car_image, 
-                                        car.c_name AS car_name, 
+                                        car.c_name AS car_name,
+                                        car.v_type AS v_type,
                                         car.c_type AS car_type,
+                                        car.c_plate AS car_plate,
                                         car.c_color AS car_color,
                                         car.capacity AS car_capacity,
                                         car_house.name_c_house AS car_house_name,
@@ -72,13 +74,13 @@
                                             OR
                                             -- Tìm chuyến xe có điểm dừng ở city_from và điểm cuối ở city_to
                                             (rs.id_city = :city_from AND r.id_city_to = :city_to)
-                                            OR
-                                            -- Tìm chuyến xe có type = 0 từ city_from đến type = 1 ở city_to
-                                            (rs.type = 0 AND rs.id_city = :city_from AND EXISTS 
-                                                (SELECT 0 FROM route_stop rs2 
-                                                WHERE rs2.id_route = rs.id_route 
-                                                AND rs2.type = 1 
-                                                AND rs2.id_city = :city_to))
+                                           OR
+                                        -- Tìm chuyến xe có điểm dừng ở city_from và city_to theo đúng thứ tự trên tuyến đường
+                                        (rs.id_city = :city_from AND EXISTS 
+                                            (SELECT 0 FROM route_stop rs2 
+                                            WHERE rs2.id_route = rs.id_route 
+                                            AND rs2.id_city = :city_to 
+                                            AND rs2.type > rs.type))
                                         )
                                         AND trip.t_pick >= :date
                                     $orderBy

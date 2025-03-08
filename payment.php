@@ -11,6 +11,7 @@ $id_trip = $_POST['id_trip'];
   $car_image = $_POST['car_image'] ?? '';
   $car_type = $_POST['car_type'] ?? '';
   $car_color = $_POST['car_color'] ?? '';
+  $car_plate  = $_POST['car_plate'] ?? '';
   $pickup_location = $_POST['pickup_location'] ?? '';
   $pickup_city = $_POST['pickup_city'] ?? '';
   $pickup_time = $_POST['pickup_time'] ?? '';
@@ -106,8 +107,8 @@ $id_trip = $_POST['id_trip'];
                 <!-- Thông tin chuyến đi -->
                 <input type="hidden" name="id_trip" value="<?= htmlspecialchars($id_trip) ?>">
     <input type="hidden" name="id_user" value="<?= htmlspecialchars($id_user) ?>">
-    <input type="hidden" name="name" value="<?= htmlspecialchars($_POST['name'])?>">
-    <input type="hidden" name="email" value="<?= htmlspecialchars($_POST['email'])?>">
+    <input type="hidden" name="name" value="<?= htmlspecialchars(string: $name)?>">
+    <input type="hidden" name="email" value="<?= htmlspecialchars(  $email)?>">
     <input type="hidden" name="phone" value="<?= htmlspecialchars($phone) ?>">
     <input type="hidden" name="number_seat" value="<?= htmlspecialchars($num_seats) ?>">
     <input type="hidden" name="total_price" value="<?= htmlspecialchars($total_price) ?>">
@@ -115,6 +116,7 @@ $id_trip = $_POST['id_trip'];
     <input type="hidden" name="id_location_from" value="<?= htmlspecialchars($id_location_from) ?>">
     <input type="hidden" name="id_location_to" value="<?= htmlspecialchars($id_location_to) ?>">
     <input type="hidden" name="car_name" value="<?= htmlspecialchars($car_name) ?>">
+    <input type="hidden" name="car_plate" value="<?= htmlspecialchars($car_plate) ?>">
     <input type="hidden" name="car_house_name" value="<?= htmlspecialchars($car_house_name) ?>">
     <input type="hidden" name="car_image" value="<?= htmlspecialchars($car_image) ?>">
     <input type="hidden" name="car_capacity" value="<?= htmlspecialchars($car_capacity) ?>">
@@ -177,8 +179,8 @@ $id_trip = $_POST['id_trip'];
 
 
 
-                <!-- Thông tin liên hệ -->
-                <div class="trip-info">
+                <!-- Thông tin liên hệ --> 
+    <div class="trip-info">
     <h5>Thông tin liên hệ</h5>
     <p id="display-name" class="mb-1"><strong>Hành khách:</strong> <?= htmlspecialchars($_POST['name']) ?></p>
     <p id="display-phone" class="mb-1"><strong>Số điện thoại:</strong> <?= htmlspecialchars($phone) ?></p>

@@ -6,14 +6,31 @@ $conn = $db->connectBee();
 
 <?php
 $c_name = $_POST['c_name'] ?? null;
+$c_type = $_POST['c_type'] ?? null;
+$c_color = $_POST['c_color'] ?? null;
 $c_plate = $_POST['c_plate'] ?? null;
 $id_c_house = $_POST['id_c_house'] ?? null;
 $capacity = $_POST['capacity'] ?? null;
 $action = $_POST['action'] ?? null;
 
 if ($action == 'add') {
-    $stmt = $conn->prepare("INSERT INTO car (c_name, c_plate, id_c_house, capacity, img) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssiis", $c_name, $c_plate, $id_c_house, $capacity, $img);
+    
+    $check_stmt = $conn->prepare("SELECT COUNT(*) AS count FROM car WHERE c_plate = ?");
+    $check_stmt->bind_param("s", $c_plate);
+    $check_stmt->execute();
+    $check_result = $check_stmt->get_result();
+    $check_row = $check_result->fetch_assoc();
+
+    if ($check_row['count'] > 0) {
+       
+        echo "Lỗi: Biển số xe đã tồn tại.";
+        exit();
+    }
+    $check_stmt->close();
+
+    
+    $stmt = $conn->prepare("INSERT INTO car (c_name, c_type, c_color, c_plate, id_c_house, capacity, img) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssiis", $c_name, $c_type, $c_color, $c_plate, $id_c_house, $capacity, $img);
 
     if ($stmt->execute()) {
         header('Location: ../views/Car.php');
@@ -21,12 +38,14 @@ if ($action == 'add') {
     } else {
         echo "Lỗi: " . $stmt->error;
     }
+    $stmt->close();
+
 
 } elseif ($action == 'edit') {
     $id_car = $_POST['id_car'];
-    $query = "UPDATE car SET c_name = ?, c_plate = ?, id_c_house = ?, capacity = ?";
-    $types = "ssii";
-    $params = [&$c_name, &$c_plate, &$id_c_house, &$capacity];
+    $query = "UPDATE car SET c_name = ?, c_type = ?, c_color = ?, c_plate = ?, id_c_house = ?, capacity = ?";
+    $types = "ssssii";
+    $params = [&$c_name, &$c_type, &$c_color, &$c_plate, &$id_c_house, &$capacity];
 
     if ($img !== null) {
         $query .= ", img = ?";

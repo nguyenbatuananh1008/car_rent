@@ -1,116 +1,128 @@
-
-document.getElementById("name_c_house").addEventListener("change", function () {
-    const id_c_house = this.value;
-    const carSelect = document.getElementById("c_plate");
-
-    carSelect.innerHTML = "<option value='' disabled selected>Đang tải...</option>";
-
-    fetch("../module/trip_p.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `id_c_house=${id_c_house}`,
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            carSelect.innerHTML = "<option value='' disabled selected>Chọn biển số</option>";
-            data.forEach((car) => {
-                carSelect.innerHTML += `<option value="${car.id_car}">${car.c_plate}</option>`;
-            });
-        })
-        .catch((error) => {
-            console.error("Error fetching cars:", error);
-            carSelect.innerHTML = "<option value='' disabled>Không thể tải dữ liệu</option>";
-        });
-});
-
-document.getElementById("edit_name_c_house").addEventListener("change", function () {
-    const id_c_house = this.value;
-    const carSelect = document.getElementById("edit_c_plate");
-
-    carSelect.innerHTML = "<option value='' disabled selected>Đang tải...</option>";
-
-    fetch("../module/trip_p.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: `id_c_house=${id_c_house}`,
-    })
-        .then((response) => response.json())
-        .then((data) => {
-            carSelect.innerHTML = "<option value='' disabled selected>Chọn biển số</option>";
-            data.forEach((car) => {
-                carSelect.innerHTML += `<option value="${car.id_car}">${car.c_plate}</option>`;
-            });
-        })
-        .catch((error) => {
-            console.error("Error fetching cars:", error);
-            carSelect.innerHTML = "<option value='' disabled>Không thể tải dữ liệu</option>";
-        });
-});
-    
-document.querySelectorAll('.btnEdit').forEach(button => {
-    button.addEventListener('click', function () {
-        const id = this.getAttribute('data-id');
-
-        fetch(`../module/trip_p.php?id=${id}`)
-            .then(response => response.json())
-            .then(data => {
-
-                document.getElementById('editId_trip').value = data.id_trip;
-                document.getElementById('edit_name_c_house').value = data.id_c_house;
-                document.getElementById('edit_id_city_from').value = data.id_city_from;
-                document.getElementById('edit_id_city_to').value = data.id_city_to;
-                document.getElementById('edit_t_pick').value = data.t_pick;
-                document.getElementById('edit_t_drop').value = data.t_drop;
-                document.getElementById('edit_t_limit').value = data.t_limit;
-                document.getElementById('edit_date').value = data.date;
-                document.getElementById('edit_price').value = data.price;
-
-
-                const carHouseSelect = document.getElementById('edit_name_c_house');
-                carHouseSelect.dispatchEvent(new Event('change'));
-
-
-                setTimeout(() => {
-                    document.getElementById('edit_c_plate').value = data.id_car;
-                }, 500);
-
-
-                new bootstrap.Modal(document.getElementById('editModal')).show();
-            })
-            .catch(error => console.error('Error:', error));
+//Fix araia hidden
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (document.activeElement) {
+            document.activeElement.blur();
+        }
     });
 });
 
-document.querySelectorAll('.btnDelete').forEach(button => {
-    button.addEventListener('click', (e) => {
-        const id = e.target.closest('button').getAttribute('data-id');
-        document.getElementById('deleteId_trip').value = id;
-        new bootstrap.Modal(document.getElementById('deleteModal')).show();
+$(document).ready(function () {
+    function loadRoutesAndCars(selectHouseId, routeSelectId, carSelectId, plateSelectId) {
+        var id_c_house = $(selectHouseId).val();
+
+        $(routeSelectId).html('<option value="" disabled selected>Đang tải...</option>');
+        $(carSelectId).html('<option value="" disabled selected>Chọn nhà xe trước</option>');
+        $(plateSelectId).html('<option value="" disabled selected>Chọn xe trước</option>');
+
+        if (id_c_house) {
+            //  tuyến đường
+            $.ajax({
+                url: '../module/trip_p.php',
+                type: 'POST',
+                data: { action: 'get_routes', id_c_house: id_c_house },
+                success: function (response) {
+                    $(routeSelectId).html(response);
+                }
+            });
+
+            //  xe
+            $.ajax({
+                url: '../module/trip_p.php',
+                type: 'POST',
+                data: { action: 'get_cars', id_c_house: id_c_house },
+                success: function (response) {
+                    $(carSelectId).html(response);
+                }
+            });
+        }
+    }
+
+    function loadCarPlates(carSelectId, plateSelectId) {
+        var id_car = $(carSelectId).val();
+
+        if (id_car) {
+            $.ajax({
+                url: '../module/trip_p.php',
+                type: 'POST',
+                data: { action: 'get_car_plate', id_car: id_car },
+                success: function (response) {
+                    $(plateSelectId).html(response);
+                }
+            });
+        }
+    }
+
+    // Add
+    $('#name_c_house').change(function () {
+        loadRoutesAndCars('#name_c_house', '#id_route', '#car_info', '#car_plate');
+    });
+
+    $('#car_info').change(function () {
+        loadCarPlates('#car_info', '#car_plate');
+    });
+
+    // Xử lý sự kiện cho modal sửa
+    $('#edit_name_c_house').change(function () {
+        loadRoutesAndCars('#edit_name_c_house', '#edit_id_route', '#edit_car_info', '#edit_car_plate');
+    });
+
+    $('#edit_car_info').change(function () {
+        loadCarPlates('#edit_car_info', '#edit_car_plate');
+    });
+
+    // Edit
+    document.querySelectorAll('.btnEdit').forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+
+            fetch(`../module/trip_p.php?id=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    $('#edit_Id_trip').val(data.id_trip);
+                    $('#edit_name_c_house').val(data.id_c_house).trigger('change');
+
+                    setTimeout(() => {
+                        $('#edit_id_route').val(data.id_route);
+                        $('#edit_car_info').val(data.id_car_info).trigger('change');
+
+                        setTimeout(() => {
+                            $('#edit_car_plate').val(data.id_car_plate);
+                        }, 500);
+                    }, 500);
+
+                    $('#edit_t_pick').val(data.t_pick);
+                    $('#edit_t_drop').val(data.t_drop);
+                    $('#edit_t_limit').val(data.t_limit);
+                    $('#edit_price').val(data.price);
+
+                    new bootstrap.Modal(document.getElementById('editModal')).show();
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+
+    // Delete
+    document.querySelectorAll('.btnDelete').forEach(button => {
+        button.addEventListener('click', function () {
+            const id = this.getAttribute('data-id');
+            $('#deleteId_trip').val(id);
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        });
     });
 });
 
-document.getElementById('btnSearch').addEventListener('click', function () {
-    var searchKeyword = document.getElementById('searchKeyword').value;
+    document.getElementById('btnSearch').addEventListener('click', function() {
+        var searchKeyword = document.getElementById('searchKeyword').value;
 
-    var form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '';
-
-    var inputAction = document.createElement('input');
-    inputAction.type = 'hidden';
-    inputAction.name = 'search_keyword';
-    inputAction.value = searchKeyword;
-    form.appendChild(inputAction);
-
-    document.body.appendChild(form);
-    form.submit();
-});
-
-
-
-
-
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '';
+        var inputAction = document.createElement('input');
+        inputAction.type = 'hidden';
+        inputAction.name = 'search_keyword';
+        inputAction.value = searchKeyword;
+        form.appendChild(inputAction);
+        document.body.appendChild(form);
+        form.submit();
+    });
